@@ -7,9 +7,10 @@ return [
     | Pipelines
     |--------------------------------------------------------------------------
     |
-    | Alle
-    | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
+    | Define pipelines in this configuration file, each designed to channel data from
+    | various sources to a specified target using a predefined schema. To implement
+    | the required functionality for any pipeline, create a set of custom classes
+    | that extends the provided base classes.
     |
     */
     'pipelines' => [

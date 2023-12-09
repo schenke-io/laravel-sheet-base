@@ -15,8 +15,7 @@ class LaravelSheetBaseServiceProviderTest extends TestCase
         $package = new Package();
         $serviceProvider->configurePackage($package);
         $this->assertEquals('laravel-sheet-base', $package->name);
-        $this->assertEquals(1, count($package->configFileNames));
-        $this->assertEquals(1, count($package->commands));
+        $this->assertCount(1, $package->commands);
 
     }
 }

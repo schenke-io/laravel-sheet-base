@@ -10,7 +10,12 @@ class LaravelSheetBaseServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-
+        $this->publishes(
+            [
+                __DIR__.'/../config/sheet-base.php' => config_path('sheet-base.php'),
+            ],
+            'laravel-sheet-base-config'
+        );
         /*
          * This class is a Package Service Provider
          *
@@ -18,7 +23,6 @@ class LaravelSheetBaseServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('laravel-sheet-base')
-            ->hasConfigFile(['sheet-base'])
             ->hasCommand(LaravelSheetBaseCommand::class);
     }
 }

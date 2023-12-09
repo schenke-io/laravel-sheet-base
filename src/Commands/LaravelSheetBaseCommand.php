@@ -3,6 +3,7 @@
 namespace SchenkeIo\LaravelSheetBase\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseConfig;
 
 class LaravelSheetBaseCommand extends Command
