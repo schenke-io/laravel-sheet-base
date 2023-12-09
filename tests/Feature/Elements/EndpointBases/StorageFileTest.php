@@ -1,0 +1,71 @@
+<?php
+
+namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements\EndpointBases;
+
+use Illuminate\Support\Facades\Storage;
+use SchenkeIo\LaravelSheetBase\Elements\EndpointBases\StorageFile;
+use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
+
+class StorageFileTest extends ConfigTestCase
+{
+    public function testPathNotSet(): void
+    {
+        $this->expectException(ReadParseException::class);
+        $file = new class extends StorageFile
+        {
+            public string $path = '';
+
+            public string $extension = 'txt';
+        };
+    }
+
+    public function testExtensionNotSet(): void
+    {
+        $this->expectException(ReadParseException::class);
+        $file = new class extends StorageFile
+        {
+            public string $path = 'test.txt';
+
+            public string $extension = '';
+        };
+    }
+
+    public function testWrongExtensionSet(): void
+    {
+        $this->expectException(ReadParseException::class);
+        $file = new class extends StorageFile
+        {
+            public string $path = 'test.txt';
+
+            public string $extension = 'abc';
+        };
+    }
+
+    public function testStorageExists(): void
+    {
+        $path = 'testfile.txt';
+        Storage::fake('sheet-base');
+        $this->assertFalse(Storage::disk('sheet-base')->exists($path));
+        Storage::disk('sheet-base')->put($path, 'some text');
+        $this->assertTrue(Storage::disk('sheet-base')->exists($path));
+
+    }
+
+    public function testGetStorageRoot(): void
+    {
+
+        $file = new class extends StorageFile
+        {
+            public string $path = 'test.txt';
+
+            public string $extension = 'txt';
+
+            public function getRoot(): string
+            {
+                return $this->getStorageRoot();
+            }
+        };
+        $this->assertIsString($file->getRoot());
+    }
+}

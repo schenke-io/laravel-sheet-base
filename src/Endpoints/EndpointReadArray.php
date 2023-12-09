@@ -1,0 +1,17 @@
+<?php
+
+namespace SchenkeIo\LaravelSheetBase\Endpoints;
+
+use SchenkeIo\LaravelSheetBase\Elements\EndpointBases\DataReader;
+
+class EndpointReadArray extends DataReader
+{
+    /**
+     * get an array of rows to be filled into the pipeline
+     */
+    public function getArray(): array
+    {
+        // this needs to be overwritten
+        return [];
+    }
+}
