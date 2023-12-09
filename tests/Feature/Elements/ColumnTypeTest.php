@@ -54,6 +54,13 @@ class ColumnTypeTest extends ConfigTestCase
             'unsigned string 5' => [ColumnType::Unsigned, '  3   5  Test  ', 3],
             'unsigned string 6' => [ColumnType::Unsigned, ' a b c ', 0],
             'unsigned string 7' => [ColumnType::Unsigned, '', null],
+            'float 1' => [ColumnType::Float, '', 0.0],
+            'float 2' => [ColumnType::Float, null, null],
+            'float 3' => [ColumnType::Float, ' 0.123 ', 0.123],
+            'float 4' => [ColumnType::Float, '1,23', 1.23],
+            'float 5' => [ColumnType::Float, ' 1,23 Euro ', 1.23],
+            'float 6' => [ColumnType::Float, 0.123, 0.123],
+            'float 7' => [ColumnType::Float, ' 1.234,56', 1234.56],
 
         ];
     }

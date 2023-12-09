@@ -10,6 +10,8 @@ enum ColumnType: string
     case Unsigned = 'Unsigned';
     case Language = 'Language';
 
+    case Float = 'Float';
+
     public function isId(): bool
     {
         return match ($this) {
@@ -35,8 +37,27 @@ enum ColumnType: string
     {
         return match ($this) {
             self::Unsigned => $this->formatUnsigned($param),
+            self::Float => $this->formatFloat($param),
             default => $param
         };
+    }
+
+    private function formatFloat(mixed $param): ?float
+    {
+        if (is_numeric($param)) {
+            return (float) $param;
+        } elseif (is_string($param) && strlen($param) > 0) {
+            if (str_contains($param, ',')) {
+                if (str_contains($param, '.')) {
+                    // remove the dots
+                    $param = str_replace('.', '', $param);
+                }
+
+                return (float) str_replace(',', '.', $param);
+            }
+        }
+
+        return null;
     }
 
     private function formatUnsigned(mixed $param): ?int

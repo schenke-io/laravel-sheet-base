@@ -10,6 +10,7 @@ use SchenkeIo\LaravelSheetBase\Exceptions\SchemaDefinitionException;
  * @method void addString(string $name)
  * @method void addUnsigned(string $name)
  * @method void addLanguage(string $name)
+ * @method void addFloat(string $name)
  */
 abstract class SheetBaseSchema
 {
