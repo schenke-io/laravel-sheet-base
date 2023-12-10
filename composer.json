@@ -18,7 +18,7 @@
     "require": {
         "php": "^8.1",
         "google/apiclient": "^2.15.0",
-        "illuminate/contracts": "^10.0",
+        "illuminate/contracts": "^v10.19",
         "nette/neon": "^3.4",
         "spatie/laravel-data": "^3.10",
         "spatie/laravel-package-tools": "^1.16.0",
@@ -93,10 +93,7 @@
         "laravel": {
             "providers": [
                 "SchenkeIo\\LaravelSheetBase\\LaravelSheetBaseServiceProvider"
-            ],
-            "aliases": {
-                "LaravelSheetBase": "SchenkeIo\\LaravelSheetBase\\Facades\\LaravelSheetBase"
-            }
+            ]
         },
         "google/apiclient-services": [
             "Drive",
