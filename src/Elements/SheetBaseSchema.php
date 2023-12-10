@@ -18,7 +18,7 @@ abstract class SheetBaseSchema
     protected string $idName = '';
 
     /** @var array<string,ColumnType> */
-    protected array $columns = [];
+    public array $columns = [];
 
     /**
      * @throws SchemaDefinitionException
@@ -33,6 +33,50 @@ abstract class SheetBaseSchema
      * define the schema in Laravel migration syntax
      */
     abstract protected function define(): void;
+
+    /**
+     * @throws SchemaDefinitionException
+     */
+    public function __call(string $name, array $arguments)
+    {
+        if (preg_match('@^add(.*)$@', $name, $matches)) {
+            $schemaColumn = ColumnType::tryFrom($matches[1]);
+            if (is_null($schemaColumn)) {
+                throw new SchemaDefinitionException('column type unknown: '.$name);
+            }
+            $this->addColumn($arguments, $schemaColumn);
+        } else {
+            throw new SchemaDefinitionException('unknown method: '.$name);
+        }
+    }
+
+    /**
+     * @throws SchemaDefinitionException
+     */
+    private function addColumn(array $arguments, ColumnType $schemaColumn): void
+    {
+        $name = $schemaColumn->getName($arguments);
+        if ($name == '') {
+            throw new SchemaDefinitionException('column name cannot be empty string');
+        }
+        if ($schemaColumn->isId()) {
+            if ($this->idName == '') {
+                $this->idName = $name;
+            } elseif ($this->idName != $name) {
+                throw new SchemaDefinitionException('only one id column is possible');
+            }
+        }
+        if (isset($this->columns[$name])) {
+            throw new SchemaDefinitionException("column name '$name' is already in use");
+        }
+        if ($schemaColumn == ColumnType::Language) {
+            if (strlen($name) != 2) {
+                throw new SchemaDefinitionException("column name '$name' is defined as language and has not a 2-char name");
+            }
+        }
+        $this->columns[$name] = $schemaColumn;
+
+    }
 
     /**
      * @return array<string,ColumnType>
@@ -86,49 +130,5 @@ abstract class SheetBaseSchema
                 ));
             }
         }
-    }
-
-    /**
-     * @throws SchemaDefinitionException
-     */
-    public function __call(string $name, array $arguments)
-    {
-        if (preg_match('@^add(.*)$@', $name, $matches)) {
-            $schemaColumn = ColumnType::tryFrom($matches[1]);
-            if (is_null($schemaColumn)) {
-                throw new SchemaDefinitionException('column type unknown: '.$name);
-            }
-            $this->addColumn($arguments, $schemaColumn);
-        } else {
-            throw new SchemaDefinitionException('unknown method: '.$name);
-        }
-    }
-
-    /**
-     * @throws SchemaDefinitionException
-     */
-    private function addColumn(array $arguments, ColumnType $schemaColumn): void
-    {
-        $name = $schemaColumn->getName($arguments);
-        if ($name == '') {
-            throw new SchemaDefinitionException('column name cannot be empty string');
-        }
-        if ($schemaColumn->isId()) {
-            if ($this->idName == '') {
-                $this->idName = $name;
-            } elseif ($this->idName != $name) {
-                throw new SchemaDefinitionException('only one id column is possible');
-            }
-        }
-        if (isset($this->columns[$name])) {
-            throw new SchemaDefinitionException("column name '$name' is already in use");
-        }
-        if ($schemaColumn == ColumnType::Language) {
-            if (strlen($name) != 2) {
-                throw new SchemaDefinitionException("column name '$name' is defined as language and has not a 2-char name");
-            }
-        }
-        $this->columns[$name] = $schemaColumn;
-
     }
 }

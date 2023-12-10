@@ -36,16 +36,16 @@ final class Pipeline
 
     public function pump(Closure $callback, string $name, string $className): void
     {
-        $callback("pipeline $name");
+        $callback("|----------   pipeline $name");
         $pipelineData = new PipelineData($this->schema);
         foreach ($this->sources as $source) {
             $source->fillPipeline($pipelineData);
-            $callback(sprintf("pipeline '%s' filled using %s %s",
+            $callback(sprintf("pipeline '%s' source %s %s",
                 $name, get_class($source), $source->explain()
             ));
         }
         $this->target->releasePipeline($pipelineData, $className);
-        $callback(sprintf("pipeline '%s' released by %s  %s",
+        $callback(sprintf("pipeline '%s'target %s  %s",
             $name, get_class($this->target), $this->target->explain()
         ));
     }
@@ -102,7 +102,7 @@ final class Pipeline
             throw new ConfigErrorException($pipelineName, "target class does not exist: $target");
         }
         if (! in_array(IsWriter::class, class_implements($target))) {
-            throw new ConfigErrorException($pipelineName, "is not a valid target class (IsWriter): $target");
+            throw new ConfigErrorException($pipelineName, "Target class invalid: $target");
         }
 
         return new $target();

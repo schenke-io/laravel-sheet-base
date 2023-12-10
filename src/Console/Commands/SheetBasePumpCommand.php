@@ -20,9 +20,14 @@ class SheetBasePumpCommand extends Command
         $inform = function (string $txt) {
             $this->info($txt);
         };
-        $config = SheetBaseConfig::make();
-        foreach ($config->pipelines as $name => $pipeline) {
-            $pipeline->pump($inform, $name, self::class);
+        $check = SheetBaseConfig::checkAndReportError();
+        if(is_null($check)) {
+            $config = SheetBaseConfig::make();
+            foreach ($config->pipelines as $name => $pipeline) {
+                $pipeline->pump($inform, $name, self::class);
+            }
+        }else{
+            $this->error($check);
         }
     }
 }
