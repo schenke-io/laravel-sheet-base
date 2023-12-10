@@ -4,7 +4,6 @@
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/schenke-io/laravel-sheet-base/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/schenke-io/laravel-sheet-base/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/schenke-io/laravel-sheet-base/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/schenke-io/laravel-sheet-base/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/schenke-io/laravel-sheet-base.svg?style=flat-square)](https://packagist.org/packages/schenke-io/laravel-sheet-base)
-[![Coverage](https://codecov.io/gh/schenke-io/laravel-sheet-base/branch/main/graph/badge.svg)](https://codecov.io/gh/schenke-io/laravel-sheet-base)
 
 
 This Laravel package facilitates the creation of pipelines for scenarios 
