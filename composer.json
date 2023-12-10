@@ -52,12 +52,10 @@
     },
     "scripts": {
         "post-autoload-dump": [
-            "@clear",
             "@prepare",
             "@composer run prepare",
             "Google\\Task\\Composer::cleanup"
         ],
-        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": "@php vendor/bin/testbench workbench:build --ansi",
         "start": [
