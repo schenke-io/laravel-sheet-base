@@ -1,34 +1,37 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Commands;
+namespace Feature\Console\Commands;
 
 use Illuminate\Support\Facades\Config;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseConfig;
-use SchenkeIo\LaravelSheetBase\Tests\TestCase;
+use SchenkeIo\LaravelSheetBase\Tests\data\DummyRead;
+use SchenkeIo\LaravelSheetBase\Tests\data\DummySchema;
+use SchenkeIo\LaravelSheetBase\Tests\data\DummyWrite;
+use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
-class LaravelSheetBaseCommandTest extends TestCase
+class SheetBaseCheckCommandTest extends ConfigTestCase
 {
-    //    public function setUp(): void
-    //    {
-    //        parent::setUp();
-    //
-    //        // This fixed the issue
-    //        $this->withoutMockingConsoleOutput();
-    //    }
     public function testNoErrors(): void
     {
-        Config::set('filesystems.disks.sheet-base', []);
-        Config::set(SheetBaseConfig::CONFIG_FILE_BASE.'.pipelines', []);
+
+        Config::set('filesystems.disks.sheet-base', [
+            'driver' => 'local',
+            'root' => '/',
+        ]);
+        Config::set(SheetBaseConfig::CONFIG_FILE_BASE.'.pipelines', [
+            'pipeline1' => [
+                'sources' => [DummyRead::class],
+                'schema' => DummySchema::class,
+                'target' => DummyWrite::class,
+            ],
+        ]);
         $this->artisan('sheet-base:check')->assertExitCode(0);
-        $this->artisan('sheet-base:check')->assertOk();
     }
 
     public function testDiskError(): void
     {
         Config::set('filesystems.disks.sheet-base', null);
         $this->artisan('sheet-base:check')->assertExitCode(1);
-        $this->artisan('sheet-base:check')->assertFailed();
-
     }
 
     public function testConfigError(): void
@@ -36,7 +39,6 @@ class LaravelSheetBaseCommandTest extends TestCase
         Config::set('filesystems.disks.sheet-base', []);
         Config::set(SheetBaseConfig::CONFIG_FILE_BASE, null);
         $this->artisan('sheet-base:check')->assertExitCode(1);
-        $this->artisan('sheet-base:check')->assertFailed();
     }
 
     public function testSyntaxError(): void
@@ -46,6 +48,5 @@ class LaravelSheetBaseCommandTest extends TestCase
             'pipeline1' => ['sources' => ['dummy']],
         ]);
         $this->artisan('sheet-base:check')->assertExitCode(1);
-        $this->artisan('sheet-base:check')->assertFailed();
     }
 }

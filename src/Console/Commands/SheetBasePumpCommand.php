@@ -15,19 +15,23 @@ class SheetBasePumpCommand extends Command
     /**
      * @throws ConfigErrorException
      */
-    public function handle(): void
+    public function handle(): int
     {
         $inform = function (string $txt) {
             $this->info($txt);
         };
         $check = SheetBaseConfig::checkAndReportError();
-        if(is_null($check)) {
+        if (is_null($check)) {
             $config = SheetBaseConfig::make();
             foreach ($config->pipelines as $name => $pipeline) {
                 $pipeline->pump($inform, $name, self::class);
             }
-        }else{
+        } else {
             $this->error($check);
+
+            return self::FAILURE;
         }
+
+        return self::SUCCESS;
     }
 }
