@@ -13,6 +13,13 @@ class StorageTreeTest extends ConfigTestCase
         $this->expectException(ReadParseException::class);
         $tree = new class extends StorageTree
         {
+            /**
+             * brief text what this endpoint is doing
+             */
+            public function explain(): string
+            {
+                return 'in test';
+            }
         };
     }
 }

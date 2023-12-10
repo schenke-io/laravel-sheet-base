@@ -54,13 +54,29 @@ class ColumnTypeTest extends ConfigTestCase
             'unsigned string 5' => [ColumnType::Unsigned, '  3   5  Test  ', 3],
             'unsigned string 6' => [ColumnType::Unsigned, ' a b c ', 0],
             'unsigned string 7' => [ColumnType::Unsigned, '', null],
-            'float 1' => [ColumnType::Float, '', 0.0],
+            'float 1' => [ColumnType::Float, '', null],
             'float 2' => [ColumnType::Float, null, null],
             'float 3' => [ColumnType::Float, ' 0.123 ', 0.123],
             'float 4' => [ColumnType::Float, '1,23', 1.23],
             'float 5' => [ColumnType::Float, ' 1,23 Euro ', 1.23],
             'float 6' => [ColumnType::Float, 0.123, 0.123],
             'float 7' => [ColumnType::Float, ' 1.234,56', 1234.56],
+            'float 8' => [ColumnType::Float, ' 1,234.56', 1234.56],
+            'float 9' => [ColumnType::Float, '  1234 ', 1234.0],
+            'bool 1' => [ColumnType::Boolean, null, null],
+            'bool 2' => [ColumnType::Boolean, true, true],
+            'bool 3' => [ColumnType::Boolean, false, false],
+            'bool 4' => [ColumnType::Boolean, 'false', false],
+            'bool 5' => [ColumnType::Boolean, 'no', false],
+            'bool 6' => [ColumnType::Boolean, 'FALSCH', false],
+            'bool 7' => [ColumnType::Boolean, 'truE', true],
+            'bool 8' => [ColumnType::Boolean, 'yES', true],
+            'bool 9' => [ColumnType::Boolean, 'WAHR', true],
+            'bool 10' => [ColumnType::Boolean, [], false],
+            'bool 11' => [ColumnType::Boolean, [1], true],
+            'bool 12' => [ColumnType::Boolean, 0, false],
+            'bool 13' => [ColumnType::Boolean, -1, true],
+            'bool 14' => [ColumnType::Boolean, 1, true],
 
         ];
     }
@@ -71,6 +87,6 @@ class ColumnTypeTest extends ConfigTestCase
     public function testFormat(ColumnType $type, mixed $input, mixed $output): void
     {
 
-        $this->assertEquals($output, $type->format($input));
+        $this->assertSame($output, $type->format($input));
     }
 }

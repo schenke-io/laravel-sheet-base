@@ -3,7 +3,8 @@
 namespace Workbench\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use SchenkeIo\LaravelSheetBase\Commands\LaravelSheetBaseCommand;
+use SchenkeIo\LaravelSheetBase\Console\Commands\SheetBaseCheckCommand;
+use SchenkeIo\LaravelSheetBase\Console\Commands\SheetBasePumpCommand;
 
 class WorkbenchServiceProvider extends ServiceProvider
 {
@@ -12,7 +13,11 @@ class WorkbenchServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->commands([
+            SheetBaseCheckCommand::class,
+            SheetBasePumpCommand::class,
+        ]);
+
     }
 
     /**
@@ -20,9 +25,9 @@ class WorkbenchServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //        parent::boot();
         $this->commands([
-            LaravelSheetBaseCommand::class,
+            SheetBaseCheckCommand::class,
+            SheetBasePumpCommand::class,
         ]);
     }
 }

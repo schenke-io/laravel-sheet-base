@@ -11,4 +11,9 @@ abstract class StorageFileWriter extends StorageFile implements IsWriter
     {
         Storage::disk(self::DISK)->put($path, $content);
     }
+
+    public function explain(): string
+    {
+        return 'writes to '.$this->path;
+    }
 }

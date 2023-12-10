@@ -1,22 +1,25 @@
+#laravel: ./skeleton
+
 providers:
+   - SchenkeIo\LaravelSheetBase\LaravelSheetBaseServiceProvider
    - Workbench\App\Providers\WorkbenchServiceProvider
 #
 #config:
 #  - config
 #
-migrations:
-  - workbench/database/migrations
-
-seeders:
-  - Workbench\Database\Seeders\DatabaseSeeder
+#migrations:
+#  - workbench/database/migrations
+#
+#seeders:
+#  - Workbench\Database\Seeders\DatabaseSeeder
 
 workbench:
   start: '/'
-  install: true
+  install: false
   discovers:
     web: true
     api: false
-    commands: true
+    commands: false
     views: false
   build: []
   assets: []

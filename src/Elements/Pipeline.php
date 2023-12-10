@@ -40,13 +40,13 @@ final class Pipeline
         $pipelineData = new PipelineData($this->schema);
         foreach ($this->sources as $source) {
             $source->fillPipeline($pipelineData);
-            $callback(sprintf("pipeline '%s' filled with source %s",
-                $name, get_class($source)
+            $callback(sprintf("pipeline '%s' filled using %s %s",
+                $name, get_class($source), $source->explain()
             ));
         }
         $this->target->releasePipeline($pipelineData, $className);
-        $callback(sprintf("pipeline '%s' released to target %s",
-            $name, get_class($this->target)
+        $callback(sprintf("pipeline '%s' released by %s  %s",
+            $name, get_class($this->target), $this->target->explain()
         ));
     }
 

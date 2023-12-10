@@ -17,6 +17,14 @@ class StorageFileTest extends ConfigTestCase
             public string $path = '';
 
             public string $extension = 'txt';
+
+            /**
+             * brief text what this endpoint is doing
+             */
+            public function explain(): string
+            {
+                return 'in test';
+            }
         };
     }
 
@@ -28,6 +36,14 @@ class StorageFileTest extends ConfigTestCase
             public string $path = 'test.txt';
 
             public string $extension = '';
+
+            /**
+             * brief text what this endpoint is doing
+             */
+            public function explain(): string
+            {
+                return 'in test';
+            }
         };
     }
 
@@ -39,6 +55,14 @@ class StorageFileTest extends ConfigTestCase
             public string $path = 'test.txt';
 
             public string $extension = 'abc';
+
+            /**
+             * brief text what this endpoint is doing
+             */
+            public function explain(): string
+            {
+                return 'in test';
+            }
         };
     }
 
@@ -64,6 +88,14 @@ class StorageFileTest extends ConfigTestCase
             public function getRoot(): string
             {
                 return $this->getStorageRoot();
+            }
+
+            /**
+             * brief text what this endpoint is doing
+             */
+            public function explain(): string
+            {
+                return 'in test';
             }
         };
         $this->assertIsString($file->getRoot());

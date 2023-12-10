@@ -14,4 +14,9 @@ class EndpointReadArray extends DataReader
         // this needs to be overwritten
         return [];
     }
+
+    public function explain(): string
+    {
+        return 'reads from array';
+    }
 }

@@ -8,6 +8,9 @@ use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 
 abstract class StorageTreeWriter extends StorageTree implements IsWriter
 {
+    /**
+     * @throws ReadParseException
+     */
     protected function storagePut(string $path, string $content): void
     {
         /*
@@ -21,5 +24,10 @@ abstract class StorageTreeWriter extends StorageTree implements IsWriter
                 $path, $this->root
             ));
         }
+    }
+
+    public function explain(): string
+    {
+        return 'writes under this root '.$this->root;
     }
 }

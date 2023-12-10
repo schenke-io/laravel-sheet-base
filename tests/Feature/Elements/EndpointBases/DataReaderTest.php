@@ -42,6 +42,14 @@ class DataReaderTest extends TestCase
                     ['a' => 2, 'b' => 'beta'],
                 ];
             }
+
+            /**
+             * brief text what this endpoint is doing
+             */
+            public function explain(): string
+            {
+                return 'in test';
+            }
         };
         $this->assertEquals([], $pipelineData->toArray());
         $dataReader->fillPipeline($pipelineData);

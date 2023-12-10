@@ -33,4 +33,9 @@ abstract class StorageFileReader extends StorageFile implements IsReader
     {
         return Storage::disk(self::DISK)->get($path);
     }
+
+    public function explain(): string
+    {
+        return 'reads from '.$this->path;
+    }
 }

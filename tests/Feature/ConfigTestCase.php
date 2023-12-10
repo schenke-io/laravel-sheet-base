@@ -4,9 +4,15 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature;
 
 use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase;
+use SchenkeIo\LaravelSheetBase\LaravelSheetBaseServiceProvider;
 
 class ConfigTestCase extends TestCase
 {
+    protected function getPackageProviders($app): array
+    {
+        return [LaravelSheetBaseServiceProvider::class];
+    }
+
     /**
      * @param  Application  $app
      */
@@ -27,5 +33,6 @@ class ConfigTestCase extends TestCase
                 ],
             ]
         );
+
     }
 }

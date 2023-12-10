@@ -12,6 +12,8 @@ enum ColumnType: string
 
     case Float = 'Float';
 
+    case Boolean = 'Bool';
+
     public function isId(): bool
     {
         return match ($this) {
@@ -38,8 +40,22 @@ enum ColumnType: string
         return match ($this) {
             self::Unsigned => $this->formatUnsigned($param),
             self::Float => $this->formatFloat($param),
+            self::Boolean => $this->formatBoolean($param),
             default => $param
         };
+    }
+
+    private function formatBoolean(mixed $param): ?bool
+    {
+        if (is_null($param)) {
+            return null;
+        } elseif (is_numeric($param)) {
+            return $param !== 0;
+        } elseif (is_string($param)) {
+            return ! preg_match('@^(false|no|falsch)$@i', $param);
+        } else {
+            return (bool) $param;
+        }
     }
 
     private function formatFloat(mixed $param): ?float
@@ -47,12 +63,17 @@ enum ColumnType: string
         if (is_numeric($param)) {
             return (float) $param;
         } elseif (is_string($param) && strlen($param) > 0) {
-            if (str_contains($param, ',')) {
-                if (str_contains($param, '.')) {
-                    // remove the dots
-                    $param = str_replace('.', '', $param);
+            $posKomma = strpos($param, ',');
+            $posDot = strpos($param, '.');
+            if ($posDot && $posKomma) {
+                if ($posDot > $posKomma) {
+                    // english
+                    return (float) str_replace(',', '', $param);
+                } else {
+                    // german
+                    return (float) str_replace(['.', ','], ['', '.'], $param);
                 }
-
+            } elseif ($posKomma) {
                 return (float) str_replace(',', '.', $param);
             }
         }

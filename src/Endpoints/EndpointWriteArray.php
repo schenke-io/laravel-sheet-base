@@ -13,4 +13,9 @@ class EndpointWriteArray implements IsWriter
     {
         $this->arrayData = $pipelineData->toArray();
     }
+
+    public function explain(): string
+    {
+        return 'writes into array';
+    }
 }

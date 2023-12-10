@@ -10,12 +10,14 @@ class LaravelSheetBaseServiceProviderTest extends TestCase
 {
     public function testConfigurePackage()
     {
-
         $serviceProvider = new LaravelSheetBaseServiceProvider($this->app);
         $package = new Package();
         $serviceProvider->configurePackage($package);
+        $serviceProvider->register();
+        $serviceProvider->boot();
         $this->assertEquals('laravel-sheet-base', $package->name);
-        $this->assertCount(1, $package->commands);
+        $this->assertArrayHasKey('sheet-base-config', $serviceProvider::$publishGroups);
+        $this->assertCount(2, $package->commands);
 
     }
 }

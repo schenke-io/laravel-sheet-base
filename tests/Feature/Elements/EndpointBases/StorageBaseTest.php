@@ -13,6 +13,13 @@ class StorageBaseTest extends TestCase
         $this->expectException(FileSystemNotDefinedException::class);
         $file = new class extends StorageBase
         {
+            /**
+             * brief text what this endpoint is doing
+             */
+            public function explain(): string
+            {
+                return 'in test';
+            }
         };
     }
 }
