@@ -13,9 +13,9 @@ abstract class StorageFileReader extends StorageFile implements IsReader
      * @throws ReadParseException
      * @throws FileSystemNotDefinedException
      */
-    public function __construct()
+    public function __construct(?string $path = null)
     {
-        parent::__construct();
+        parent::__construct($path);
         if (! $this->storageExists($this->path)) {
             throw new ReadParseException(
                 sprintf(

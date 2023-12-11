@@ -2,8 +2,9 @@
 
 namespace SchenkeIo\LaravelSheetBase\Elements;
 
+use Exception;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 
 final class SheetBaseConfig
 {
@@ -14,6 +15,7 @@ final class SheetBaseConfig
 
     /**
      * @throws ConfigErrorException
+     * @throws SchemaVerifyColumnsException
      */
     public static function make(): SheetBaseConfig
     {
@@ -36,7 +38,7 @@ final class SheetBaseConfig
     {
         try {
             SheetBaseConfig::make();
-        } catch (ConfigErrorException|ReadParseException|\Exception $e) {
+        } catch (ConfigErrorException|SchemaVerifyColumnsException|Exception $e) {
             return $e->getMessage();
         }
 

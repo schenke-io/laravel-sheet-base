@@ -23,9 +23,12 @@ abstract class StorageFile extends StorageBase implements IsEndpoint
      * @throws ReadParseException
      * @throws FileSystemNotDefinedException
      */
-    public function __construct()
+    public function __construct(?string $path = null)
     {
         parent::__construct();
+        if (! is_null($path)) {
+            $this->path = $path;
+        }
         if ($this->path === '') {
             throw new ReadParseException("'public string \$path = ...' not set in ".get_class($this));
         }

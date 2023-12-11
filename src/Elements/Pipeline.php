@@ -7,8 +7,11 @@ use SchenkeIo\LaravelSheetBase\Contracts\IsEndpoint;
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Contracts\IsWriter;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
+use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
+use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
 use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
+use SchenkeIo\LaravelSheetBase\Skills\MakeEndpoint;
 
 final class Pipeline
 {
@@ -61,6 +64,9 @@ final class Pipeline
      * @return array<int,IsReader>
      *
      * @throws ConfigErrorException
+     * @throws FileSystemNotDefinedException
+     * @throws MakeEndpointException
+     * @throws ReadParseException
      */
     protected static function getSources(mixed $sources, string $pipelineName): array
     {
@@ -72,13 +78,15 @@ final class Pipeline
         }
         $return = [];
         foreach ($sources as $source) {
-            if (! class_exists($source)) {
-                throw new ConfigErrorException($pipelineName, "source class does not exist: $source");
+            if (class_exists($source)) {
+                if (! in_array(IsReader::class, class_implements($source))) {
+                    throw new ConfigErrorException($pipelineName, "is not a valid source class (IsReader): $source");
+                }
+                $return[] = new $source();
+            } else {
+                // try filename for auto
+                $return[] = MakeEndpoint::fromSource($source);
             }
-            if (! in_array(IsReader::class, class_implements($source))) {
-                throw new ConfigErrorException($pipelineName, "is not a valid source class (IsReader): $source");
-            }
-            $return[] = new $source();
         }
 
         return $return;
@@ -105,17 +113,22 @@ final class Pipeline
 
     /**
      * @throws ConfigErrorException
+     * @throws FileSystemNotDefinedException
+     * @throws MakeEndpointException
+     * @throws ReadParseException
      */
     protected static function getTarget(string $target, string $pipelineName): IsWriter
     {
-        if (! class_exists($target)) {
-            throw new ConfigErrorException($pipelineName, "target class does not exist: $target");
-        }
-        if (! in_array(IsWriter::class, class_implements($target))) {
-            throw new ConfigErrorException($pipelineName, "Target class invalid: $target");
-        }
 
-        return new $target();
+        if (class_exists($target)) {
+            if (! in_array(IsWriter::class, class_implements($target))) {
+                throw new ConfigErrorException($pipelineName, "is not a valid target class (IsWriter): $target");
+            }
 
+            return new $target();
+        } else {
+            // try filename for auto
+            return MakeEndpoint::fromTarget($target);
+        }
     }
 }

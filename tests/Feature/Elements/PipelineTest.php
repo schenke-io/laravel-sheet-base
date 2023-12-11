@@ -4,6 +4,7 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
 use SchenkeIo\LaravelSheetBase\Elements\Pipeline;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
+use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 use Workbench\App\Endpoints\DummyRead;
 use Workbench\App\Endpoints\DummySchema;
@@ -38,10 +39,17 @@ class PipelineTest extends ConfigTestCase
                     'schema' => PersonSchema::class,
                 ],
             ],
-            'target class do not exists' => [ConfigErrorException::class,
+            'no class name and invalid target file' => [MakeEndpointException::class,
                 [
                     'sources' => [PersonsReadPsv::class],
                     'target' => 'do not exists',
+                    'schema' => PersonSchema::class,
+                ],
+            ],
+            'target is just a file name' => ['',
+                [
+                    'sources' => [PersonsReadPsv::class],
+                    'target' => 'something.neon',
                     'schema' => PersonSchema::class,
                 ],
             ],
@@ -66,7 +74,7 @@ class PipelineTest extends ConfigTestCase
                     'schema' => PersonSchema::class,
                 ],
             ],
-            'defect source' => [ConfigErrorException::class,
+            'no class name and invalid source file' => [MakeEndpointException::class,
                 [
                     'sources' => ['unknown class'],
                     'target' => PersonsWriteNeon::class,
