@@ -16,9 +16,14 @@ abstract class SheetBaseSchema
 
     protected string $idName = '';
 
+    protected PipelineType $pipelineType = PipelineType::Table;
+
     /** @var array<string,ColumnSchema> */
     public array $columns = [];
 
+    /**
+     * @throws SchemaAddColumnException
+     */
     public function __construct()
     {
         $this->define();
@@ -46,6 +51,7 @@ abstract class SheetBaseSchema
         if ($columnDefinition->type->isId()) {
             if ($this->idName == '') {
                 $this->idName = $name;
+                $this->pipelineType = $columnDefinition->type->getPipelineType();
             } elseif ($this->idName != $name) {
                 throw new SchemaAddColumnException($source, 'only one id column is possible');
             }
@@ -77,7 +83,7 @@ abstract class SheetBaseSchema
 
     public function getPipelineType(): PipelineType
     {
-        return $this->columns[$this->idName]->type->getPipelineType();
+        return $this->pipelineType;
     }
 
     /**
