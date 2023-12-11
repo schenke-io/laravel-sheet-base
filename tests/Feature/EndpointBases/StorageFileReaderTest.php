@@ -2,7 +2,6 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\EndpointBases;
 
-
 use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFileReader;

@@ -4,7 +4,6 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
 use ReflectionMethod;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
-use SchenkeIo\LaravelSheetBase\Elements\PipelineType;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
@@ -29,8 +28,8 @@ class ColumnTypeTest extends ConfigTestCase
         $methodNames = array_map(function (ReflectionMethod $reflectionMethod) {
             return $reflectionMethod->name;
         }, $reflection->getMethods());
-        $methodName = 'add' . $columnType->value;
-        $this->assertTrue(in_array($methodName, $methodNames), 'assert ' . SheetBaseSchema::class . " has method $methodName");
+        $methodName = 'add'.$columnType->value;
+        $this->assertTrue(in_array($methodName, $methodNames), 'assert '.SheetBaseSchema::class." has method $methodName");
     }
 
     public static function dataProviderFormat(): array

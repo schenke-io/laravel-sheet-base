@@ -15,7 +15,7 @@ class EndpointWriteLang extends StorageTreeWriter
     protected function getRoot(): string
     {
         // windows compatible
-        return str_replace('\\', '/',substr(lang_path(), strlen(base_path())));
+        return str_replace('\\', '/', substr(lang_path(), strlen(base_path())));
     }
 
     /**

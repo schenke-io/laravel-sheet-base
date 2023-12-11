@@ -64,23 +64,33 @@ return (new class() extends \SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema
     {
         $return = [];
         foreach (ColumnType::cases() as $case) {
-            if ($case == ColumnType::ID) continue;
-            if ($case == ColumnType::Dot) continue;
-            if ($case == ColumnType::Language) continue;
-            if ($case == ColumnType::Closure) continue;
+            if ($case == ColumnType::ID) {
+                continue;
+            }
+            if ($case == ColumnType::Dot) {
+                continue;
+            }
+            if ($case == ColumnType::Language) {
+                continue;
+            }
+            if ($case == ColumnType::Closure) {
+                continue;
+            }
             $return[$case->name] = [$case];
         }
+
         return $return;
     }
 
     /**
      * @dataProvider dataProviderColumnTypes()
+     *
      * @return void
      */
     public function testAddColumnNonLanguageOrClosureWithoutException(ColumnType $columnType)
     {
         $this->expectNotToPerformAssertions();
-        $this->getClass("\$this->addId();\$this->add" . $columnType->value . '("a");');
+        $this->getClass('$this->addId();$this->add'.$columnType->value.'("a");');
     }
 
     public function testAddColumnLanguage()
@@ -98,7 +108,8 @@ return (new class() extends \SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema
     public function testAddColumnClosure()
     {
         $this->expectNotToPerformAssertions();
-        new class() extends SheetBaseSchema {
+        new class() extends SheetBaseSchema
+        {
             /**
              * define the schema in Laravel migration syntax
              */

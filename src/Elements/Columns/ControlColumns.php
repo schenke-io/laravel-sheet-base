@@ -7,7 +7,6 @@ use SchenkeIo\LaravelSheetBase\Elements\ColumnSchema;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaDefinitionException;
 
-
 trait ControlColumns
 {
     /**

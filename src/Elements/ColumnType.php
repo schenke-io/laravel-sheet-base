@@ -24,8 +24,6 @@ enum ColumnType: string
         };
     }
 
-
-
     public function getPipelineType(): PipelineType
     {
         return $this == ColumnType::Dot ? PipelineType::Tree : PipelineType::Table;

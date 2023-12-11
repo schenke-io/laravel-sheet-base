@@ -2,8 +2,6 @@
 
 namespace SchenkeIo\LaravelSheetBase\Elements\Columns;
 
-
-use Illuminate\Database\Schema\ColumnDefinition;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnSchema;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaDefinitionException;

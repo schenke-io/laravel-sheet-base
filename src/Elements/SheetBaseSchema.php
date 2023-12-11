@@ -2,7 +2,6 @@
 
 namespace SchenkeIo\LaravelSheetBase\Elements;
 
-use Closure;
 use SchenkeIo\LaravelSheetBase\Elements\Columns\ControlColumns;
 use SchenkeIo\LaravelSheetBase\Elements\Columns\NumericColumns;
 use SchenkeIo\LaravelSheetBase\Elements\Columns\TextColumns;
@@ -10,9 +9,9 @@ use SchenkeIo\LaravelSheetBase\Exceptions\SchemaDefinitionException;
 
 abstract class SheetBaseSchema
 {
+    use ControlColumns;
     use NumericColumns;
     use TextColumns;
-    use ControlColumns;
 
     protected string $idName = '';
 
@@ -88,7 +87,7 @@ abstract class SheetBaseSchema
         }
         if (count($this->columns) < 2) {
             $columnNames = implode(', ', array_keys($this->columns));
-            throw new SchemaDefinitionException('2 columns minimum required but found only one: ' . $columnNames);
+            throw new SchemaDefinitionException('2 columns minimum required but found only one: '.$columnNames);
         }
         /*
          * if one column is language we can have only one column dot key and the other must be language

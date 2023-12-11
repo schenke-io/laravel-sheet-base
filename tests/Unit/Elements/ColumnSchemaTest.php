@@ -23,24 +23,22 @@ class ColumnSchemaTest extends TestCase
             'c' => 'World',
         ];
         $concat = function ($param, $row) {
-            return $row['b'] . ' ' . $row['c'];
+            return $row['b'].' '.$row['c'];
         };
+
         return [
-            #  name            $param   $closure  $row     $result
+            //  name            $param   $closure  $row     $result
             'null closure 1' => [123, null, [], 123],
             'null closure 2' => ['abc', null, [], 'abc'],
             'null closure 3' => [null, null, [], null],
-            'string function 1' => ['abc', fn($x) => strtoupper($x), [], 'ABC'],
+            'string function 1' => ['abc', fn ($x) => strtoupper($x), [], 'ABC'],
             'string function 2' => [null, $concat, $row1, 'Hello World'],
         ];
     }
 
     /**
      * @dataProvider dataProviderTransform
-     * @param mixed $param
-     * @param Closure|null $closure
-     * @param array $row
-     * @param mixed $result
+     *
      * @return void
      */
     public function testTransform(mixed $param, ?Closure $closure, array $row, mixed $result)

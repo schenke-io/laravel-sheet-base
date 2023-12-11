@@ -43,7 +43,7 @@ final class PipelineData
             if ($columnName == $this->idName) {
                 continue;
             }
-            $cellValue = $columnDefinition->format($row[$columnName] ?? null,$row);
+            $cellValue = $columnDefinition->format($row[$columnName] ?? null, $row);
             if ($this->pipelineType == PipelineType::Tree) {
                 data_set($this->table, "$id.$columnName", $cellValue);
             } else {

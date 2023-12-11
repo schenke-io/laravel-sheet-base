@@ -2,7 +2,6 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\EndpointBases;
 
-
 use Orchestra\Testbench\TestCase;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
