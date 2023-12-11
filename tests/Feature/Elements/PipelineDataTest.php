@@ -9,7 +9,9 @@ use SchenkeIo\LaravelSheetBase\Tests\TestCase;
 
 class PipelineDataTest extends TestCase
 {
-    protected SheetBaseSchema $sheetBaseSchemaTable;
+    protected SheetBaseSchema $sheetBaseSchemaTable1;
+
+    protected SheetBaseSchema $sheetBaseSchemaTable2;
 
     protected SheetBaseSchema $sheetBaseSchemaTree;
 
@@ -27,7 +29,7 @@ class PipelineDataTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->sheetBaseSchemaTable = new class extends SheetBaseSchema
+        $this->sheetBaseSchemaTable1 = new class extends SheetBaseSchema
         {
             /**
              * define the schema in Laravel migration syntax
@@ -37,6 +39,16 @@ class PipelineDataTest extends TestCase
                 $this->addId();
                 $this->addString('c1');
                 $this->addString('c2');
+            }
+        };
+        $this->sheetBaseSchemaTable2 = new class extends SheetBaseSchema
+        {
+            /**
+             * define the schema in Laravel migration syntax
+             */
+            protected function define(): void
+            {
+                $this->addString('c1');
             }
         };
         $this->sheetBaseSchemaTree = new class extends SheetBaseSchema
@@ -58,7 +70,7 @@ class PipelineDataTest extends TestCase
      */
     public function testOverwriteOfPipelineData(): void
     {
-        $pipeline = new PipelineData($this->sheetBaseSchemaTable);
+        $pipeline = new PipelineData($this->sheetBaseSchemaTable1);
         $pipeline->addRow($this->dataTable[0]);
         $pipeline->addRow($this->dataTable[1]);
         $this->assertEquals('a', $pipeline->toArray()[1]['c1'], 'data loaded');
@@ -70,7 +82,7 @@ class PipelineDataTest extends TestCase
 
     public function testFromArray(): void
     {
-        $pipelineData = PipelineData::fromArray($this->dataTable, $this->sheetBaseSchemaTable);
+        $pipelineData = PipelineData::fromArray($this->dataTable, $this->sheetBaseSchemaTable1);
         $this->assertEquals($this->dataTable, $pipelineData->toArray());
 
         $pipelineData = PipelineData::fromArray($this->dataTree, $this->sheetBaseSchemaTree);
@@ -80,8 +92,19 @@ class PipelineDataTest extends TestCase
     public function testAddRowEmptyIdException()
     {
         $this->expectException(ReadParseException::class);
-        $pipeline = new PipelineData($this->sheetBaseSchemaTable);
+        $pipeline = new PipelineData($this->sheetBaseSchemaTable1);
         $pipeline->addRow(['id' => '', 'c1' => 'text']);
+    }
+
+    /**
+     * @throws ReadParseException
+     */
+    public function testAddRowSingleColumnWithoutKey()
+    {
+        $pipeline = new PipelineData($this->sheetBaseSchemaTable2);
+        $pipeline->addRow(['c1' => 'text 1']);
+        $pipeline->addRow(['c1' => 'text 2']);
+        $this->assertEquals('text 1', $pipeline->toArray()['c1'][0]);
     }
 
     /**
