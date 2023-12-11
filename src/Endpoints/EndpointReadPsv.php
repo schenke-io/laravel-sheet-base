@@ -2,8 +2,8 @@
 
 namespace SchenkeIo\LaravelSheetBase\Endpoints;
 
-use SchenkeIo\LaravelSheetBase\Elements\EndpointBases\StorageFileReader;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
+use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFileReader;
 use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 use SchenkeIo\LaravelSheetBase\Skills\ReadExcel;
 

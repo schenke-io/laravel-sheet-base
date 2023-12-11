@@ -2,7 +2,7 @@
 
 namespace SchenkeIo\LaravelSheetBase\Endpoints;
 
-use SchenkeIo\LaravelSheetBase\Elements\EndpointBases\DataReader;
+use SchenkeIo\LaravelSheetBase\EndpointBases\DataReader;
 
 class EndpointReadArray extends DataReader
 {

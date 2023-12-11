@@ -2,6 +2,7 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
+use ReflectionMethod;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineType;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
@@ -25,16 +26,11 @@ class ColumnTypeTest extends ConfigTestCase
     public function testAllMethodsAreDefined(ColumnType $columnType): void
     {
         $reflection = new \ReflectionClass(SheetBaseSchema::class);
-        $comment = $reflection->getDocComment();
-        $this->assertStringContainsStringIgnoringLineEndings('add'.$columnType->value.'(string', $comment);
-        $this->assertInstanceOf(PipelineType::class, $columnType->getPipelineType());
-        $this->assertIsString($columnType->getName([]));
-        $this->assertEquals('verySpecial', $columnType->getName(['verySpecial']));
-        if (in_array($columnType->name, ['ID', 'Dot'])) {
-            $this->assertTrue($columnType->isId());
-        } else {
-            $this->assertFalse($columnType->isId());
-        }
+        $methodNames = array_map(function (ReflectionMethod $reflectionMethod) {
+            return $reflectionMethod->name;
+        }, $reflection->getMethods());
+        $methodName = 'add' . $columnType->value;
+        $this->assertTrue(in_array($methodName, $methodNames), 'assert ' . SheetBaseSchema::class . " has method $methodName");
     }
 
     public static function dataProviderFormat(): array

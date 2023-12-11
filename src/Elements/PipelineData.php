@@ -39,11 +39,11 @@ final class PipelineData
         if (strlen($id) < 1) {
             throw new ReadParseException('empty id field');
         }
-        foreach ($this->sheetBaseSchema->getColumns() as $columnName => $columnType) {
+        foreach ($this->sheetBaseSchema->getColumns() as $columnName => $columnDefinition) {
             if ($columnName == $this->idName) {
                 continue;
             }
-            $cellValue = $columnType->format($row[$columnName] ?? null);
+            $cellValue = $columnDefinition->format($row[$columnName] ?? null,$row);
             if ($this->pipelineType == PipelineType::Tree) {
                 data_set($this->table, "$id.$columnName", $cellValue);
             } else {

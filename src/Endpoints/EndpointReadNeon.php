@@ -7,8 +7,8 @@ use Nette\Neon\Neon;
 use Nette\Schema\Expect;
 use Nette\Schema\Processor;
 use Nette\Schema\ValidationException;
-use SchenkeIo\LaravelSheetBase\Elements\EndpointBases\StorageFileReader;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
+use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFileReader;
 use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 
 class EndpointReadNeon extends StorageFileReader

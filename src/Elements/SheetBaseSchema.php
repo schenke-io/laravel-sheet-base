@@ -2,22 +2,21 @@
 
 namespace SchenkeIo\LaravelSheetBase\Elements;
 
+use Closure;
+use SchenkeIo\LaravelSheetBase\Elements\Columns\ControlColumns;
+use SchenkeIo\LaravelSheetBase\Elements\Columns\NumericColumns;
+use SchenkeIo\LaravelSheetBase\Elements\Columns\TextColumns;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaDefinitionException;
 
-/**
- * @method void addId(string $name = 'id')
- * @method void addDot(string $name = 'id')
- * @method void addString(string $name)
- * @method void addUnsigned(string $name)
- * @method void addLanguage(string $name)
- * @method void addFloat(string $name)
- * @method void addBool(string $name)
- */
 abstract class SheetBaseSchema
 {
+    use NumericColumns;
+    use TextColumns;
+    use ControlColumns;
+
     protected string $idName = '';
 
-    /** @var array<string,ColumnType> */
+    /** @var array<string,ColumnSchema> */
     public array $columns = [];
 
     /**
@@ -37,29 +36,12 @@ abstract class SheetBaseSchema
     /**
      * @throws SchemaDefinitionException
      */
-    public function __call(string $name, array $arguments)
+    private function addColumn(string $name, ColumnSchema $columnDefinition): void
     {
-        if (preg_match('@^add(.*)$@', $name, $matches)) {
-            $schemaColumn = ColumnType::tryFrom($matches[1]);
-            if (is_null($schemaColumn)) {
-                throw new SchemaDefinitionException('column type unknown: '.$name);
-            }
-            $this->addColumn($arguments, $schemaColumn);
-        } else {
-            throw new SchemaDefinitionException('unknown method: '.$name);
-        }
-    }
-
-    /**
-     * @throws SchemaDefinitionException
-     */
-    private function addColumn(array $arguments, ColumnType $schemaColumn): void
-    {
-        $name = $schemaColumn->getName($arguments);
         if ($name == '') {
             throw new SchemaDefinitionException('column name cannot be empty string');
         }
-        if ($schemaColumn->isId()) {
+        if ($columnDefinition->type->isId()) {
             if ($this->idName == '') {
                 $this->idName = $name;
             } elseif ($this->idName != $name) {
@@ -69,21 +51,21 @@ abstract class SheetBaseSchema
         if (isset($this->columns[$name])) {
             throw new SchemaDefinitionException("column name '$name' is already in use");
         }
-        if ($schemaColumn == ColumnType::Language) {
+        if ($columnDefinition->type == ColumnType::Language) {
             if (strlen($name) != 2) {
                 throw new SchemaDefinitionException("column name '$name' is defined as language and has not a 2-char name");
             }
         }
-        $this->columns[$name] = $schemaColumn;
-
+        $this->columns[$name] = $columnDefinition;
     }
 
     /**
-     * @return array<string,ColumnType>
+     * @return array<string,ColumnSchema>
      */
     public function getColumns(): array
     {
         return $this->columns;
+
     }
 
     public function getIdName(): string
@@ -93,7 +75,7 @@ abstract class SheetBaseSchema
 
     public function getPipelineType(): PipelineType
     {
-        return $this->columns[$this->idName]->getPipelineType();
+        return $this->columns[$this->idName]->type->getPipelineType();
     }
 
     /**
@@ -106,7 +88,7 @@ abstract class SheetBaseSchema
         }
         if (count($this->columns) < 2) {
             $columnNames = implode(', ', array_keys($this->columns));
-            throw new SchemaDefinitionException('2 columns minimum required but found only one: '.$columnNames);
+            throw new SchemaDefinitionException('2 columns minimum required but found only one: ' . $columnNames);
         }
         /*
          * if one column is language we can have only one column dot key and the other must be language
@@ -115,9 +97,9 @@ abstract class SheetBaseSchema
         $dotKeyCount = 0;
         $langCount = 0;
         foreach ($this->columns as $column) {
-            if ($column == ColumnType::Language) {
+            if ($column->type == ColumnType::Language) {
                 $langCount++;
-            } elseif ($column == ColumnType::Dot) {
+            } elseif ($column->type == ColumnType::Dot) {
                 $dotKeyCount++;
             }
             $columnCount++;

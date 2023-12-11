@@ -2,12 +2,12 @@
 
 namespace SchenkeIo\LaravelSheetBase\Endpoints;
 
+use SchenkeIo\LaravelSheetBase\Elements\EndpointBases\StorageFileWriter;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
-use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFileWriter;
 use SchenkeIo\LaravelSheetBase\Skills\Comments;
 use SchenkeIo\LaravelSheetBase\Skills\MakePhp;
 
-class EndpointWritePhp extends StorageFileWriter
+class EndpointWritePhpReturn extends StorageFileWriter
 {
     use Comments;
     use MakePhp;

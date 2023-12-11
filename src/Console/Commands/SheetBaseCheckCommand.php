@@ -4,8 +4,8 @@ namespace SchenkeIo\LaravelSheetBase\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
-use SchenkeIo\LaravelSheetBase\Elements\EndpointBases\StorageBase;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseConfig;
+use SchenkeIo\LaravelSheetBase\EndpointBases\StorageBase;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
 
 class SheetBaseCheckCommand extends Command

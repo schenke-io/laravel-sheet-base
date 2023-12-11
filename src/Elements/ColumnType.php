@@ -14,6 +14,8 @@ enum ColumnType: string
 
     case Boolean = 'Bool';
 
+    case Closure = 'Closure';
+
     public function isId(): bool
     {
         return match ($this) {
@@ -22,13 +24,7 @@ enum ColumnType: string
         };
     }
 
-    public function getName(array $arguments): string
-    {
-        return match ($this) {
-            self::ID, self::Dot => $arguments[0] ?? 'id',
-            default => $arguments[0] ?? ''
-        };
-    }
+
 
     public function getPipelineType(): PipelineType
     {

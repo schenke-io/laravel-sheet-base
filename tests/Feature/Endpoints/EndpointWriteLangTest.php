@@ -3,8 +3,8 @@
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints;
 
 use Illuminate\Support\Facades\Storage;
-use SchenkeIo\LaravelSheetBase\Elements\EndpointBases\StorageBase;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
+use SchenkeIo\LaravelSheetBase\EndpointBases\StorageBase;
 use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 use SchenkeIo\LaravelSheetBase\Tests\data\LangSchema;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;

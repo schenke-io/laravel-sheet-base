@@ -3,8 +3,8 @@
 namespace SchenkeIo\LaravelSheetBase\Endpoints;
 
 use Nette\Neon\Neon;
-use SchenkeIo\LaravelSheetBase\Elements\EndpointBases\StorageFileWriter;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
+use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFileWriter;
 use SchenkeIo\LaravelSheetBase\Skills\Comments;
 
 class EndpointWriteNeon extends StorageFileWriter
