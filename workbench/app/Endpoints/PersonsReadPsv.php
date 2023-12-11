@@ -1,10 +1,10 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Tests\data;
+namespace Workbench\App\Endpoints;
 
 use SchenkeIo\LaravelSheetBase\Endpoints\EndpointReadPsv;
 
 class PersonsReadPsv extends EndpointReadPsv
 {
-    public string $path = '/persons.psv';
+    public string $path = '/psv/persons.psv';
 }

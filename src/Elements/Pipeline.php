@@ -7,6 +7,8 @@ use SchenkeIo\LaravelSheetBase\Contracts\IsEndpoint;
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Contracts\IsWriter;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
+use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 
 final class Pipeline
 {
@@ -24,6 +26,7 @@ final class Pipeline
 
     /**
      * @throws ConfigErrorException
+     * @throws SchemaVerifyColumnsException
      */
     public static function fromConfig(array $pipeline, string $pipelineName): Pipeline
     {
@@ -34,6 +37,9 @@ final class Pipeline
         );
     }
 
+    /**
+     * @throws ReadParseException
+     */
     public function pump(Closure $callback, string $name, string $className): void
     {
         $callback("|----------   pipeline $name");
@@ -80,6 +86,7 @@ final class Pipeline
 
     /**
      * @throws ConfigErrorException
+     * @throws SchemaVerifyColumnsException
      */
     protected static function getSchema(string $schema, string $pipelineName): SheetBaseSchema
     {
@@ -89,6 +96,9 @@ final class Pipeline
         if (! in_array(SheetBaseSchema::class, class_parents($schema))) {
             throw new ConfigErrorException($pipelineName, "schema not valid: $schema");
         }
+        /** @var SheetBaseSchema $class */
+        $class = new $schema();
+        $class->verify($pipelineName);
 
         return new $schema();
     }

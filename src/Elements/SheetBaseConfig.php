@@ -20,7 +20,9 @@ final class SheetBaseConfig
         $configProject = new SheetBaseConfig();
         $pipelines = [];
         foreach ($configProject->getConfig() as $pipelineName => $pipeline) {
-            $pipelines[$pipelineName] = Pipeline::fromConfig($pipeline, $pipelineName);
+            $pipeline = Pipeline::fromConfig($pipeline, $pipelineName);
+
+            $pipelines[$pipelineName] = $pipeline;
         }
         $configProject->pipelines = $pipelines;
 

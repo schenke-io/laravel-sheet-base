@@ -5,12 +5,12 @@ namespace SchenkeIo\LaravelSheetBase\Elements\Columns;
 use Closure;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnSchema;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
-use SchenkeIo\LaravelSheetBase\Exceptions\SchemaDefinitionException;
+use SchenkeIo\LaravelSheetBase\Exceptions\SchemaAddColumnException;
 
 trait ControlColumns
 {
     /**
-     * @throws SchemaDefinitionException
+     * @throws SchemaAddColumnException
      */
     public function addId(string $name = 'id'): void
     {
@@ -18,7 +18,7 @@ trait ControlColumns
     }
 
     /**
-     * @throws SchemaDefinitionException
+     * @throws SchemaAddColumnException
      */
     public function addDot(string $name = 'id'): void
     {
@@ -26,7 +26,7 @@ trait ControlColumns
     }
 
     /**
-     * @throws SchemaDefinitionException
+     * @throws SchemaAddColumnException
      */
     public function addClosure(string $name, ?Closure $closure = null): void
     {

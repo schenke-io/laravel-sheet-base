@@ -4,8 +4,8 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints;
 
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Endpoints\EndpointWriteArray;
-use SchenkeIo\LaravelSheetBase\Tests\data\DummySchema;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
+use Workbench\App\Endpoints\DummySchema;
 
 class EndpointWriteArrayTest extends ConfigTestCase
 {

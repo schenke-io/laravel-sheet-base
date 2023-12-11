@@ -4,13 +4,13 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
 use SchenkeIo\LaravelSheetBase\Elements\Pipeline;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
-use SchenkeIo\LaravelSheetBase\Tests\data\DummyRead;
-use SchenkeIo\LaravelSheetBase\Tests\data\DummySchema;
-use SchenkeIo\LaravelSheetBase\Tests\data\DummyWrite;
-use SchenkeIo\LaravelSheetBase\Tests\data\PersonSchema;
-use SchenkeIo\LaravelSheetBase\Tests\data\PersonsReadPsv;
-use SchenkeIo\LaravelSheetBase\Tests\data\PersonsWriteNeon;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
+use Workbench\App\Endpoints\DummyRead;
+use Workbench\App\Endpoints\DummySchema;
+use Workbench\App\Endpoints\DummyWrite;
+use Workbench\App\Endpoints\PersonSchema;
+use Workbench\App\Endpoints\PersonsReadPsv;
+use Workbench\App\Endpoints\PersonsWriteNeon;
 
 class PipelineTest extends ConfigTestCase
 {
@@ -95,7 +95,7 @@ class PipelineTest extends ConfigTestCase
         } else {
             $this->expectException($exception);
         }
-        $pipeline = Pipeline::fromConfig($config, '');
+        Pipeline::fromConfig($config, '');
 
     }
 

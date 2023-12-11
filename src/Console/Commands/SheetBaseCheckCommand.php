@@ -39,6 +39,8 @@ class SheetBaseCheckCommand extends Command
         }
         $this->info('config file found');
 
+        //## SheetBaseConfig::make();
+
         $result = SheetBaseConfig::checkAndReportError();
         if (! is_null($result)) {
             $this->error($result);

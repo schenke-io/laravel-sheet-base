@@ -6,7 +6,8 @@ use PHPUnit\Framework\TestCase;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineType;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
-use SchenkeIo\LaravelSheetBase\Exceptions\SchemaDefinitionException;
+use SchenkeIo\LaravelSheetBase\Exceptions\SchemaAddColumnException;
+use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 
 class SheetBaseSchemaTest extends TestCase
 {
@@ -14,17 +15,19 @@ class SheetBaseSchemaTest extends TestCase
     {
         return [
             'correct' => ['', '$this->addId();$this->addString("name");'],
-            'no id' => [SchemaDefinitionException::class, '$this->addString("name");'],
-            'only id' => [SchemaDefinitionException::class, '$this->addId();'],
-            'no column' => [SchemaDefinitionException::class, ''],
-            'two id 1' => [SchemaDefinitionException::class, '$this->addId("a");$this->addId("b");'],
-            'two id 2' => [SchemaDefinitionException::class, '$this->addId();$this->addDot();'],
-            '2 same names' => [SchemaDefinitionException::class, '$this->addId();$this->addString("id");'],
-            'wrong language column name' => [SchemaDefinitionException::class, '$this->addId();$this->addLanguage("very long name");'],
-            'empty column name' => [SchemaDefinitionException::class, '$this->addId();$this->addString("");'],
+            'no id 1' => ['', '$this->addString("name");'], // ok for single column
+            'no id 2' => [SchemaAddColumnException::class, '$this->addString("name1");$this->addString("name1");'], // 2 columns need one id
+            'only id' => ['', '$this->addId();'],
+            'no column' => [SchemaVerifyColumnsException::class, ''],
+            'two id 1' => [SchemaAddColumnException::class, '$this->addId("a");$this->addId("b");'],
+            'two id 2' => [SchemaAddColumnException::class, '$this->addId();$this->addDot();'],
+            '2 same names' => [SchemaAddColumnException::class, '$this->addId();$this->addString("id");'],
+            '2 columns no id' => [SchemaVerifyColumnsException::class, '$this->addString("a");$this->addString("b");'],
+            'wrong language column name' => [SchemaAddColumnException::class, '$this->addId();$this->addLanguage("very long name");'],
+            'empty column name' => [SchemaAddColumnException::class, '$this->addId();$this->addString("");'],
             'valid lang tree' => ['', '$this->addDot();$this->addLanguage("de");'],
-            'lang tree not only language' => [SchemaDefinitionException::class, '$this->addDot();$this->addLanguage("de");$this->addString("x");'],
-            'lang tree language but no dot' => [SchemaDefinitionException::class, '$this->addId();$this->addLanguage("de");'],
+            'lang tree not only language' => [SchemaVerifyColumnsException::class, '$this->addDot();$this->addLanguage("de");$this->addString("x");'],
+            'lang tree language but no dot' => [SchemaVerifyColumnsException::class, '$this->addId();$this->addLanguage("de");'],
         ];
     }
 
@@ -39,7 +42,7 @@ return (new class() extends \SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema
     /**
      * @dataProvider dataProviderSchemas
      *
-     * @throws SchemaDefinitionException
+     * @throws SchemaVerifyColumnsException
      */
     public function testSchemas(string $exception, string $php): void
     {
@@ -49,7 +52,7 @@ return (new class() extends \SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema
         $testClass = $this->getClass($php);
         $this->assertInstanceOf(SheetBaseSchema::class, $testClass);
 
-        $testClass->verify();
+        $testClass->verify('test');
     }
 
     public function testGetFunctions()

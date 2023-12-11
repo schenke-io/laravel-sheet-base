@@ -4,12 +4,12 @@ namespace SchenkeIo\LaravelSheetBase\Elements\Columns;
 
 use SchenkeIo\LaravelSheetBase\Elements\ColumnSchema;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
-use SchenkeIo\LaravelSheetBase\Exceptions\SchemaDefinitionException;
+use SchenkeIo\LaravelSheetBase\Exceptions\SchemaAddColumnException;
 
 trait NumericColumns
 {
     /**
-     * @throws SchemaDefinitionException
+     * @throws SchemaAddColumnException
      */
     public function addUnsigned(string $name): void
     {
@@ -17,7 +17,7 @@ trait NumericColumns
     }
 
     /**
-     * @throws SchemaDefinitionException
+     * @throws SchemaAddColumnException
      */
     public function addFloat(string $name): void
     {
@@ -25,7 +25,7 @@ trait NumericColumns
     }
 
     /**
-     * @throws SchemaDefinitionException
+     * @throws SchemaAddColumnException
      */
     public function addBool(string $name): void
     {

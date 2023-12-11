@@ -5,25 +5,47 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/schenke-io/laravel-sheet-base.svg?style=flat-square)](https://packagist.org/packages/schenke-io/laravel-sheet-base)
 
 
-This Laravel package facilitates the creation of pipelines for scenarios 
-where data changes infrequently. The pipelines connect endpoints that 
-serve as readers to those with writers, responsible for generating the 
-output. Each pipeline is equipped with a schema to define its tabular data format.
 
-Readers are available for files, arrays, collections, Eloquent models, 
-cloud files, and Google Sheets. On the writing side, the package supports 
-JSON, Neon, YAML, PHP files, and Laravel Language files. The PHP files can 
-serve as configurations or traits.
+The **Laravel Sheet Base** package provides a set of classes designed for creating pipelines that efficiently handle scenarios where data changes infrequently.
 
-Notably, all generated files contain remarks indicating the reference to 
-the file that produced them, emphasizing that editing these files is not 
-recommended. This ensures clarity and discourages unnecessary modifications.
+## Overview
 
-Typical applications are:
+On one side of these pipelines are endpoints responsible for reading data, while on the other side, there is a writer that processes and stores the results. Each pipeline is equipped with a schema to describe its tabular data format.
 
-* collecting data from csv files and write them to json, yaml or neon
-* read translations from various sources and build language files from it
-* build files to be used in seeding, backup , configuration or for Laravel Sushi.
+### Supported Readers
+
+- File readers
+- Array readers
+- Collection readers
+- Eloquent model readers
+- Cloud file readers
+- Google Sheets readers
+
+### Supported Writers
+
+The package includes versatile writers capable of handling various file formats:
+
+- JSON
+- Neon
+- YAML
+- PHP files (suitable for tests, configuration files, or Laravel Sushi)
+- Laravel Language files
+
+Additionally, all written files that support comments include remarks about the reference file, discouraging direct editing for clarity.
+
+## Typical Use Cases
+
+The Laravel Sheet Base package is well-suited for a range of applications, including:
+
+- Collecting data from CSV files and exporting them to JSON, YAML, or Neon formats.
+- Extracting translations from diverse sources and generating language files.
+- Creating files for seeding, backup, configuration, or Laravel Sushi integration.
+
+By offering a flexible and extensible pipeline architecture, this package streamlines the process of managing and transforming data in Laravel applications.
+
+
+
+
 
 ## Installation
 

@@ -23,11 +23,11 @@ class ConfigTestCase extends TestCase
                 'disks' => [
                     'testing' => [
                         'driver' => 'local',
-                        'root' => realpath(__DIR__.'/../data'),
+                        'root' => realpath(__DIR__.'/../../workbench'),
                     ],
                     'sheet-base' => [
                         'driver' => 'local',
-                        'root' => __DIR__.'/../data',
+                        'root' => realpath(__DIR__.'/../../workbench/resources'),
                     ],
                     'default' => 'testing',
                 ],

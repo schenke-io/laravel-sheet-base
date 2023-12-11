@@ -13,10 +13,10 @@ class WorkbenchServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->commands([
-            SheetBaseCheckCommand::class,
-            SheetBasePumpCommand::class,
-        ]);
+        //        $this->commands([
+        //            SheetBaseCheckCommand::class,
+        //            SheetBasePumpCommand::class,
+        //        ]);
 
     }
 
@@ -29,5 +29,6 @@ class WorkbenchServiceProvider extends ServiceProvider
             SheetBaseCheckCommand::class,
             SheetBasePumpCommand::class,
         ]);
+        $this->mergeConfigFrom(__DIR__.'/../../config/filesystems.php', 'filesystems');
     }
 }

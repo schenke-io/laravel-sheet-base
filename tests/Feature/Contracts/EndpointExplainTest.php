@@ -2,10 +2,10 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Contracts;
 
-use SchenkeIo\LaravelSheetBase\Tests\data\LangWrite;
-use SchenkeIo\LaravelSheetBase\Tests\data\PersonsReadPsv;
-use SchenkeIo\LaravelSheetBase\Tests\data\PersonsWriteNeon;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
+use Workbench\App\Endpoints\LangWrite;
+use Workbench\App\Endpoints\PersonsReadPsv;
+use Workbench\App\Endpoints\PersonsWriteNeon;
 
 class EndpointExplainTest extends ConfigTestCase
 {

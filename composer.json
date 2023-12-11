@@ -52,6 +52,7 @@
     },
     "scripts": {
         "post-autoload-dump": [
+            "@clear",
             "@prepare",
             "@composer run prepare",
             "Google\\Task\\Composer::cleanup"
@@ -80,7 +81,8 @@
         "lint": [
             "@php vendor/bin/pint",
             "@php vendor/bin/phpstan analyse"
-        ]
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi"
     },
     "config": {
         "sort-packages": true,

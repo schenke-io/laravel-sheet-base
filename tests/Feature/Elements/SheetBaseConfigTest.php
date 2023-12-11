@@ -5,10 +5,10 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 use Illuminate\Support\Facades\Config;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseConfig;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
-use SchenkeIo\LaravelSheetBase\Tests\data\PersonSchema;
-use SchenkeIo\LaravelSheetBase\Tests\data\PersonsReadPsv;
-use SchenkeIo\LaravelSheetBase\Tests\data\PersonsWriteNeon;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
+use Workbench\App\Endpoints\PersonSchema;
+use Workbench\App\Endpoints\PersonsReadPsv;
+use Workbench\App\Endpoints\PersonsWriteNeon;
 
 class SheetBaseConfigTest extends ConfigTestCase
 {

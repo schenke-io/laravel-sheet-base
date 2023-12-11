@@ -1,11 +1,11 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Tests\data;
+namespace Workbench\App\Endpoints;
 
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaDefinitionException;
 
-class DummySchema extends SheetBaseSchema
+class PersonSchema extends SheetBaseSchema
 {
     /**
      * define the schema in Laravel migration syntax

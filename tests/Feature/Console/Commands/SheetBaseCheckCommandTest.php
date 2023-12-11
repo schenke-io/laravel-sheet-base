@@ -4,10 +4,10 @@ namespace Feature\Console\Commands;
 
 use Illuminate\Support\Facades\Config;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseConfig;
-use SchenkeIo\LaravelSheetBase\Tests\data\DummyRead;
-use SchenkeIo\LaravelSheetBase\Tests\data\DummySchema;
-use SchenkeIo\LaravelSheetBase\Tests\data\DummyWrite;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
+use Workbench\App\Endpoints\DummyRead;
+use Workbench\App\Endpoints\DummySchema;
+use Workbench\App\Endpoints\DummyWrite;
 
 class SheetBaseCheckCommandTest extends ConfigTestCase
 {

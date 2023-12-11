@@ -1,20 +1,21 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Tests\data;
+namespace Workbench\App\Endpoints;
 
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaDefinitionException;
 
-class PersonSchema extends SheetBaseSchema
+class LangSchema extends SheetBaseSchema
 {
     /**
      * define the schema in Laravel migration syntax
      *
      * @throws SchemaDefinitionException
      */
-    public function define(): void
+    protected function define(): void
     {
-        $this->addId();
-        $this->addString('name');
+        $this->addDot();
+        $this->addLanguage('de');
+        $this->addLanguage('en');
     }
 }

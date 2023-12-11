@@ -1,6 +1,6 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Tests\data;
+namespace Workbench\App\Endpoints;
 
 use SchenkeIo\LaravelSheetBase\Endpoints\EndpointWriteArray;
 

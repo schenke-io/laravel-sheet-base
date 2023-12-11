@@ -4,12 +4,12 @@ namespace SchenkeIo\LaravelSheetBase\Elements\Columns;
 
 use SchenkeIo\LaravelSheetBase\Elements\ColumnSchema;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
-use SchenkeIo\LaravelSheetBase\Exceptions\SchemaDefinitionException;
+use SchenkeIo\LaravelSheetBase\Exceptions\SchemaAddColumnException;
 
 trait TextColumns
 {
     /**
-     * @throws SchemaDefinitionException
+     * @throws SchemaAddColumnException
      */
     public function addString(string $name): void
     {
@@ -17,7 +17,7 @@ trait TextColumns
     }
 
     /**
-     * @throws SchemaDefinitionException
+     * @throws SchemaAddColumnException
      */
     public function addLanguage(string $name): void
     {
