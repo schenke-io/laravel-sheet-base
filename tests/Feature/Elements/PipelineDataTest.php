@@ -19,6 +19,8 @@ class PipelineDataTest extends TestCase
         0 => ['id' => 1, 'c1' => 'a'],
         1 => ['id' => 2, 'c1' => 'b'],
         2 => ['id' => 1, 'c1' => 'c'],
+        3 => ['id' => 1, 'c1' => 'd'],
+        4 => ['id' => 1, 'c2' => 'e'],
     ];
 
     protected array $dataTree = [
@@ -77,7 +79,16 @@ class PipelineDataTest extends TestCase
         $this->assertEquals(null, $pipeline->toArray()[1]['c2'], 'empty data is null');
         $pipeline->addRow($this->dataTable[2]);
         $this->assertEquals('c', $pipeline->toArray()[1]['c1'], 'data overwritten');
+    }
 
+    public function testOverwriteOnlySomeColumns(): void
+    {
+        $pipeline = new PipelineData($this->sheetBaseSchemaTable1);
+        $pipeline->addRow($this->dataTable[2]);
+        $pipeline->addRow($this->dataTable[3]);
+        $pipeline->addRow($this->dataTable[4]);
+        $this->assertEquals('d', $pipeline->toArray()[1]['c1'], '2x overwritten');
+        $this->assertEquals('e', $pipeline->toArray()[1]['c2'], 'do not destroy line before');
     }
 
     public function testFromArray(): void

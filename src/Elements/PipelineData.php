@@ -29,6 +29,9 @@ final class PipelineData
         return $me;
     }
 
+    /**
+     * @throws ReadParseException
+     */
     public function addRow(array $row): void
     {
         if ($this->idName != '') {
@@ -38,21 +41,20 @@ final class PipelineData
             if (strlen($id) < 1) {
                 throw new ReadParseException('empty id field');
             }
-            foreach ($this->sheetBaseSchema->getColumns() as $columnName => $columnDefinition) {
-                if ($columnName == $this->idName) {
-                    continue;
-                }
-                $cellValue = $columnDefinition->format($row[$columnName] ?? null, $row);
+        }
+        foreach ($this->sheetBaseSchema->getColumns() as $columnName => $columnDefinition) {
+            if (! isset($row[$columnName])) {
+                continue;
+            }
+            $cellValue = $columnDefinition->format($row[$columnName], $row);
+            if ($this->idName != '') {
                 if ($this->pipelineType == PipelineType::Tree) {
                     data_set($this->table, "$id.$columnName", $cellValue);
                 } else {
                     $this->table[$id][$columnName] = $cellValue;
                 }
-            }
-        } else {
-            // without id
-            foreach ($this->sheetBaseSchema->getColumns() as $columnName => $columnDefinition) {
-                $cellValue = $columnDefinition->format($row[$columnName] ?? null, $row);
+            } else {
+                // without id
                 $this->table[$columnName][] = $cellValue;
             }
         }
