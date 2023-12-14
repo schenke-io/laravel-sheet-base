@@ -21,12 +21,14 @@ class PipelineDataTest extends TestCase
         2 => ['id' => 1, 'c1' => 'c'],
         3 => ['id' => 1, 'c1' => 'd'],
         4 => ['id' => 1, 'c2' => 'e'],
+        5 => ['id' => 1, 'c1' => 'f', 'c2' => 'f'],
     ];
 
     protected array $dataTree = [
         0 => ['id' => 'test.title', 'de' => 'Hallo Welt', 'en' => 'Hello world'],
         1 => ['id' => 'test.story', 'de' => 'Alle Details', 'en' => 'All details'],
         2 => ['id' => 'test.help', 'de' => 'Rufen Sie an', 'en' => 'Call us'],
+        3 => ['id' => 'test.help', 'en' => 'Call us again'],
     ];
 
     protected function setUp(): void
@@ -110,17 +112,6 @@ class PipelineDataTest extends TestCase
     /**
      * @throws ReadParseException
      */
-    public function testAddRowSingleColumnWithoutKey()
-    {
-        $pipeline = new PipelineData($this->sheetBaseSchemaTable2);
-        $pipeline->addRow(['c1' => 'text 1']);
-        $pipeline->addRow(['c1' => 'text 2']);
-        $this->assertEquals('text 1', $pipeline->toArray()['c1'][0]);
-    }
-
-    /**
-     * @throws ReadParseException
-     */
     public function testAddRowTree()
     {
         $pipelineData = new PipelineData($this->sheetBaseSchemaTree);
@@ -128,5 +119,18 @@ class PipelineDataTest extends TestCase
         $pipelineData->addRow($this->dataTree[1]);
         $pipelineData->addRow($this->dataTree[2]);
         $this->assertArrayHasKey('test', $pipelineData->toArray());
+    }
+
+    /**
+     * @throws ReadParseException
+     */
+    public function testOverwriteTree(): void
+    {
+        $pipelineData = new PipelineData($this->sheetBaseSchemaTree);
+        $pipelineData->addRow($this->dataTree[2]);
+        $pipelineData->addRow($this->dataTree[3]);
+        // dump($pipelineData->toArray());
+        $this->assertArrayHasKey('test', $pipelineData->toArray());
+        $this->assertEquals('Call us again', $pipelineData->toArray()['test']['help']['en']);
     }
 }

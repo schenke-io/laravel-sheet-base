@@ -16,9 +16,6 @@ class EndpointWritePhp extends StorageFileWriter
 
     public function releasePipeline(PipelineData $pipelineData, string $writingClass): void
     {
-        $this->storagePut(
-            $this->path,
-            $this->getPhp($pipelineData->toArray(), $writingClass)
-        );
+        $this->storagePut($this->path, $this->getPhp($pipelineData->toArray(), $writingClass));
     }
 }

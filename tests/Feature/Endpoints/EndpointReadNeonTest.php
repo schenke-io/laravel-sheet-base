@@ -15,7 +15,7 @@ class EndpointReadNeonTest extends ConfigTestCase
     {
         return [
             'ok' => [[1 => ['b' => 2], 2 => ['b' => 3]], '[{a: 1,b: 2},{a: 2,b: 3}]'],
-            'neon syntax' => [ReadParseException::class, '[{a: 1,b: 2},{a: 2,:3]'],
+            'neon syntax error' => [ReadParseException::class, '[{a: 1,b: 2},{a: 2,:3]'],
             'neon no array' => [ReadParseException::class, 'a 45'],
         ];
     }

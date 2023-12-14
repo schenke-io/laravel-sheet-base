@@ -6,10 +6,11 @@ trait MakePhp
 {
     use Comments;
 
-    protected function getPhp(array $tree, string $writer): string
+    protected function getPhp(array $data, string $writer): string
     {
+
         $comment = $this->getComment('//', $writer);
-        $pretty = $this->prettyArray($tree);
+        $pretty = $this->prettyArray($data);
 
         return <<<PHP
 <?php

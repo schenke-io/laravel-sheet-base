@@ -6,4 +6,5 @@ enum PipelineType
 {
     case Table;
     case Tree;
+
 }

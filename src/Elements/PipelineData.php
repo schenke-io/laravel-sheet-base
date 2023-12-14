@@ -34,28 +34,37 @@ final class PipelineData
      */
     public function addRow(array $row): void
     {
-        if ($this->idName != '') {
-            // with id
+        $id = '';
+        if (isset($row[$this->idName])) {
             $id = $row[$this->idName];
             unset($row[$this->idName]);
-            if (strlen($id) < 1) {
-                throw new ReadParseException('empty id field');
-            }
         }
+        if (strlen($id) < 1) {
+            throw new ReadParseException('empty id field');
+        }
+        /*
+         * we have a valid id
+         */
         foreach ($this->sheetBaseSchema->getColumns() as $columnName => $columnDefinition) {
-            if (! isset($row[$columnName])) {
+            // we still have the id column
+            if ($columnName == $this->idName) {
                 continue;
             }
-            $cellValue = $columnDefinition->format($row[$columnName], $row);
-            if ($this->idName != '') {
-                if ($this->pipelineType == PipelineType::Tree) {
-                    data_set($this->table, "$id.$columnName", $cellValue);
+            if ($this->pipelineType == PipelineType::Tree) {
+                $key = "$id.$columnName";
+                if (isset($row[$columnName])) {
+                    $cellValue = $columnDefinition->format($columnName, $row);
                 } else {
-                    $this->table[$id][$columnName] = $cellValue;
+                    $cellValue = data_get($this->table, $key);
                 }
+                data_set($this->table, $key, $cellValue);
             } else {
-                // without id
-                $this->table[$columnName][] = $cellValue;
+                if (isset($row[$columnName])) {
+                    $cellValue = $columnDefinition->format($columnName, $row);
+                } else {
+                    $cellValue = $this->table[$id][$columnName] ?? null;
+                }
+                $this->table[$id][$columnName] = $cellValue;
             }
         }
     }

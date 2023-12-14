@@ -12,17 +12,17 @@ class ColumnSchema
     {
     }
 
-    public function format(mixed $param, array $row): mixed
+    public function format(string $key, array $row): mixed
     {
-        return $this->type->format($this->transform($param, $row));
+        return $this->type->format($this->transform($key, $row));
     }
 
-    public function transform(mixed $param, array $row): mixed
+    public function transform(string $key, array $row): mixed
     {
         if (is_null($this->closure)) {
-            return $param;
+            return $row[$key] ?? null;
         } else {
-            return ($this->closure)($param, $row);
+            return ($this->closure)($key, $row);
         }
     }
 }
