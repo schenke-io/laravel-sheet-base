@@ -45,6 +45,6 @@ class ColumnSchemaTest extends TestCase
     public function testTransform(string $key, ?Closure $closure, array $row, mixed $result)
     {
         $columnSchema = new ColumnSchema(ColumnType::Closure, $closure);
-        $this->assertSame($result, $columnSchema->transform($key, $row));
+        $this->assertSame($result, $columnSchema->format($key, $row));
     }
 }

@@ -43,6 +43,7 @@ class PipelineDataTest extends TestCase
                 $this->addId();
                 $this->addString('c1');
                 $this->addString('c2');
+                $this->addUnsignedNotNull('c3');
             }
         };
         $this->sheetBaseSchemaTable2 = new class extends SheetBaseSchema
@@ -81,6 +82,10 @@ class PipelineDataTest extends TestCase
         $this->assertEquals(null, $pipeline->toArray()[1]['c2'], 'empty data is null');
         $pipeline->addRow($this->dataTable[2]);
         $this->assertEquals('c', $pipeline->toArray()[1]['c1'], 'data overwritten');
+        /*
+         * check not null fields         *
+         */
+        $this->assertSame(0, $pipeline->toArray()[1]['c3'], 'no input results in 0 not in null');
     }
 
     public function testOverwriteOnlySomeColumns(): void

@@ -50,19 +50,23 @@ final class PipelineData
             if ($columnName == $this->idName) {
                 continue;
             }
+            /*
+             * what is the default value if not null
+             */
+            $nullValue = $columnDefinition->type->format(null);
             if ($this->pipelineType == PipelineType::Tree) {
                 $key = "$id.$columnName";
                 if (isset($row[$columnName])) {
                     $cellValue = $columnDefinition->format($columnName, $row);
                 } else {
-                    $cellValue = data_get($this->table, $key);
+                    $cellValue = data_get($this->table, $key, $nullValue);
                 }
                 data_set($this->table, $key, $cellValue);
             } else {
                 if (isset($row[$columnName])) {
                     $cellValue = $columnDefinition->format($columnName, $row);
                 } else {
-                    $cellValue = $this->table[$id][$columnName] ?? null;
+                    $cellValue = $this->table[$id][$columnName] ?? $nullValue;
                 }
                 $this->table[$id][$columnName] = $cellValue;
             }

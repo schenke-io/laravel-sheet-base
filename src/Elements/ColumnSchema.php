@@ -14,15 +14,12 @@ class ColumnSchema
 
     public function format(string $key, array $row): mixed
     {
-        return $this->type->format($this->transform($key, $row));
-    }
-
-    public function transform(string $key, array $row): mixed
-    {
         if (is_null($this->closure)) {
-            return $row[$key] ?? null;
+            $value = $row[$key] ?? null;
         } else {
-            return ($this->closure)($key, $row);
+            $value = ($this->closure)($key, $row);
         }
+
+        return $this->type->format($value);
     }
 }

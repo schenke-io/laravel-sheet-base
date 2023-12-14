@@ -34,7 +34,7 @@ enum ColumnType: string
     {
         return match ($this) {
             self::Unsigned => $this->formatUnsigned($param),
-            self::UnsignedNotNull => $this->formatUnsigned($param, true),
+            self::UnsignedNotNull => $this->formatUnsignedNotNull($param),
             self::Float => $this->formatFloat($param),
             self::Boolean => $this->formatBoolean($param),
             default => $param
@@ -48,7 +48,7 @@ enum ColumnType: string
         } elseif (is_numeric($param)) {
             return $param !== 0;
         } elseif (is_string($param)) {
-            return ! preg_match('@^(false|no|falsch)$@i', $param);
+            return ! preg_match('@^(false|no|falsch|nein)$@i', $param);
         } else {
             return (bool) $param;
         }
@@ -77,7 +77,7 @@ enum ColumnType: string
         return null;
     }
 
-    private function formatUnsigned(mixed $param, bool $notNull = false): ?int
+    private function formatUnsigned(mixed $param): ?int
     {
         if (is_numeric($param)) {
             return max(0, abs(floor($param)));
@@ -89,6 +89,13 @@ enum ColumnType: string
             }
         }
 
-        return $notNull ? 0 : null;
+        return null;
+    }
+
+    private function formatUnsignedNotNull(mixed $param): int
+    {
+        $return = $this->formatUnsigned($param);
+
+        return $return == null ? 0 : $return;
     }
 }
