@@ -19,6 +19,14 @@ trait NumericColumns
     /**
      * @throws SchemaAddColumnException
      */
+    public function addUnsignedNotNull(string $name): void
+    {
+        $this->addColumn($name, new ColumnSchema(ColumnType::UnsignedNotNull));
+    }
+
+    /**
+     * @throws SchemaAddColumnException
+     */
     public function addFloat(string $name): void
     {
         $this->addColumn($name, new ColumnSchema(ColumnType::Float));

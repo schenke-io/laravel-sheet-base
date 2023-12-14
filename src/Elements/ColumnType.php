@@ -8,6 +8,7 @@ enum ColumnType: string
     case Dot = 'Dot';
     case String = 'String';
     case Unsigned = 'Unsigned';
+    case UnsignedNotNull = 'UnsignedNotNull';
     case Language = 'Language';
 
     case Float = 'Float';
@@ -33,6 +34,7 @@ enum ColumnType: string
     {
         return match ($this) {
             self::Unsigned => $this->formatUnsigned($param),
+            self::UnsignedNotNull => $this->formatUnsigned($param, true),
             self::Float => $this->formatFloat($param),
             self::Boolean => $this->formatBoolean($param),
             default => $param
@@ -75,7 +77,7 @@ enum ColumnType: string
         return null;
     }
 
-    private function formatUnsigned(mixed $param): ?int
+    private function formatUnsigned(mixed $param, bool $notNull = false): ?int
     {
         if (is_numeric($param)) {
             return max(0, abs(floor($param)));
@@ -87,6 +89,6 @@ enum ColumnType: string
             }
         }
 
-        return null;
+        return $notNull ? 0 : null;
     }
 }
