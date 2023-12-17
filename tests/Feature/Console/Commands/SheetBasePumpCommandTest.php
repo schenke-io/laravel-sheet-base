@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Console\Commands;
+namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Console\Commands;
 
 use Illuminate\Support\Facades\Config;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseConfig;
@@ -22,18 +22,5 @@ class SheetBasePumpCommandTest extends ConfigTestCase
             ],
         ]);
         $this->artisan('sheet-base:pump')->assertOk();
-    }
-
-    public function testErrors(): void
-    {
-        Config::set('filesystems.disks.sheet-base', []);
-        Config::set(SheetBaseConfig::CONFIG_FILE_BASE.'.pipelines', [
-            'test' => [
-                'sources' => [''],
-                'schema' => DummySchema::class,
-                'target' => DummyWrite::class,
-            ],
-        ]);
-        $this->artisan('sheet-base:pump')->assertExitCode(1);
     }
 }

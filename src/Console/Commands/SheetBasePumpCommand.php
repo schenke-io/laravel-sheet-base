@@ -2,9 +2,9 @@
 
 namespace SchenkeIo\LaravelSheetBase\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseConfig;
-use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
 
 class SheetBasePumpCommand extends Command
 {
@@ -12,22 +12,18 @@ class SheetBasePumpCommand extends Command
 
     protected $description = 'pump data within each pipeline';
 
-    /**
-     * @throws ConfigErrorException
-     */
     public function handle(): int
     {
         $inform = function (string $txt) {
             $this->info($txt);
         };
-        $check = SheetBaseConfig::checkAndReportError();
-        if (is_null($check)) {
+        try {
             $config = SheetBaseConfig::make();
             foreach ($config->pipelines as $name => $pipeline) {
                 $pipeline->pump($inform, $name, self::class);
             }
-        } else {
-            $this->error($check);
+        } catch (Exception $e) {
+            $this->error($e->getMessage());
 
             return self::FAILURE;
         }

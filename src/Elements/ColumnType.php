@@ -37,6 +37,8 @@ enum ColumnType: string
             self::UnsignedNotNull => $this->formatUnsignedNotNull($param),
             self::Float => $this->formatFloat($param),
             self::Boolean => $this->formatBoolean($param),
+            self::String => $this->formatString($param),
+            self::Language => $this->formatLanguage($param),
             default => $param
         };
     }
@@ -97,5 +99,17 @@ enum ColumnType: string
         $return = $this->formatUnsigned($param);
 
         return $return == null ? 0 : $return;
+    }
+
+    private function formatString(mixed $param): string
+    {
+        return trim((string) ($param ?? ''));
+    }
+
+    private function formatLanguage(mixed $param): ?string
+    {
+        $return = (string) $param;
+
+        return $return == '' ? null : $return;
     }
 }

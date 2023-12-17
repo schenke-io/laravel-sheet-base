@@ -47,6 +47,6 @@ final class SheetBaseConfig
 
     protected function getConfig(): array
     {
-        return config(self::CONFIG_FILE_BASE.'.pipelines');
+        return config(self::CONFIG_FILE_BASE.'.pipelines') ?? [];
     }
 }

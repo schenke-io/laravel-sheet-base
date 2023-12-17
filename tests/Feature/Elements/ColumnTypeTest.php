@@ -76,6 +76,14 @@ class ColumnTypeTest extends ConfigTestCase
             'bool 13' => [ColumnType::Boolean, -1, true],
             'bool 14' => [ColumnType::Boolean, 1, true],
 
+            'string 1' => [ColumnType::String, '', ''],
+            'string 2' => [ColumnType::String, null, ''],
+            'string 3' => [ColumnType::String, 12, '12'],
+
+            'language 1' => [ColumnType::Language, '', null],
+            'language 2' => [ColumnType::Language, null, null],
+            'language 3' => [ColumnType::Language, ' ', ' '],
+            'language 4' => [ColumnType::Language, 1234, '1234'],
         ];
     }
 

@@ -28,6 +28,7 @@ class EndpointWriteLang extends StorageTreeWriter
          */
         $translation = [];
         foreach (Arr::dot($pipelineData->toArray()) as $key => $value) {
+            $value = $value == '' ? null : $value;
             $parts = explode('.', $key);
             if (count($parts) < 3) {
                 throw new ReadParseException("the given key would result in invalid translation files: $key");

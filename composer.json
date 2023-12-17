@@ -25,9 +25,10 @@
         "spatie/simple-excel": "^3.3"
     },
     "require-dev": {
+        "brianium/paratest": "^7.3",
+        "larastan/larastan": "^2.0",
         "laravel/pint": "^1.13",
         "nunomaduro/collision": "^7.10",
-        "larastan/larastan": "^2.0",
         "orchestra/testbench": "^8.17",
         "pestphp/pest": "^2.28",
         "pestphp/pest-plugin-arch": "^2.5",
