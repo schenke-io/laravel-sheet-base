@@ -23,4 +23,12 @@ trait TextColumns
     {
         $this->addColumn($name, new ColumnSchema(ColumnType::Language));
     }
+
+    /**
+     * @throws SchemaAddColumnException
+     */
+    public function addDateTime(string $name): void
+    {
+        $this->addColumn($name, new ColumnSchema(ColumnType::DateTime));
+    }
 }

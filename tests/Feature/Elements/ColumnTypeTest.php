@@ -84,6 +84,12 @@ class ColumnTypeTest extends ConfigTestCase
             'language 2' => [ColumnType::Language, null, null],
             'language 3' => [ColumnType::Language, ' ', ' '],
             'language 4' => [ColumnType::Language, 1234, '1234'],
+
+            'data-time 1' => [ColumnType::DateTime, null, null],
+            'data-time 2' => [ColumnType::DateTime, '', null],
+            'data-time 3' => [ColumnType::DateTime, '2010-12-31', '2010-12-31 00:00:00'],
+            'data-time 4' => [ColumnType::DateTime, 'midnight first day of november 2012', '2012-11-01 00:00:00'],
+            'data-time 5' => [ColumnType::DateTime, '12:00 Uhr 1.12.2007', null],
         ];
     }
 

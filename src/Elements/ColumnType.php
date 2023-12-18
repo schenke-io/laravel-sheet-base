@@ -2,6 +2,9 @@
 
 namespace SchenkeIo\LaravelSheetBase\Elements;
 
+use Carbon\Carbon;
+use Carbon\Exceptions\InvalidFormatException;
+
 enum ColumnType: string
 {
     case ID = 'Id';
@@ -16,6 +19,8 @@ enum ColumnType: string
     case Boolean = 'Bool';
 
     case Closure = 'Closure';
+
+    case DateTime = 'DateTime';
 
     public function isId(): bool
     {
@@ -39,6 +44,7 @@ enum ColumnType: string
             self::Boolean => $this->formatBoolean($param),
             self::String => $this->formatString($param),
             self::Language => $this->formatLanguage($param),
+            self::DateTime => $this->formatDateTime($param),
             default => $param
         };
     }
@@ -111,5 +117,14 @@ enum ColumnType: string
         $return = (string) $param;
 
         return $return == '' ? null : $return;
+    }
+
+    private function formatDateTime(mixed $param): ?string
+    {
+        try {
+            return Carbon::make($param)?->format('Y-m-d H:i:s');
+        } catch (InvalidFormatException $e) {
+            return null;
+        }
     }
 }
