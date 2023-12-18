@@ -10,6 +10,7 @@ enum ColumnType: string
     case ID = 'Id';
     case Dot = 'Dot';
     case String = 'String';
+    case NullString = 'NullString';
     case Unsigned = 'Unsigned';
     case UnsignedNotNull = 'UnsignedNotNull';
     case Language = 'Language';
@@ -43,7 +44,7 @@ enum ColumnType: string
             self::Float => $this->formatFloat($param),
             self::Boolean => $this->formatBoolean($param),
             self::String => $this->formatString($param),
-            self::Language => $this->formatLanguage($param),
+            self::Language,self::NullString => $this->formatNullString($param),
             self::DateTime => $this->formatDateTime($param),
             default => $param
         };
@@ -112,7 +113,7 @@ enum ColumnType: string
         return trim((string) ($param ?? ''));
     }
 
-    private function formatLanguage(mixed $param): ?string
+    private function formatNullString(mixed $param): ?string
     {
         $return = (string) $param;
 
@@ -123,7 +124,7 @@ enum ColumnType: string
     {
         try {
             return Carbon::make($param)?->format('Y-m-d H:i:s');
-        } catch (InvalidFormatException $e) {
+        } catch(InvalidFormatException $e){
             return null;
         }
     }

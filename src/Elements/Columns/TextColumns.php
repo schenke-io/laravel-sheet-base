@@ -27,6 +27,14 @@ trait TextColumns
     /**
      * @throws SchemaAddColumnException
      */
+    public function addNullString(string $name): void
+    {
+        $this->addColumn($name, new ColumnSchema(ColumnType::NullString));
+    }
+
+    /**
+     * @throws SchemaAddColumnException
+     */
     public function addDateTime(string $name): void
     {
         $this->addColumn($name, new ColumnSchema(ColumnType::DateTime));
