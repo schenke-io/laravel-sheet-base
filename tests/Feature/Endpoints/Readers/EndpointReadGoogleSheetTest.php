@@ -5,14 +5,21 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints\Readers;
 use Google\Service\Sheets;
 use Google\Service\Sheets\Resource\SpreadsheetsValues;
 use Orchestra\Testbench\TestCase;
+use PHPUnit\Framework\MockObject\Exception;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
 use SchenkeIo\LaravelSheetBase\Exceptions\GoogleSheetException;
+use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 use SchenkeIo\LaravelSheetBase\Google\GoogleSheetApi;
 use Workbench\App\Endpoints\TestDummyEndpointReadGoogleSheet;
 
 class EndpointReadGoogleSheetTest extends TestCase
 {
+    /**
+     * @throws Exception
+     * @throws \Google\Service\Exception
+     * @throws ReadParseException
+     */
     public function testFillPipeline()
     {
         $schema = new class extends SheetBaseSchema
@@ -30,7 +37,15 @@ class EndpointReadGoogleSheetTest extends TestCase
                 'spreadsheetId',
                 'sheetName'
             )
-            ->willReturn(new Sheets\ValueRange(['values' => [['a', 'b'], [1, 2], [2, 5]]]));
+            ->willReturn(new Sheets\ValueRange(['values' => [
+                ['a', 'b'],
+                [1, 2],
+                [null, null],  // this line gets skipped
+                [2, 5],
+            ],
+            ]
+            )
+            );
 
         $api = new GoogleSheetApi();
         $api->spreadsheetsValues = $mockValues;
@@ -40,7 +55,9 @@ class EndpointReadGoogleSheetTest extends TestCase
         $sheet->spreadsheet = $api;
 
         $sheet->fillPipeline($pipelineData);
-        $this->assertIsArray($pipelineData->toArray());
+        $result = $pipelineData->toArray();
+        $this->assertIsArray($result);
+        $this->assertCount(2, $result);
     }
 
     public function testExplain()

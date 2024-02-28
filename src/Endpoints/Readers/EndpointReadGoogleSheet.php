@@ -32,10 +32,14 @@ class EndpointReadGoogleSheet extends GoogleSheetBase implements IsReader
             if ($rowIndex == 0) {
                 $header = $row;
             } else {
-                // 1. Align $rows to the size of $headers
+                // check if first column has a value
+                if (strlen($row[0]) < 1) {
+                    continue;
+                }
+                // Align $row to the size of $header
                 $row = array_slice($row, 0, count($header)); // Trim if $row is too long
                 $row = array_pad($row, count($header), null); // Extend with null if $row is too short
-                // 2. Combine the arrays
+                // Combine the arrays
                 $pipelineData->addRow(array_combine($header, $row));
             }
         }
