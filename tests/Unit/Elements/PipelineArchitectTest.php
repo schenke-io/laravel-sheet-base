@@ -7,6 +7,9 @@ use SchenkeIo\LaravelSheetBase\Elements\PipelineArchitect;
 
 class PipelineArchitectTest extends TestCase
 {
+    /**
+     * @throws \Throwable
+     */
     public function testArchitecture()
     {
         $this->expectNotToPerformAssertions();

@@ -20,7 +20,7 @@ class SheetBasePumpCommand extends Command
         try {
             $config = SheetBaseConfig::make();
             foreach ($config->pipelines as $name => $pipeline) {
-                $pipeline->pump($inform, $name, self::class);
+                $pipeline->pump($inform, $name, class_basename(self::class));
             }
         } catch (Exception $e) {
             $this->error($e->getMessage());

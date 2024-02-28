@@ -57,17 +57,17 @@ final class Pipeline
      */
     public function pump(Closure $callback, string $name, string $className): void
     {
-        $callback("|----------   pipeline $name");
+        $callback("|----------   pipeline '$name' with schema: ".class_basename($this->schema));
         $pipelineData = new PipelineData($this->schema);
         foreach ($this->sources as $source) {
             $source->fillPipeline($pipelineData);
             $callback(sprintf("pipeline '%s' source %s %s",
-                $name, get_class($source), $source->explain()
+                $name, class_basename($source), $source->explain()
             ));
         }
         $this->target->releasePipeline($pipelineData, $className);
-        $callback(sprintf("pipeline '%s'target %s  %s",
-            $name, get_class($this->target), $this->target->explain()
+        $callback(sprintf("pipeline '%s' target %s  %s",
+            $name, class_basename($this->target), $this->target->explain()
         ));
     }
 
