@@ -70,7 +70,7 @@ This will become the place for all files to be read and write.
 
 ### Pipelines
 Configure the pipelines in `config/sheet-base.php`.
-Under the primary key `pipelines` and names for each pipeline
+Under the primary key `pipelines` add names for each pipeline
 and define these 3 keys:
  
 | key     | purpose                           | type                                     |
@@ -168,9 +168,9 @@ class LanguageTarget extends EndpointWriteLang
 ````
 #### Endpoint to read Google Sheets
 
-First get a service account in the Google api cosnole and download the json file. Then add 
-the key `GOOGLE_APPLICATION_CREDENTIALS` to the `.env` file and fill the
-pat to this file. 
+First get a service account in the Google api console and download the json file. 
+Then add the key `GOOGLE_APPLICATION_CREDENTIALS` to the `.env` file and fill the
+path to this file. 
 ````bash
 # .env
 GOOGLE_APPLICATION_CREDENTIALS=directory/google/file.json

@@ -3,14 +3,14 @@
 namespace Workbench\App\Endpoints;
 
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
-use SchenkeIo\LaravelSheetBase\Exceptions\SchemaDefinitionException;
+use SchenkeIo\LaravelSheetBase\Exceptions\SchemaAddColumnException;
 
 class PersonSchema extends SheetBaseSchema
 {
     /**
      * define the schema in Laravel migration syntax
      *
-     * @throws SchemaDefinitionException
+     * @throws SchemaAddColumnException
      */
     public function define(): void
     {
