@@ -11,11 +11,13 @@ abstract class StorageBase implements IsEndpoint
 
     /**
      * @throws FileSystemNotDefinedException
+     * @throws \Throwable
      */
     public function __construct()
     {
-        if (! is_array(config('filesystems.disks.sheet-base'))) {
-            throw new FileSystemNotDefinedException("the file system disk 'sheet-base' is not defined in /config/filesystems.php");
-        }
+        throw_unless(
+            is_array(config('filesystems.disks.sheet-base')),
+            new FileSystemNotDefinedException("the file system disk 'sheet-base' is not defined in /config/filesystems.php")
+        );
     }
 }

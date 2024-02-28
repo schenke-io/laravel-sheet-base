@@ -2,7 +2,7 @@
 
 namespace Workbench\App\Endpoints;
 
-use SchenkeIo\LaravelSheetBase\Endpoints\EndpointReadPsv;
+use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadPsv;
 
 class PersonsReadPsv extends EndpointReadPsv
 {

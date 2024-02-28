@@ -1,18 +1,18 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints;
+namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints\Writers;
 
 use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
-use SchenkeIo\LaravelSheetBase\Endpoints\EndpointWritePhp;
+use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteJson;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
-class EndpointWritePhpTest extends ConfigTestCase
+class EndpointWriteJsonTest extends ConfigTestCase
 {
-    public function testWritePhp()
+    public function testReleasePipeline(): void
     {
-        $path = '/test.php';
+        $path = '/test.json';
         //dd(Storage::getConfig());
         $schema = new class extends SheetBaseSchema
         {
@@ -27,12 +27,12 @@ class EndpointWritePhpTest extends ConfigTestCase
         $tempTable = new PipelineData($schema);
         $tempTable->addRow(['a' => 1, 'b' => 2]);
         $tempTable->addRow(['a' => 2, 'b' => 3]);
-        $php = new class extends EndpointWritePhp
+        $neon = new class extends EndpointWriteJson
         {
-            public string $path = '/test.php';
+            public string $path = '/test.json';
         };
         Storage::disk('sheet-base')->assertMissing($path);
-        $php->releasePipeline($tempTable, 'x');
+        $neon->releasePipeline($tempTable, 'x');
         Storage::disk('sheet-base')->assertExists($path);
     }
 }

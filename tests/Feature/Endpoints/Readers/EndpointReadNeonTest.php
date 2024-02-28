@@ -1,11 +1,11 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints;
+namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints\Readers;
 
 use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
-use SchenkeIo\LaravelSheetBase\Endpoints\EndpointReadNeon;
+use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadNeon;
 use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 

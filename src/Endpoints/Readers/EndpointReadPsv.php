@@ -1,6 +1,6 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Endpoints;
+namespace SchenkeIo\LaravelSheetBase\Endpoints\Readers;
 
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFileReader;

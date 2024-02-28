@@ -1,9 +1,9 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints;
+namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints\Writers;
 
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
-use SchenkeIo\LaravelSheetBase\Endpoints\EndpointWriteArray;
+use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteArray;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 use Workbench\App\Endpoints\DummySchema;
 

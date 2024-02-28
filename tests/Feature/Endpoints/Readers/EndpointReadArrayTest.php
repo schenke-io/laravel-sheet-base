@@ -1,9 +1,9 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints;
+namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints\Readers;
 
 use Orchestra\Testbench\TestCase;
-use SchenkeIo\LaravelSheetBase\Endpoints\EndpointReadArray;
+use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadArray;
 
 class EndpointReadArrayTest extends TestCase
 {

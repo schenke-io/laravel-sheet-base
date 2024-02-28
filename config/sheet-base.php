@@ -11,6 +11,7 @@ return [
     | various sources to a specified target using a predefined schema. To implement
     | the required functionality for any pipeline, create a set of custom classes
     | that extends the provided base classes.
+    | For simple situations use filenames with known extensions instead of classes.
     |
     */
     'pipelines' => [

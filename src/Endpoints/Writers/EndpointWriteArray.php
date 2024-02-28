@@ -1,6 +1,6 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Endpoints;
+namespace SchenkeIo\LaravelSheetBase\Endpoints\Writers;
 
 use SchenkeIo\LaravelSheetBase\Contracts\IsWriter;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
@@ -16,6 +16,6 @@ class EndpointWriteArray implements IsWriter
 
     public function explain(): string
     {
-        return 'writes into array';
+        return 'writes into public array $arrayData';
     }
 }

@@ -124,7 +124,7 @@ enum ColumnType: string
     {
         try {
             return Carbon::make($param)?->format('Y-m-d H:i:s');
-        } catch(InvalidFormatException $e){
+        } catch (InvalidFormatException $e) {
             return null;
         }
     }

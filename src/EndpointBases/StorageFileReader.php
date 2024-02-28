@@ -6,18 +6,20 @@ use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use Throwable;
 
 abstract class StorageFileReader extends StorageFile implements IsReader
 {
     /**
      * @throws ReadParseException
      * @throws FileSystemNotDefinedException
+     * @throws Throwable
      */
     public function __construct(?string $path = null)
     {
         parent::__construct($path);
-        if (! $this->storageExists($this->path)) {
-            throw new ReadParseException(
+        throw_unless($this->storageExists($this->path),
+            new ReadParseException(
                 sprintf(
                     'class %s was unable to find file %s in disk %s',
                     get_class($this),
@@ -25,8 +27,9 @@ abstract class StorageFileReader extends StorageFile implements IsReader
                     self::DISK,
 
                 )
-            );
-        }
+            )
+        );
+
     }
 
     protected function storageGet(string $path): string

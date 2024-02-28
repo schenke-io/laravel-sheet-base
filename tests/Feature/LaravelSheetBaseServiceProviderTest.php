@@ -18,6 +18,5 @@ class LaravelSheetBaseServiceProviderTest extends TestCase
         $this->assertEquals('laravel-sheet-base', $package->name);
         $this->assertArrayHasKey('sheet-base-config', $serviceProvider::$publishGroups);
         $this->assertCount(2, $package->commands);
-
     }
 }

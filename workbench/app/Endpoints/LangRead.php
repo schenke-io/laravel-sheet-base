@@ -2,7 +2,7 @@
 
 namespace Workbench\App\Endpoints;
 
-use SchenkeIo\LaravelSheetBase\Endpoints\EndpointReadArray;
+use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadArray;
 
 class LangRead extends EndpointReadArray
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Endpoints;
+namespace SchenkeIo\LaravelSheetBase\Endpoints\Readers;
 
 use Nette\Neon\Exception as NeonException;
 use Nette\Neon\Neon;

@@ -4,10 +4,10 @@ namespace SchenkeIo\LaravelSheetBase\Skills;
 
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Contracts\IsWriter;
-use SchenkeIo\LaravelSheetBase\Endpoints\EndpointReadNeon;
-use SchenkeIo\LaravelSheetBase\Endpoints\EndpointReadPsv;
-use SchenkeIo\LaravelSheetBase\Endpoints\EndpointWriteNeon;
-use SchenkeIo\LaravelSheetBase\Endpoints\EndpointWritePhp;
+use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadNeon;
+use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadPsv;
+use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteNeon;
+use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWritePhp;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
 use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
@@ -17,7 +17,7 @@ class MakeEndpoint
     /**
      * @throws FileSystemNotDefinedException
      * @throws ReadParseException
-     * @throws MakeEndpointException
+     * @throws MakeEndpointException|\Throwable
      */
     public static function fromSource(string $path): IsReader
     {
@@ -33,7 +33,7 @@ class MakeEndpoint
     /**
      * @throws ReadParseException
      * @throws FileSystemNotDefinedException
-     * @throws MakeEndpointException
+     * @throws MakeEndpointException|\Throwable
      */
     public static function fromTarget(string $path): IsWriter
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Endpoints;
+namespace SchenkeIo\LaravelSheetBase\Endpoints\Writers;
 
 use Illuminate\Support\Arr;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;

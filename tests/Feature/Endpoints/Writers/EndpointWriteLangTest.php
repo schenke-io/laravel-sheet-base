@@ -1,6 +1,6 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints;
+namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints\Writers;
 
 use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
@@ -46,7 +46,7 @@ class EndpointWriteLangTest extends ConfigTestCase
         $fileBasesPhp = var_export($fileBases, true);
         $writeLang = null;
         $php = <<<PHP
-\$writeLang = new class extends SchenkeIo\LaravelSheetBase\Endpoints\EndpointWriteLang {
+\$writeLang = new class extends \SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteLang {
             public string \$root = '$root';
             public array \$fileBases = $fileBasesPhp;
         };

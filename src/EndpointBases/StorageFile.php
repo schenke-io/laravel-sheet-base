@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Contracts\IsEndpoint;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use Throwable;
 
 abstract class StorageFile extends StorageBase implements IsEndpoint
 {
@@ -22,6 +23,7 @@ abstract class StorageFile extends StorageBase implements IsEndpoint
     /**
      * @throws ReadParseException
      * @throws FileSystemNotDefinedException
+     * @throws Throwable
      */
     public function __construct(?string $path = null)
     {
@@ -29,16 +31,10 @@ abstract class StorageFile extends StorageBase implements IsEndpoint
         if (! is_null($path)) {
             $this->path = $path;
         }
-        if ($this->path === '') {
-            throw new ReadParseException("'public string \$path = ...' not set in ".get_class($this));
-        }
-        if ($this->extension === '') {
-            throw new ReadParseException("'protected string \$extension = ...' not set in ".get_class($this));
-        }
+        throw_if($this->path === '', new ReadParseException("'public string \$path = ...' not set in ".get_class($this)));
+        throw_if($this->extension === '', new ReadParseException("'protected string \$extension = ...' not set in ".get_class($this)));
         $extension = pathinfo($this->path)['extension'] ?? 'extension not found in path';
-        if ($this->extension !== $extension) {
-            throw new ReadParseException(sprintf("expected extension '%s' but found '%s'", $this->extension, $extension));
-        }
+        throw_unless($this->extension == $extension, new ReadParseException(sprintf("expected extension '%s' but found '%s'", $this->extension, $extension)));
     }
 
     protected function storageExists(string $path): bool

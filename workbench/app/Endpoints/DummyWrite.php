@@ -2,7 +2,7 @@
 
 namespace Workbench\App\Endpoints;
 
-use SchenkeIo\LaravelSheetBase\Endpoints\EndpointWriteArray;
+use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteArray;
 
 class DummyWrite extends EndpointWriteArray
 {

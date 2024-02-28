@@ -2,10 +2,12 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\EndpointBases;
 
+use AllowDynamicProperties;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageTree;
 use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
+#[AllowDynamicProperties]
 class StorageTreeTest extends ConfigTestCase
 {
     public function testEmptyRootReadParseException()

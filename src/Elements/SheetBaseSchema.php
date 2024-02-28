@@ -43,17 +43,21 @@ abstract class SheetBaseSchema
     {
         $track = debug_backtrace(0, 4);
         $source = sprintf('class %s line %d', $track[2]['class'], $track[2]['line']);
-        //dump($track);
 
         if ($name == '') {
             throw new SchemaAddColumnException($source, 'column name cannot be empty string');
         }
         if ($columnDefinition->type->isId()) {
             if ($this->idName == '') {
+                // first time
                 $this->idName = $name;
                 $this->pipelineType = $columnDefinition->type->getPipelineType();
-            } elseif ($this->idName != $name) {
+            } else {
+                // second time
                 throw new SchemaAddColumnException($source, 'only one id column is possible');
+            }
+            if (count($this->columns) > 0) {
+                throw new SchemaAddColumnException($source, 'id column must be the first');
             }
         }
         if (isset($this->columns[$name])) {

@@ -11,6 +11,7 @@ use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 
 class SheetBaseSchemaTest extends TestCase
 {
+    // todo test exception when 2x id is defined
     public static function dataProviderSchemas(): array
     {
         return [
@@ -18,6 +19,7 @@ class SheetBaseSchemaTest extends TestCase
             'no id 1' => ['', '$this->addString("name");'], // ok for single column
             'no id 2' => [SchemaAddColumnException::class, '$this->addString("name1");$this->addString("name1");'], // 2 columns need one id
             'only id' => ['', '$this->addId();'],
+            'id not first' => [SchemaAddColumnException::class, '$this->addString("name");$this->addId();'],
             'no column' => [SchemaVerifyColumnsException::class, ''],
             'two id 1' => [SchemaAddColumnException::class, '$this->addId("a");$this->addId("b");'],
             'two id 2' => [SchemaAddColumnException::class, '$this->addId();$this->addDot();'],

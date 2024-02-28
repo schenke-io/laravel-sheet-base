@@ -2,7 +2,7 @@
 
 namespace Workbench\App\Endpoints;
 
-use SchenkeIo\LaravelSheetBase\Endpoints\EndpointReadArray;
+use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadArray;
 
 class DummyRead extends EndpointReadArray
 {

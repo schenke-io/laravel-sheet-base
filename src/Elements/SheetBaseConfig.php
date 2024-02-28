@@ -4,6 +4,9 @@ namespace SchenkeIo\LaravelSheetBase\Elements;
 
 use Exception;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
+use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
+use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
+use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 
 final class SheetBaseConfig
@@ -14,16 +17,35 @@ final class SheetBaseConfig
     public array $pipelines = [];
 
     /**
+     * @throws \Throwable
+     * @throws FileSystemNotDefinedException
+     * @throws ReadParseException
      * @throws ConfigErrorException
      * @throws SchemaVerifyColumnsException
+     * @throws MakeEndpointException
      */
     public static function make(): SheetBaseConfig
     {
         $configProject = new SheetBaseConfig();
         $pipelines = [];
-        foreach ($configProject->getConfig() as $pipelineName => $pipeline) {
-            $pipeline = Pipeline::fromConfig($pipeline, $pipelineName);
+        $targets = [];
+        $languagePipelineCount = 0;
+        foreach ($configProject->getConfig() as $pipelineName => $pipelineArray) {
+            $target = $pipelineArray['target'];
 
+            if (in_array($target, $targets)) {
+                throw new ConfigErrorException($pipelineName, 'multiple use of target: '.$target);
+            } else {
+                $targets[] = $target;
+            }
+            $pipeline = Pipeline::fromConfig($pipelineArray, $pipelineName);
+            if ($pipeline->isLanguage()) {
+                $languagePipelineCount++;
+                throw_if(
+                    $languagePipelineCount > 1,
+                    new ConfigErrorException($pipelineName, 'multiple definition of a language pipeline')
+                );
+            }
             $pipelines[$pipelineName] = $pipeline;
         }
         $configProject->pipelines = $pipelines;

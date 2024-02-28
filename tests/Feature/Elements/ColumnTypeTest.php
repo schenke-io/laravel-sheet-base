@@ -84,7 +84,6 @@ class ColumnTypeTest extends ConfigTestCase
             'null string 2' => [ColumnType::NullString, null, null],
             'null string 3' => [ColumnType::NullString, ' ', ' '],
             'null string 4' => [ColumnType::NullString, 1234, '1234'],
-            
 
             'language 1' => [ColumnType::Language, '', null],
             'language 2' => [ColumnType::Language, null, null],

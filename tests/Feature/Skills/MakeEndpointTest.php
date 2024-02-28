@@ -2,10 +2,8 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Skills;
 
-use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Contracts\IsWriter;
-use SchenkeIo\LaravelSheetBase\EndpointBases\StorageBase;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
 use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
@@ -31,14 +29,12 @@ class MakeEndpointTest extends ConfigTestCase
      *
      * @throws FileSystemNotDefinedException
      * @throws ReadParseException
+     * @throws \Throwable
      */
     public function testMakeEndpoint(bool $isReader, string $path, bool $isException, string $interface): void
     {
-        //     Storage::fake(StorageBase::DISK);
         if ($isException) {
             $this->expectException(MakeEndpointException::class);
-            //        }else{
-            //            $this->expectNotToPerformAssertions();
         }
         if ($isReader) {
             $endpoint = MakeEndpoint::fromSource($path);

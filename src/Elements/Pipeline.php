@@ -6,6 +6,7 @@ use Closure;
 use SchenkeIo\LaravelSheetBase\Contracts\IsEndpoint;
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Contracts\IsWriter;
+use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteLang;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
@@ -28,16 +29,27 @@ final class Pipeline
     }
 
     /**
+     * @throws ReadParseException
+     * @throws FileSystemNotDefinedException
      * @throws ConfigErrorException
+     * @throws MakeEndpointException
+     * @throws \Throwable
      * @throws SchemaVerifyColumnsException
      */
     public static function fromConfig(array $pipeline, string $pipelineName): Pipeline
     {
+
         return new Pipeline(
-            self::getSources($pipeline['sources'] ?? [], $pipelineName),
-            self::getSchema($pipeline['schema'] ?? '', $pipelineName),
-            self::getTarget($pipeline['target'] ?? '', $pipelineName)
+            sources: self::getSources($pipeline['sources'] ?? [], $pipelineName),
+            schema: self::getSchema($pipeline['schema'] ?? '', $pipelineName),
+            target: self::getTarget($pipeline['target'] ?? '', $pipelineName)
         );
+
+    }
+
+    public function isLanguage(): bool
+    {
+        return $this->target instanceof EndpointWriteLang;
     }
 
     /**
@@ -67,21 +79,21 @@ final class Pipeline
      * @throws FileSystemNotDefinedException
      * @throws MakeEndpointException
      * @throws ReadParseException
+     * @throws \Throwable
      */
     protected static function getSources(mixed $sources, string $pipelineName): array
     {
-        if (! is_array($sources)) {
-            throw new ConfigErrorException($pipelineName, 'sources must be defined as array');
-        }
-        if (count($sources) == 0) {
-            throw new ConfigErrorException($pipelineName, 'no sources found');
-        }
+        throw_unless(is_array($sources), new ConfigErrorException($pipelineName, 'sources must be defined as array'));
+        throw_if(count($sources) == 0, new ConfigErrorException($pipelineName, 'no sources found'));
+
         $return = [];
         foreach ($sources as $source) {
             if (class_exists($source)) {
-                if (! in_array(IsReader::class, class_implements($source))) {
-                    throw new ConfigErrorException($pipelineName, "is not a valid source class (IsReader): $source");
-                }
+                throw_unless(
+                    in_array(IsReader::class, class_implements($source)),
+                    new ConfigErrorException($pipelineName, "is not a valid source class (IsReader): $source")
+                );
+
                 $return[] = new $source();
             } else {
                 // try filename for auto
@@ -95,15 +107,18 @@ final class Pipeline
     /**
      * @throws ConfigErrorException
      * @throws SchemaVerifyColumnsException
+     * @throws \Throwable
      */
     protected static function getSchema(string $schema, string $pipelineName): SheetBaseSchema
     {
-        if (! class_exists($schema)) {
-            throw new ConfigErrorException($pipelineName, "schema class does not exist: $schema");
-        }
-        if (! in_array(SheetBaseSchema::class, class_parents($schema))) {
-            throw new ConfigErrorException($pipelineName, "schema not valid: $schema");
-        }
+        throw_unless(
+            class_exists($schema),
+            new ConfigErrorException($pipelineName, "schema class does not exist: $schema")
+        );
+        throw_unless(
+            in_array(SheetBaseSchema::class, class_parents($schema)),
+            new ConfigErrorException($pipelineName, "schema not valid: $schema")
+        );
         /** @var SheetBaseSchema $class */
         $class = new $schema();
         $class->verify($pipelineName);
@@ -116,14 +131,16 @@ final class Pipeline
      * @throws FileSystemNotDefinedException
      * @throws MakeEndpointException
      * @throws ReadParseException
+     * @throws \Throwable
      */
     protected static function getTarget(string $target, string $pipelineName): IsWriter
     {
-
+        throw_if($target == '', new ConfigErrorException($pipelineName, 'target is empty'));
         if (class_exists($target)) {
-            if (! in_array(IsWriter::class, class_implements($target))) {
-                throw new ConfigErrorException($pipelineName, "is not a valid target class (IsWriter): $target");
-            }
+            throw_unless(
+                in_array(IsWriter::class, class_implements($target)),
+                new ConfigErrorException($pipelineName, "is not a valid target class (IsWriter): $target")
+            );
 
             return new $target();
         } else {

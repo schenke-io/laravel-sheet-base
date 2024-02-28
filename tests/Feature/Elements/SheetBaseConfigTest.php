@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Config;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseConfig;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
+use Workbench\App\Endpoints\LangSchema;
+use Workbench\App\Endpoints\LangWrite;
+use Workbench\App\Endpoints\LangWrite2;
 use Workbench\App\Endpoints\PersonSchema;
 use Workbench\App\Endpoints\PersonsReadPsv;
 use Workbench\App\Endpoints\PersonsWriteNeon;
@@ -57,6 +60,34 @@ class SheetBaseConfigTest extends ConfigTestCase
                         'sources' => [PersonsReadPsv::class],
                         'schema' => PersonSchema::class,
                         'target' => PersonSchema::class,
+                    ],
+                ],
+            ],
+            'multiple use of same target' => [ConfigErrorException::class,
+                [
+                    'persons' => [
+                        'sources' => ['psv/persons.psv'],
+                        'schema' => PersonSchema::class,
+                        'target' => PersonsWriteNeon::class,
+                    ],
+                    'persons2' => [
+                        'sources' => [PersonsReadPsv::class],
+                        'schema' => PersonSchema::class,
+                        'target' => PersonsWriteNeon::class,
+                    ],
+                ],
+            ],
+            'multiple use of language' => [ConfigErrorException::class,
+                [
+                    'persons' => [
+                        'sources' => [PersonsReadPsv::class],
+                        'schema' => LangSchema::class,
+                        'target' => LangWrite::class,
+                    ],
+                    'persons2' => [
+                        'sources' => [PersonsReadPsv::class],
+                        'schema' => LangSchema::class,
+                        'target' => LangWrite2::class,
                     ],
                 ],
             ],

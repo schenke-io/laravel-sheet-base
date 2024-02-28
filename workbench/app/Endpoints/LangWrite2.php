@@ -4,7 +4,7 @@ namespace Workbench\App\Endpoints;
 
 use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteLang;
 
-class LangWrite extends EndpointWriteLang
+class LangWrite2 extends EndpointWriteLang
 {
     public string $root = '/lang';
 
