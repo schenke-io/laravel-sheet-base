@@ -4,7 +4,7 @@ namespace Workbench\App\Endpoints;
 
 use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadGoogleSheet;
 
-class EndpointReadGoogleSheetDummy extends EndpointReadGoogleSheet
+class TestDummyEndpointReadGoogleSheet extends EndpointReadGoogleSheet
 {
     public function __construct(string $spreadsheetId, string $sheetName)
     {

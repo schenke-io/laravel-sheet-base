@@ -9,7 +9,7 @@ use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
 use SchenkeIo\LaravelSheetBase\Exceptions\GoogleSheetException;
 use SchenkeIo\LaravelSheetBase\Google\GoogleSheetApi;
-use Workbench\App\Endpoints\EndpointReadGoogleSheetDummy;
+use Workbench\App\Endpoints\TestDummyEndpointReadGoogleSheet;
 
 class EndpointReadGoogleSheetTest extends TestCase
 {
@@ -36,7 +36,7 @@ class EndpointReadGoogleSheetTest extends TestCase
         $api->spreadsheetsValues = $mockValues;
 
         $pipelineData = new PipelineData($schema);
-        $sheet = new EndpointReadGoogleSheetDummy('spreadsheetId', 'sheetName');
+        $sheet = new TestDummyEndpointReadGoogleSheet('spreadsheetId', 'sheetName');
         $sheet->spreadsheet = $api;
 
         $sheet->fillPipeline($pipelineData);
@@ -45,19 +45,19 @@ class EndpointReadGoogleSheetTest extends TestCase
 
     public function testExplain()
     {
-        $sheet = new EndpointReadGoogleSheetDummy('spreadsheetId', 'sheetName');
+        $sheet = new TestDummyEndpointReadGoogleSheet('spreadsheetId', 'sheetName');
         $this->assertGreaterThan(2, strlen($sheet->explain()));
     }
 
     public function testExceptionSpreadsheetId()
     {
         $this->expectException(GoogleSheetException::class);
-        $sheet = new EndpointReadGoogleSheetDummy('', 'sheetName');
+        $sheet = new TestDummyEndpointReadGoogleSheet('', 'sheetName');
     }
 
     public function testExceptionSheetName()
     {
         $this->expectException(GoogleSheetException::class);
-        $sheet = new EndpointReadGoogleSheetDummy('spreadsheetId', '');
+        $sheet = new TestDummyEndpointReadGoogleSheet('spreadsheetId', '');
     }
 }
