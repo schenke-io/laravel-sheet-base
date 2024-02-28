@@ -6,6 +6,7 @@ use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Contracts\IsWriter;
 use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadNeon;
 use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadPsv;
+use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteJson;
 use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteNeon;
 use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWritePhp;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
@@ -42,6 +43,7 @@ class MakeEndpoint
         return match ($extension) {
             'php' => new EndpointWritePhp($path),
             'neon' => new EndpointWriteNeon($path),
+            'json' => new EndpointWriteJson($path),
             default => throw new MakeEndpointException($path, "no writer found for '$extension'")
         };
     }

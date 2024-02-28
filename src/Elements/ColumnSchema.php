@@ -6,8 +6,6 @@ use Closure;
 
 class ColumnSchema
 {
-    public Closure $transform;
-
     public function __construct(public ColumnType $type, public ?Closure $closure = null)
     {
     }
