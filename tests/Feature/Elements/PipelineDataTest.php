@@ -4,6 +4,7 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
+use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
 use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 use SchenkeIo\LaravelSheetBase\Tests\TestCase;
 
@@ -109,7 +110,7 @@ class PipelineDataTest extends TestCase
 
     public function testAddRowEmptyIdException()
     {
-        $this->expectException(ReadParseException::class);
+        $this->expectException(DataReadException::class);
         $pipeline = new PipelineData($this->sheetBaseSchemaTable1);
         $pipeline->addRow(['id' => '', 'c1' => 'text']);
     }

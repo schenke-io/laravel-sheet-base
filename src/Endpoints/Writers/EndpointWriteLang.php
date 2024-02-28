@@ -31,7 +31,7 @@ class EndpointWriteLang extends StorageTreeWriter
             $value = $value == '' ? null : $value;
             $parts = explode('.', $key);
             if (count($parts) < 3) {
-                throw new ReadParseException("the given key would result in invalid translation files: $key");
+                throw new ReadParseException(class_basename($this), "the given key would result in invalid translation files: $key");
             }
             // Get the last item from the array
             $lastItem = array_pop($parts);

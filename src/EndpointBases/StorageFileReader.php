@@ -20,6 +20,7 @@ abstract class StorageFileReader extends StorageFile implements IsReader
         parent::__construct($path);
         throw_unless($this->storageExists($this->path),
             new ReadParseException(
+                class_basename($this),
                 sprintf(
                     'class %s was unable to find file %s in disk %s',
                     get_class($this),

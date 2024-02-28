@@ -22,8 +22,9 @@ abstract class GoogleSheetBase implements IsEndpoint
      */
     public function __construct()
     {
-        throw_if(strlen($this->spreadsheetId) < 10, new GoogleSheetException('spreadsheetId not defined'));
-        throw_if(strlen($this->sheetName) < 1, new GoogleSheetException('sheetName not defined'));
+        $className = class_basename($this);
+        throw_if(strlen($this->spreadsheetId) < 10, new GoogleSheetException($className, 'spreadsheetId not defined'));
+        throw_if(strlen($this->sheetName) < 1, new GoogleSheetException($className, 'sheetName not defined'));
         $this->spreadsheet = new GoogleSheetApi();
     }
 }

@@ -29,7 +29,7 @@ class EndpointReadNeon extends StorageFileReader
                 Neon::decode($fileContent)
             );
         } catch (ValidationException|NeonException $e) {
-            throw new ReadParseException($e->getMessage());
+            throw new ReadParseException(class_basename($this), $e->getMessage());
         }
         // from Neon processor parsing we always get an array
         foreach ($content as $row) {

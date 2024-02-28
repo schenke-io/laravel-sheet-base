@@ -27,7 +27,8 @@ abstract class StorageTree extends StorageBase implements IsEndpoint
     public function __construct()
     {
         parent::__construct();
-        throw_if($this->root === '', new ReadParseException("'public string \$root = ...' not set in ".get_class($this)));
-        throw_if(count($this->fileBases) == 0, new ReadParseException("'public array \$fileBases = [...]' not set in ".get_class($this)));
+        $className = class_basename($this);
+        throw_if($this->root === '', new ReadParseException($className, "'public string \$root = ...' not set in ".get_class($this)));
+        throw_if(count($this->fileBases) == 0, new ReadParseException($className, "'public array \$fileBases = [...]' not set in ".get_class($this)));
     }
 }

@@ -20,10 +20,12 @@ abstract class StorageTreeWriter extends StorageTree implements IsWriter
          */
         throw_unless(
             str_starts_with($path, $this->root),
-            new ReadParseException(sprintf(
-                'the given file %s is not under the given root %s',
-                $path, $this->root
-            )
+            new ReadParseException(
+                class_basename($this),
+                sprintf(
+                    'the given file %s is not under the given root %s',
+                    $path, $this->root
+                )
             )
         );
         Storage::disk(self::DISK)->put($path, $content);

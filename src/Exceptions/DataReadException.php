@@ -2,6 +2,8 @@
 
 namespace SchenkeIo\LaravelSheetBase\Exceptions;
 
-class GoogleSheetException extends AddClassNameException
+use Exception;
+
+class DataReadException extends Exception
 {
 }

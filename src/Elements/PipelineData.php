@@ -2,6 +2,7 @@
 
 namespace SchenkeIo\LaravelSheetBase\Elements;
 
+use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
 use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 
 /**
@@ -40,7 +41,7 @@ final class PipelineData
             unset($row[$this->idName]);
         }
         if (strlen($id) < 1) {
-            throw new ReadParseException('empty id field');
+            throw new DataReadException('empty id field');
         }
         /*
          * we have a valid id
