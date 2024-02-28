@@ -27,12 +27,16 @@ class EndpointReadGoogleSheet extends GoogleSheetBase implements IsReader
     public function fillPipeline(PipelineData &$pipelineData): void
     {
         $data = $this->spreadsheet->getData($this->spreadsheetId, $this->sheetName);
-        $headers = [];
+        $header = [];
         foreach ($data as $rowIndex => $row) {
             if ($rowIndex == 0) {
-                $headers = $row;
+                $header = $row;
             } else {
-                $pipelineData->addRow(array_combine($headers, $row));
+                // 1. Align $rows to the size of $headers
+                $row = array_slice($row, 0, count($header)); // Trim if $row is too long
+                $row = array_pad($row, count($header), null); // Extend with null if $row is too short
+                // 2. Combine the arrays
+                $pipelineData->addRow(array_combine($header, $row));
             }
         }
     }
