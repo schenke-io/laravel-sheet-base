@@ -3,8 +3,8 @@
 namespace SchenkeIo\LaravelSheetBase\EndpointBases;
 
 use SchenkeIo\LaravelSheetBase\Contracts\IsEndpoint;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 use Throwable;
 
 abstract class StorageTree extends StorageBase implements IsEndpoint
@@ -20,7 +20,7 @@ abstract class StorageTree extends StorageBase implements IsEndpoint
     public array $fileBases = [];
 
     /**
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      * @throws FileSystemNotDefinedException
      * @throws Throwable
      */
@@ -28,7 +28,7 @@ abstract class StorageTree extends StorageBase implements IsEndpoint
     {
         parent::__construct();
         $className = class_basename($this);
-        throw_if($this->root === '', new ReadParseException($className, "'public string \$root = ...' not set in ".get_class($this)));
-        throw_if(count($this->fileBases) == 0, new ReadParseException($className, "'public array \$fileBases = [...]' not set in ".get_class($this)));
+        throw_if($this->root === '', new EndpointCodeException($className, "'public string \$root = ...' not set in ".get_class($this)));
+        throw_if(count($this->fileBases) == 0, new EndpointCodeException($className, "'public array \$fileBases = [...]' not set in ".get_class($this)));
     }
 }

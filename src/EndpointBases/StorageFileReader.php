@@ -4,14 +4,14 @@ namespace SchenkeIo\LaravelSheetBase\EndpointBases;
 
 use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 use Throwable;
 
 abstract class StorageFileReader extends StorageFile implements IsReader
 {
     /**
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      * @throws FileSystemNotDefinedException
      * @throws Throwable
      */
@@ -19,7 +19,7 @@ abstract class StorageFileReader extends StorageFile implements IsReader
     {
         parent::__construct($path);
         throw_unless($this->storageExists($this->path),
-            new ReadParseException(
+            new EndpointCodeException(
                 class_basename($this),
                 sprintf(
                     'class %s was unable to find file %s in disk %s',

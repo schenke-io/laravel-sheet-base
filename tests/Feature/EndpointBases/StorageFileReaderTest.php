@@ -5,7 +5,7 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\EndpointBases;
 use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFileReader;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class StorageFileReaderTest extends ConfigTestCase
@@ -13,7 +13,7 @@ class StorageFileReaderTest extends ConfigTestCase
     public function testFileNotFound()
     {
         Storage::fake('sheet-base');
-        $this->expectException(ReadParseException::class);
+        $this->expectException(EndpointCodeException::class);
         $file = new class extends StorageFileReader
         {
             public string $path = '/unknown filename.txt';

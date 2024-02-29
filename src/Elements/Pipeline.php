@@ -8,11 +8,11 @@ use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Contracts\IsWriter;
 use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteLang;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
-use SchenkeIo\LaravelSheetBase\Skills\MakeEndpoint;
+use SchenkeIo\LaravelSheetBase\Skills\FindEndpointClass;
 
 final class Pipeline
 {
@@ -29,7 +29,7 @@ final class Pipeline
     }
 
     /**
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      * @throws FileSystemNotDefinedException
      * @throws ConfigErrorException
      * @throws MakeEndpointException
@@ -53,7 +53,7 @@ final class Pipeline
     }
 
     /**
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      */
     public function pump(Closure $callback, string $name, string $className): void
     {
@@ -78,7 +78,7 @@ final class Pipeline
      * @throws ConfigErrorException
      * @throws FileSystemNotDefinedException
      * @throws MakeEndpointException
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      * @throws \Throwable
      */
     protected static function getSources(mixed $sources, string $pipelineName): array
@@ -97,7 +97,7 @@ final class Pipeline
                 $return[] = new $source();
             } else {
                 // try filename for auto
-                $return[] = MakeEndpoint::fromSource($source);
+                $return[] = FindEndpointClass::fromSource($source);
             }
         }
 
@@ -130,7 +130,7 @@ final class Pipeline
      * @throws ConfigErrorException
      * @throws FileSystemNotDefinedException
      * @throws MakeEndpointException
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      * @throws \Throwable
      */
     protected static function getTarget(string $target, string $pipelineName): IsWriter
@@ -145,7 +145,7 @@ final class Pipeline
             return new $target();
         } else {
             // try filename for auto
-            return MakeEndpoint::fromTarget($target);
+            return FindEndpointClass::fromTarget($target);
         }
     }
 }

@@ -2,6 +2,6 @@
 
 namespace SchenkeIo\LaravelSheetBase\Exceptions;
 
-class ReadParseException extends AddClassNameException
+class EndpointCodeException extends AddClassNameException
 {
 }

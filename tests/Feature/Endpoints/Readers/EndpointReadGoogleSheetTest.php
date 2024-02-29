@@ -8,8 +8,8 @@ use Orchestra\Testbench\TestCase;
 use PHPUnit\Framework\MockObject\Exception;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Exceptions\GoogleSheetException;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 use SchenkeIo\LaravelSheetBase\Google\GoogleSheetApi;
 use Workbench\App\Endpoints\TestDummyEndpointReadGoogleSheet;
 
@@ -18,7 +18,7 @@ class EndpointReadGoogleSheetTest extends TestCase
     /**
      * @throws Exception
      * @throws \Google\Service\Exception
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      */
     public function testFillPipeline()
     {

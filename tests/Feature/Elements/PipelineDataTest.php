@@ -5,7 +5,7 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
 use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\TestCase;
 
 class PipelineDataTest extends TestCase
@@ -72,7 +72,7 @@ class PipelineDataTest extends TestCase
     }
 
     /**
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      */
     public function testOverwriteOfPipelineData(): void
     {
@@ -116,7 +116,7 @@ class PipelineDataTest extends TestCase
     }
 
     /**
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      */
     public function testAddRowTree()
     {
@@ -128,7 +128,7 @@ class PipelineDataTest extends TestCase
     }
 
     /**
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      */
     public function testOverwriteTree(): void
     {

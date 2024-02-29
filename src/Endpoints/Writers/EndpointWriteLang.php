@@ -5,7 +5,7 @@ namespace SchenkeIo\LaravelSheetBase\Endpoints\Writers;
 use Illuminate\Support\Arr;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageTreeWriter;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Skills\MakePhp;
 
 class EndpointWriteLang extends StorageTreeWriter
@@ -19,7 +19,7 @@ class EndpointWriteLang extends StorageTreeWriter
     }
 
     /**
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      */
     public function releasePipeline(PipelineData $pipelineData, string $writingClass): void
     {
@@ -31,7 +31,7 @@ class EndpointWriteLang extends StorageTreeWriter
             $value = $value == '' ? null : $value;
             $parts = explode('.', $key);
             if (count($parts) < 3) {
-                throw new ReadParseException(class_basename($this), "the given key would result in invalid translation files: $key");
+                throw new EndpointCodeException(class_basename($this), "the given key would result in invalid translation files: $key");
             }
             // Get the last item from the array
             $lastItem = array_pop($parts);

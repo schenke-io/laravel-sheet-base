@@ -4,9 +4,9 @@ namespace SchenkeIo\LaravelSheetBase\Elements;
 
 use Exception;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 
 final class SheetBaseConfig
@@ -19,7 +19,7 @@ final class SheetBaseConfig
     /**
      * @throws \Throwable
      * @throws FileSystemNotDefinedException
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      * @throws ConfigErrorException
      * @throws SchemaVerifyColumnsException
      * @throws MakeEndpointException

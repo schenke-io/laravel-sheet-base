@@ -9,7 +9,7 @@ use Nette\Schema\Processor;
 use Nette\Schema\ValidationException;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFileReader;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 
 class EndpointReadNeon extends StorageFileReader
 {
@@ -18,7 +18,7 @@ class EndpointReadNeon extends StorageFileReader
     /**
      * get data and fill it into the pipeline
      *
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      */
     public function fillPipeline(PipelineData &$pipelineData): void
     {
@@ -29,7 +29,7 @@ class EndpointReadNeon extends StorageFileReader
                 Neon::decode($fileContent)
             );
         } catch (ValidationException|NeonException $e) {
-            throw new ReadParseException(class_basename($this), $e->getMessage());
+            throw new EndpointCodeException(class_basename($this), $e->getMessage());
         }
         // from Neon processor parsing we always get an array
         foreach ($content as $row) {

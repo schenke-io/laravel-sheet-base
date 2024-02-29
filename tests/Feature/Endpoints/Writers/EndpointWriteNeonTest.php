@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
 use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteNeon;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class EndpointWriteNeonTest extends ConfigTestCase
 {
     /**
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      */
     public function testWriteNeon()
     {

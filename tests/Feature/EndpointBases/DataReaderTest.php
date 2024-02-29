@@ -6,12 +6,12 @@ use Orchestra\Testbench\TestCase;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
 use SchenkeIo\LaravelSheetBase\EndpointBases\DataReader;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 
 class DataReaderTest extends TestCase
 {
     /**
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      */
     public function testCanFillPipeline()
     {

@@ -11,7 +11,11 @@ class EndpointWriteJson extends StorageFileWriter
 
     public function releasePipeline(PipelineData $pipelineData, string $writingClass): void
     {
-        $content = json_encode($pipelineData->toArray(), JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES);
+        $content = json_encode($pipelineData->toArray(),
+            JSON_PRETTY_PRINT +
+            JSON_UNESCAPED_SLASHES +
+            JSON_UNESCAPED_UNICODE
+        );
         $this->storagePut($this->path, $content);
     }
 }

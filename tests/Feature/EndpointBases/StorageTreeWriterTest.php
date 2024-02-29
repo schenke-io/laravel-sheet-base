@@ -5,7 +5,7 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\EndpointBases;
 use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageTreeWriter;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class StorageTreeWriterTest extends ConfigTestCase
@@ -26,7 +26,7 @@ class StorageTreeWriterTest extends ConfigTestCase
         $content = 'some random text';
         Storage::fake('sheet-base');
         if (! $isOk) {
-            $this->expectException(ReadParseException::class);
+            $this->expectException(EndpointCodeException::class);
         }
 
         $tree = new class extends StorageTreeWriter

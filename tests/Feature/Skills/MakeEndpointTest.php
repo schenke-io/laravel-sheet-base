@@ -4,10 +4,10 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Skills;
 
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Contracts\IsWriter;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
-use SchenkeIo\LaravelSheetBase\Skills\MakeEndpoint;
+use SchenkeIo\LaravelSheetBase\Skills\FindEndpointClass;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class MakeEndpointTest extends ConfigTestCase
@@ -28,7 +28,7 @@ class MakeEndpointTest extends ConfigTestCase
      * @dataProvider  dataProviderPathTest
      *
      * @throws FileSystemNotDefinedException
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      * @throws \Throwable
      */
     public function testMakeEndpoint(bool $isReader, string $path, bool $isException, string $interface): void
@@ -37,9 +37,9 @@ class MakeEndpointTest extends ConfigTestCase
             $this->expectException(MakeEndpointException::class);
         }
         if ($isReader) {
-            $endpoint = MakeEndpoint::fromSource($path);
+            $endpoint = FindEndpointClass::fromSource($path);
         } else {
-            $endpoint = MakeEndpoint::fromTarget($path);
+            $endpoint = FindEndpointClass::fromTarget($path);
         }
         $this->assertInstanceOf($interface, $endpoint);
     }

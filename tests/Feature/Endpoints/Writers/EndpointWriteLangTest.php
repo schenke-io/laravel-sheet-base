@@ -5,7 +5,7 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints\Writers;
 use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageBase;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 use Workbench\App\Endpoints\LangSchema;
 
@@ -24,16 +24,16 @@ class EndpointWriteLangTest extends ConfigTestCase
 
         return [
             'all fine' => ['', '/lang', ['home'], $dataGood],
-            'root defect' => [ReadParseException::class, '/lang_error', ['home'], $dataGood],
-            'data defect' => [ReadParseException::class, '/lang', ['home'], $dataBad],
-            'bases defect' => [ReadParseException::class, '/lang', [], $dataGood],
+            'root defect' => [EndpointCodeException::class, '/lang_error', ['home'], $dataGood],
+            'data defect' => [EndpointCodeException::class, '/lang', ['home'], $dataBad],
+            'bases defect' => [EndpointCodeException::class, '/lang', [], $dataGood],
         ];
     }
 
     /**
      * @dataProvider dataProviderRows
      *
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      */
     public function testWriteLang(string $exception, string $root, array $fileBases, array $rows): void
     {

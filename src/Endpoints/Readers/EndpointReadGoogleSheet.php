@@ -6,7 +6,7 @@ use Google\Service\Exception;
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\EndpointBases\GoogleSheetBase;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 
 class EndpointReadGoogleSheet extends GoogleSheetBase implements IsReader
 {
@@ -21,7 +21,7 @@ class EndpointReadGoogleSheet extends GoogleSheetBase implements IsReader
     /**
      * get data and fill it into the pipeline
      *
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      * @throws Exception
      */
     public function fillPipeline(PipelineData &$pipelineData): void

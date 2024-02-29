@@ -9,15 +9,15 @@ use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadPsv;
 use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteJson;
 use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteNeon;
 use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWritePhp;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
 
-class MakeEndpoint
+class FindEndpointClass
 {
     /**
      * @throws FileSystemNotDefinedException
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      * @throws MakeEndpointException|\Throwable
      */
     public static function fromSource(string $path): IsReader
@@ -32,7 +32,7 @@ class MakeEndpoint
     }
 
     /**
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      * @throws FileSystemNotDefinedException
      * @throws MakeEndpointException|\Throwable
      */

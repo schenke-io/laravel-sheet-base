@@ -4,13 +4,13 @@ namespace SchenkeIo\LaravelSheetBase\EndpointBases;
 
 use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Contracts\IsWriter;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use Throwable;
 
 abstract class StorageTreeWriter extends StorageTree implements IsWriter
 {
     /**
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      * @throws Throwable
      */
     protected function storagePut(string $path, string $content): void
@@ -20,7 +20,7 @@ abstract class StorageTreeWriter extends StorageTree implements IsWriter
          */
         throw_unless(
             str_starts_with($path, $this->root),
-            new ReadParseException(
+            new EndpointCodeException(
                 class_basename($this),
                 sprintf(
                     'the given file %s is not under the given root %s',

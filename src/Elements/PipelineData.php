@@ -3,7 +3,7 @@
 namespace SchenkeIo\LaravelSheetBase\Elements;
 
 use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 
 /**
  * generic data structure used inside the pipeline
@@ -31,7 +31,7 @@ final class PipelineData
     }
 
     /**
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      */
     public function addRow(array $row): void
     {

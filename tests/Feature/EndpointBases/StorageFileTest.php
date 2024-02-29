@@ -4,14 +4,14 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\EndpointBases;
 
 use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFile;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class StorageFileTest extends ConfigTestCase
 {
     public function testPathNotSet(): void
     {
-        $this->expectException(ReadParseException::class);
+        $this->expectException(EndpointCodeException::class);
         $file = new class extends StorageFile
         {
             public string $path = '';
@@ -30,7 +30,7 @@ class StorageFileTest extends ConfigTestCase
 
     public function testExtensionNotSet(): void
     {
-        $this->expectException(ReadParseException::class);
+        $this->expectException(EndpointCodeException::class);
         $file = new class extends StorageFile
         {
             public string $path = 'test.txt';
@@ -49,7 +49,7 @@ class StorageFileTest extends ConfigTestCase
 
     public function testWrongExtensionSet(): void
     {
-        $this->expectException(ReadParseException::class);
+        $this->expectException(EndpointCodeException::class);
         $file = new class extends StorageFile
         {
             public string $path = 'test.txt';

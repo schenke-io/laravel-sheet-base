@@ -4,9 +4,7 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints\Readers;
 
 use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
-use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
-use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadNeon;
-use SchenkeIo\LaravelSheetBase\Exceptions\ReadParseException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class EndpointReadNeonTest extends ConfigTestCase
@@ -15,15 +13,15 @@ class EndpointReadNeonTest extends ConfigTestCase
     {
         return [
             'ok' => [[1 => ['b' => 2], 2 => ['b' => 3]], '[{a: 1,b: 2},{a: 2,b: 3}]'],
-            'neon syntax error' => [ReadParseException::class, '[{a: 1,b: 2},{a: 2,:3]'],
-            'neon no array' => [ReadParseException::class, 'a 45'],
+            'neon syntax error' => [EndpointCodeException::class, '[{a: 1,b: 2},{a: 2,:3]'],
+            'neon no array' => [EndpointCodeException::class, 'a 45'],
         ];
     }
 
     /**
      * @dataProvider dataProviderContent
      *
-     * @throws ReadParseException
+     * @throws EndpointCodeException
      */
     public function testReadFile(mixed $expectation, string $content)
     {
@@ -31,22 +29,12 @@ class EndpointReadNeonTest extends ConfigTestCase
         if (! is_array($expectation)) {
             $this->expectException($expectation);
         }
-        $schema = new class extends SheetBaseSchema
-        {
-            protected function define(): void
-            {
-                $this->addId('a');
-                $this->addUnsigned('b');
-            }
-        };
+        $schema = new DummySheetBaseSchema();
 
         Storage::fake('sheet-base');
         Storage::disk('sheet-base')->put($path, $content);
         $pipelineData = new PipelineData($schema);
-        $neon = new class extends EndpointReadNeon
-        {
-            public string $path = '/test.neon';
-        };
+        $neon = new DummyEndpointReadNeon();
         $neon->fillPipeline($pipelineData);
         if (is_array($expectation)) {
             $this->assertEquals($expectation, $pipelineData->toArray());

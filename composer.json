@@ -22,7 +22,8 @@
         "nette/neon": "^3.4",
         "spatie/laravel-data": "^3.10",
         "spatie/laravel-package-tools": "^1.16.0",
-        "spatie/simple-excel": "^3.3"
+        "spatie/simple-excel": "^3.3",
+        "ext-simplexml": "*"
     },
     "require-dev": {
         "brianium/paratest": "^7.3",
@@ -67,7 +68,10 @@
         ],
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage",
+        "test-coverage": [
+            "vendor/bin/pest --coverage --coverage-text=tests/coverage/coverage.txt",
+            "npm run coverage-badge"
+        ],
         "pint": "vendor/bin/pint",
         "release": [
             "composer pint",
