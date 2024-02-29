@@ -1,7 +1,7 @@
 # Laravel Sheet Base
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/schenke-io/laravel-sheet-base.svg?style=flat-square)](https://packagist.org/packages/schenke-io/laravel-sheet-base)
-![Coverage](https://github.com/schenke-io/laravel-sheet-base/blob/main/tests/coverage/coverage.svg?raw=true)
+![Coverage](https://raw.githubusercontent.com/schenke-io/laravel-sheet-base/main/tests/coverage/coverage.svg)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/schenke-io/laravel-sheet-base/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/schenke-io/laravel-sheet-base/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/schenke-io/laravel-sheet-base.svg?style=flat-square)](https://packagist.org/packages/schenke-io/laravel-sheet-base)
 

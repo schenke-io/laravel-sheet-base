@@ -18,7 +18,7 @@ class EndpointReadExcelTest extends ConfigTestCase
         ];
         $return = '';
         foreach ($data as $row) {
-            $return .= implode($separator, $row)."\n";
+            $return .= implode($separator, $row).PHP_EOL;
         }
 
         return $return;
