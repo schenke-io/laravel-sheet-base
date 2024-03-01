@@ -1,9 +1,0 @@
-{
-  "name": "laravel-sheet-base",
-  "scripts": {
-    "coverage-badge": "node js/make_badge.js"
-  },
-  "devDependencies": {
-    "badgen-cli": "^0.2.0"
-  }
-}

@@ -68,8 +68,7 @@
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
         "test-coverage": [
-            "vendor/bin/pest --coverage --coverage-text=tests/coverage/coverage.txt",
-            "npm run coverage-badge"
+            "vendor/bin/pest --coverage --coverage-text=tests/coverage/coverage.txt"
         ],
         "pint": "vendor/bin/pint",
         "release": [

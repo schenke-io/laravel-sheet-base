@@ -42,6 +42,8 @@ class MakeReleaseCommand extends Command
      */
     public function handle(): void
     {
+        $this->updateCoverageBadge();
+
         $content = '';
         foreach (file(__DIR__.'/../../../docs/README.md') as $line) {
             if (preg_match('@_+include\((.*)\)@', $line, $matches)) {
@@ -57,6 +59,46 @@ class MakeReleaseCommand extends Command
         }
         file_put_contents(__DIR__.'/../../../../README.md', $content);
         $this->info('readme made');
+    }
+
+    private function updateCoverageBadge(): void
+    {
+        $dir = realpath(__DIR__.'/../../../../tests/coverage/');
+        $coverageTxt = "$dir/coverage.txt";
+        $coverageSvg = "$dir/coverage.svg";
+        if (! file_exists($coverageTxt)) {
+            $this->error("txt file missing: $coverageTxt");
+
+            return;
+        }
+        $content = file_get_contents($coverageTxt);
+        preg_match('@Lines:\s*([\d.]+)%@', $content, $matches);
+        $percentage = $matches[1];
+
+        $svg = <<<SVG
+<svg width="123.3" height="20" viewBox="0 0 1233 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Coverage: $percentage%">
+  <title>Coverage: $percentage%</title>
+  <linearGradient id="dPVkA" x2="0" y2="100%">
+    <stop offset="0" stop-opacity=".1" stop-color="#EEE"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <mask id="JyxQb"><rect width="1233" height="200" rx="30" fill="#FFF"/></mask>
+  <g mask="url(#JyxQb)">
+    <rect width="623" height="200" fill="#555"/>
+    <rect width="610" height="200" fill="#3C1" x="623"/>
+    <rect width="1233" height="200" fill="url(#dPVkA)"/>
+  </g>
+  <g aria-hidden="true" fill="#fff" text-anchor="start" font-family="Verdana,DejaVu Sans,sans-serif" font-size="110">
+    <text x="60" y="148" textLength="523" fill="#000" opacity="0.25">Coverage</text>
+    <text x="50" y="138" textLength="523">Coverage</text>
+    <text x="678" y="148" textLength="510" fill="#000" opacity="0.25">$percentage%</text>
+    <text x="668" y="138" textLength="510">$percentage%</text>
+  </g>
+  
+</svg>
+SVG;
+        file_put_contents($coverageSvg, $svg);
+        unlink($coverageTxt);
     }
 
     /**
