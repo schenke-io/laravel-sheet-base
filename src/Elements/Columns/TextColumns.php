@@ -13,7 +13,7 @@ trait TextColumns
      */
     public function addString(string $name): void
     {
-        $this->addColumn($name, new ColumnSchema(ColumnType::String));
+        $this->newColumn($name, new ColumnSchema(ColumnType::String));
     }
 
     /**
@@ -21,7 +21,7 @@ trait TextColumns
      */
     public function addLanguage(string $name): void
     {
-        $this->addColumn($name, new ColumnSchema(ColumnType::Language));
+        $this->newColumn($name, new ColumnSchema(ColumnType::Language));
     }
 
     /**
@@ -29,7 +29,7 @@ trait TextColumns
      */
     public function addNullString(string $name): void
     {
-        $this->addColumn($name, new ColumnSchema(ColumnType::NullString));
+        $this->newColumn($name, new ColumnSchema(ColumnType::NullString));
     }
 
     /**
@@ -37,6 +37,6 @@ trait TextColumns
      */
     public function addDateTime(string $name): void
     {
-        $this->addColumn($name, new ColumnSchema(ColumnType::DateTime));
+        $this->newColumn($name, new ColumnSchema(ColumnType::DateTime));
     }
 }

@@ -7,7 +7,9 @@ use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 
 abstract class StorageBase implements IsEndpoint
 {
-    public const DISK = 'sheet-base';
+    public const DEFAULT_DISK = 'sheet-base';
+
+    public string $disk = self::DEFAULT_DISK;
 
     /**
      * @throws FileSystemNotDefinedException
@@ -16,8 +18,10 @@ abstract class StorageBase implements IsEndpoint
     public function __construct()
     {
         throw_unless(
-            is_array(config('filesystems.disks.sheet-base')),
-            new FileSystemNotDefinedException("the file system disk 'sheet-base' is not defined in /config/filesystems.php")
+            is_array(config('filesystems.disks.'.$this->disk)),
+            new FileSystemNotDefinedException(
+                "the file system disk '{$this->disk}' is not defined in /config/filesystems.php"
+            )
         );
     }
 }

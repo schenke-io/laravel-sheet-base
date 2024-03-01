@@ -41,7 +41,7 @@ class ColumnTypeTest extends ConfigTestCase
             'string' => [ColumnType::String, 'test something', 'test something'],
             'unsigned null' => [ColumnType::Unsigned, null, null],
             'unsigned decimal positiv' => [ColumnType::Unsigned, 3, 3],
-            'unsigned decimal negativ' => [ColumnType::Unsigned, -3, 3],
+            'unsigned decimal negativ' => [ColumnType::Unsigned, -3, 0],
             'unsigned string 1' => [ColumnType::Unsigned, '3', 3],
             'unsigned string 2' => [ColumnType::Unsigned, '  3', 3],
             'unsigned string 3' => [ColumnType::Unsigned, '  3    ', 3],
@@ -61,7 +61,8 @@ class ColumnTypeTest extends ConfigTestCase
             'float 7' => [ColumnType::Float, ' 1.234,56', 1234.56],
             'float 8' => [ColumnType::Float, ' 1,234.56', 1234.56],
             'float 9' => [ColumnType::Float, '  1234 ', 1234.0],
-            'bool 1' => [ColumnType::Boolean, null, null],
+
+            'bool 1' => [ColumnType::Boolean, null, false],
             'bool 2' => [ColumnType::Boolean, true, true],
             'bool 3' => [ColumnType::Boolean, false, false],
             'bool 4' => [ColumnType::Boolean, 'false', false],

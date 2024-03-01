@@ -19,7 +19,7 @@ workbench:
   discovers:
     web: true
     api: false
-    commands: false
+    commands: true
     views: false
   build: []
   assets: []

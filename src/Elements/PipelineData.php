@@ -3,7 +3,6 @@
 namespace SchenkeIo\LaravelSheetBase\Elements;
 
 use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
-use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 
 /**
  * generic data structure used inside the pipeline
@@ -31,7 +30,7 @@ final class PipelineData
     }
 
     /**
-     * @throws EndpointCodeException
+     * @throws DataReadException
      */
     public function addRow(array $row): void
     {
@@ -56,6 +55,9 @@ final class PipelineData
              */
             $nullValue = $columnDefinition->type->format(null);
             if ($this->pipelineType == PipelineType::Tree) {
+                /*
+                 * organize data in tree format
+                 */
                 $key = "$id.$columnName";
                 if (isset($row[$columnName])) {
                     $cellValue = $columnDefinition->format($columnName, $row);
@@ -64,6 +66,9 @@ final class PipelineData
                 }
                 data_set($this->table, $key, $cellValue);
             } else {
+                /*
+                 * organize data in key => array format
+                 */
                 if (isset($row[$columnName])) {
                     $cellValue = $columnDefinition->format($columnName, $row);
                 } else {

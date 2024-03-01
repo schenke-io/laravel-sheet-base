@@ -14,7 +14,7 @@ trait ControlColumns
      */
     public function addId(string $name = 'id'): void
     {
-        $this->addColumn($name, new ColumnSchema(ColumnType::ID));
+        $this->newColumn($name, new ColumnSchema(ColumnType::ID));
     }
 
     /**
@@ -22,7 +22,7 @@ trait ControlColumns
      */
     public function addDot(string $name = 'id'): void
     {
-        $this->addColumn($name, new ColumnSchema(ColumnType::Dot));
+        $this->newColumn($name, new ColumnSchema(ColumnType::Dot));
     }
 
     /**
@@ -30,6 +30,6 @@ trait ControlColumns
      */
     public function addClosure(string $name, ?Closure $closure = null): void
     {
-        $this->addColumn($name, new ColumnSchema(type: ColumnType::Closure, closure: $closure));
+        $this->newColumn($name, new ColumnSchema(type: ColumnType::Closure, closure: $closure));
     }
 }

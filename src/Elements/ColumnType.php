@@ -50,10 +50,10 @@ enum ColumnType: string
         };
     }
 
-    private function formatBoolean(mixed $param): ?bool
+    private function formatBoolean(mixed $param): bool
     {
         if (is_null($param)) {
-            return null;
+            return false;
         } elseif (is_numeric($param)) {
             return $param !== 0;
         } elseif (is_string($param)) {
@@ -89,7 +89,7 @@ enum ColumnType: string
     private function formatUnsigned(mixed $param): ?int
     {
         if (is_numeric($param)) {
-            return max(0, abs(floor($param)));
+            return max(0, floor($param));
         } elseif (is_string($param) && strlen($param) > 0) {
             if (preg_match('@(\d+)@', $param, $matches)) {
                 return (int) $matches[1];

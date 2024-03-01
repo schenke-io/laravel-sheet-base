@@ -28,7 +28,7 @@ abstract class StorageTreeWriter extends StorageTree implements IsWriter
                 )
             )
         );
-        Storage::disk(self::DISK)->put($path, $content);
+        Storage::disk($this->disk)->put($path, $content);
     }
 
     public function explain(): string

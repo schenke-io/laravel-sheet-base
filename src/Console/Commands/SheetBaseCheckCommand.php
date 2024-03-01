@@ -49,7 +49,7 @@ class SheetBaseCheckCommand extends Command
         }
         $this->info('no syntax errors in config file');
         $this->info('file base directory: '.
-            Storage::disk(StorageBase::DISK)->getConfig()['root']
+            Storage::disk(StorageBase::DEFAULT_DISK)->getConfig()['root']
         );
 
         foreach (SheetBaseConfig::make()->pipelines as $name => $pipeline) {

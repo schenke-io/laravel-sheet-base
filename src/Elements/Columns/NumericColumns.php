@@ -13,7 +13,7 @@ trait NumericColumns
      */
     public function addUnsigned(string $name): void
     {
-        $this->addColumn($name, new ColumnSchema(ColumnType::Unsigned));
+        $this->newColumn($name, new ColumnSchema(ColumnType::Unsigned));
     }
 
     /**
@@ -21,7 +21,7 @@ trait NumericColumns
      */
     public function addUnsignedNotNull(string $name): void
     {
-        $this->addColumn($name, new ColumnSchema(ColumnType::UnsignedNotNull));
+        $this->newColumn($name, new ColumnSchema(ColumnType::UnsignedNotNull));
     }
 
     /**
@@ -29,7 +29,7 @@ trait NumericColumns
      */
     public function addFloat(string $name): void
     {
-        $this->addColumn($name, new ColumnSchema(ColumnType::Float));
+        $this->newColumn($name, new ColumnSchema(ColumnType::Float));
     }
 
     /**
@@ -37,6 +37,6 @@ trait NumericColumns
      */
     public function addBool(string $name): void
     {
-        $this->addColumn($name, new ColumnSchema(ColumnType::Boolean));
+        $this->newColumn($name, new ColumnSchema(ColumnType::Boolean));
     }
 }

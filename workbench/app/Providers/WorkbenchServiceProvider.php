@@ -5,6 +5,7 @@ namespace Workbench\App\Providers;
 use Illuminate\Support\ServiceProvider;
 use SchenkeIo\LaravelSheetBase\Console\Commands\SheetBaseCheckCommand;
 use SchenkeIo\LaravelSheetBase\Console\Commands\SheetBasePumpCommand;
+use Workbench\App\Console\Commands\MakeReleaseCommand;
 
 class WorkbenchServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,7 @@ class WorkbenchServiceProvider extends ServiceProvider
         $this->commands([
             SheetBaseCheckCommand::class,
             SheetBasePumpCommand::class,
+            MakeReleaseCommand::class,
         ]);
         $this->mergeConfigFrom(__DIR__.'/../../config/filesystems.php', 'filesystems');
     }

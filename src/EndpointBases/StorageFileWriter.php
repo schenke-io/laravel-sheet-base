@@ -9,7 +9,7 @@ abstract class StorageFileWriter extends StorageFile implements IsWriter
 {
     protected function storagePut(string $path, string $content): void
     {
-        Storage::disk(self::DISK)->put($path, $content);
+        Storage::disk($this->disk)->put($path, $content);
     }
 
     public function explain(): string

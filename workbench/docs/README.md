@@ -6,7 +6,8 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/schenke-io/laravel-sheet-base.svg?style=flat-square)](https://packagist.org/packages/schenke-io/laravel-sheet-base)
 
 
-warning, do not edit
+____include(warning)
+
 
 
 The **Laravel Sheet Base** package provides a set of classes 
@@ -180,24 +181,8 @@ Create a schema by:
 The following columns are possible:
 
 
-<table>
-<tr>
-<th>method</th>
-<th>definition</th>
-<th>can be null</th>
-<th>is ID</th>
-</tr><tr><td>addId</td><td>numeric or string id</td><td>yes</td><td>yes</td></tr>
-<tr><td>addDot</td><td>text id with dots like 'alpha.beta.gamma'</td><td>yes</td><td>yes</td></tr>
-<tr><td>addClosure</td><td>allows for custom formatting function using column name and data row as input</td><td>yes</td><td>no</td></tr>
-<tr><td>addUnsigned</td><td>-</td><td>yes</td><td>no</td></tr>
-<tr><td>addUnsignedNotNull</td><td>-</td><td>no</td><td>no</td></tr>
-<tr><td>addFloat</td><td>-</td><td>yes</td><td>no</td></tr>
-<tr><td>addBool</td><td>-</td><td>no</td><td>no</td></tr>
-<tr><td>addString</td><td>-</td><td>no</td><td>no</td></tr>
-<tr><td>addLanguage</td><td>valid language code as name</td><td>yes</td><td>no</td></tr>
-<tr><td>addNullString</td><td>-</td><td>yes</td><td>no</td></tr>
-<tr><td>addDateTime</td><td>-</td><td>yes</td><td>no</td></tr>
-</table>
+____include(table_columns)
+
 
 
 For the two possible ID columns `addId` and `addDot` the following applies:
@@ -253,19 +238,8 @@ The file is read from the  `sheet-base` $disk.
 
 
 
-<table>
-<tr>
-<th>extension</th>
-<th>description</th>
-<th>reader</th>
-<th>writer</th>
-</tr><tr><td>csv</td><td>comma seperated values</td><td>EndpointReadCsv</td><td>-</td></tr>
-<tr><td>json</td><td>JavaScript Object Notation</td><td>-</td><td>EndpointWriteJson</td></tr>
-<tr><td>neon</td><td>Nette Object Notation</td><td>EndpointReadNeon</td><td>EndpointWriteNeon</td></tr>
-<tr><td>php</td><td>PHP config file</td><td>-</td><td>EndpointWritePhp</td></tr>
-<tr><td>psv</td><td>pipe seperated values</td><td>EndpointReadPsv</td><td>-</td></tr>
-<tr><td>tsv</td><td>tab seperated values</td><td>EndpointReadTsv</td><td>-</td></tr>
-</table>
+____include(table_endpoints)
+
 
 
 

@@ -25,8 +25,7 @@ abstract class StorageFileReader extends StorageFile implements IsReader
                     'class %s was unable to find file %s in disk %s',
                     get_class($this),
                     $this->getStorageRoot().$this->path,
-                    self::DISK,
-
+                    $this->disk
                 )
             )
         );
@@ -35,7 +34,7 @@ abstract class StorageFileReader extends StorageFile implements IsReader
 
     protected function storageGet(string $path): string
     {
-        return Storage::disk(self::DISK)->get($path);
+        return Storage::disk($this->disk)->get($path);
     }
 
     public function explain(): string

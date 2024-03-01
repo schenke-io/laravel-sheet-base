@@ -40,11 +40,11 @@ abstract class StorageFile extends StorageBase implements IsEndpoint
 
     protected function storageExists(string $path): bool
     {
-        return Storage::disk(StorageBase::DISK)->exists($path);
+        return Storage::disk($this->disk)->exists($path);
     }
 
     protected function getStorageRoot(): string
     {
-        return rtrim(Storage::disk(StorageBase::DISK)->getConfig()['root'] ?? '', '/').'/';
+        return rtrim(Storage::disk($this->disk)->getConfig()['root'] ?? '', '/').'/';
     }
 }

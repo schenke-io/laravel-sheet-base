@@ -19,7 +19,9 @@ class SheetBasePumpCommand extends Command
         };
         try {
             $config = SheetBaseConfig::make();
-            foreach ($config->pipelines as $name => $pipeline) {
+            $pipelines = $config->pipelines;
+            ksort($pipelines);
+            foreach ($pipelines as $name => $pipeline) {
                 $pipeline->pump($inform, $name, class_basename(self::class));
             }
         } catch (Exception $e) {

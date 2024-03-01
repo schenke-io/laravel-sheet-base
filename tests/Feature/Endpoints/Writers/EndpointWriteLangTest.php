@@ -37,7 +37,7 @@ class EndpointWriteLangTest extends ConfigTestCase
      */
     public function testWriteLang(string $exception, string $root, array $fileBases, array $rows): void
     {
-        Storage::fake(StorageBase::DISK);
+        Storage::fake(StorageBase::DEFAULT_DISK);
         if ($exception == '') {
             $this->expectNotToPerformAssertions();
         } else {

@@ -14,7 +14,7 @@ abstract class SheetBaseSchema
     use NumericColumns;
     use TextColumns;
 
-    protected string $idName = '';
+    public string $idName = '';
 
     protected PipelineType $pipelineType = PipelineType::Table;
 
@@ -39,7 +39,7 @@ abstract class SheetBaseSchema
     /**
      * @throws SchemaAddColumnException
      */
-    private function addColumn(string $name, ColumnSchema $columnDefinition): void
+    private function newColumn(string $name, ColumnSchema $columnDefinition): void
     {
         $track = debug_backtrace(0, 4);
         $source = sprintf('class %s line %d', $track[2]['class'], $track[2]['line']);

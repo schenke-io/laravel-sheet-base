@@ -75,7 +75,8 @@
         "release": [
             "composer pint",
             "composer analyse",
-            "composer test-coverage"
+            "composer test-coverage",
+            "vendor/bin/testbench make:release"
         ],
         "serve": [
             "Composer\\Config::disableProcessTimeout",
