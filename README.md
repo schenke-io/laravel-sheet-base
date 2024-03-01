@@ -6,18 +6,21 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/schenke-io/laravel-sheet-base.svg?style=flat-square)](https://packagist.org/packages/schenke-io/laravel-sheet-base)
 
 
-warning, do not edit
+<!-- 
 
 
-The **Laravel Sheet Base** package provides a set of classes 
-designed for creating pipelines that efficiently handle 
-data conversion scenarios where data changes infrequently.
+This file is generated from /workbench/docs/README.md 
 
-This package is ideal for scenarios where:
+All edits in the file /README.md will be overwritten
 
-+ Most data sources are manually edited by experts.
-+ Data changes infrequently.
-+ A developer console command is more efficient than a web form.
+-->
+The **Laravel Sheet Base** package simplifies data processing by offering a collection of classes specifically tailored for building efficient data conversion pipelines. These pipelines are well-suited for scenarios where data modifications occur infrequently.
+
+Here are some ideal use cases for this package:
+
+* **Manually edited data sources:** When most of your data originates from manual edits by specialists.
+* **Infrequent data changes:** When your data remains relatively stable over time.
+* **Command line efficiency:** When utilizing a developer console command proves more efficient than a web form for data processing tasks.
 
 These pipelines involve **reading data** from **endpoints**
 on one end and **processing & storing** it using a **writer**
@@ -107,15 +110,15 @@ Here's the breakdown of how a pipeline pumps data:
 + **Read data:** Each line of data is read into a "dataRow".
 + **Assign key:** The dataRow gets its key either from an "ID" column or a numeric sequence.
 + **New key:** If the key is new, a new "target dataRow" is created for that ID, with all its columns filled with null values.
-+ **Fill data:** For each key required by the schema, its value is searched for in the source data. If found, it's added to the corresponding column of the output dataRow.
-+ **Repeat:** This process repeats for each data row, even if the same ID appears multiple times.
++ **Fill data:** For each key required by the schema, its value is searched for in the source data. If found, it's added to the corresponding column of the target dataRow.
++ **Repeat:** This process repeats for each source dataRow, even if the same ID appears multiple times.
 + **Write output:** Once all sources are read, the entire dataset is written from memory to a target, using the appropriate format function for each column.
 
 **Pipeline execution:**
 + Pipelines are executed in the alphabetic order of the pipeline names.
 + Important points:
   + **No warning for duplicate IDs:** Sources can have duplicate IDs, but the final result only allows unique IDs.
-  + **Optional data in sources:** Sources might not have all the required data.
+  + **Optional data in sources:** Sources might not have all the data defined in the Schema.
   + **Pipelines can be chained:** One pipeline's output can be another's input.
 
 
@@ -154,6 +157,14 @@ and define these 3 keys:
 
 ### Schema
 Each pipeline has a Schema, which defines the columns of the written file.
+Create a schema by:
+
++ **Inheriting:** Extend the `SheetBaseSchema` class.
++ **Defining columns:** Override the `define()` method.
++ **Adding columns:** Use one of the `$this->add*` methods within
+  `define()` to list columns with unique names.
+
+
 Here a simple example of a Schema class:
 ```php
 
@@ -168,13 +179,6 @@ class MySchema extends SheetBaseSchema
     }
 }
 ```
-Create a schema by:
-
-+ **Inheriting:** Extend the `SheetBaseSchema` class.
-+ **Defining columns:** Override the `define()` method.
-+ **Adding columns:** Use one of the `$this->add*` methods within
-`define()` to list columns with unique names. 
-
 
 ### Schema columns
 The following columns are possible:
@@ -203,7 +207,7 @@ The following columns are possible:
 For the two possible ID columns `addId` and `addDot` the following applies:
 * must be only one ID column 
 * ID column must be the first column 
-* ID value must not be empty
+* empty ID values are skipped
 * if ID value repeats, its overwrite existing data - this allows to read from one file and add from another
 
 Here an example of the addClosure method:

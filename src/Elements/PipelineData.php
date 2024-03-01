@@ -40,7 +40,8 @@ final class PipelineData
             unset($row[$this->idName]);
         }
         if (strlen($id) < 1) {
-            throw new DataReadException('empty id field in row: '.count($this->table));
+            // skip empty ID values
+            return;
         }
         /*
          * we have a valid id

@@ -108,11 +108,17 @@ class PipelineDataTest extends TestCase
         $this->assertEquals($this->dataTree, $pipelineData->toArray());
     }
 
+    /**
+     * @throws DataReadException
+     */
     public function testAddRowEmptyIdException()
     {
-        $this->expectException(DataReadException::class);
         $pipeline = new PipelineData($this->sheetBaseSchemaTable1);
+        $this->assertCount(0, $pipeline->toArray());
+        $pipeline->addRow(['id' => '12', 'c1' => 'text 12']);
+        $this->assertCount(1, $pipeline->toArray());
         $pipeline->addRow(['id' => '', 'c1' => 'text']);
+        $this->assertCount(1, $pipeline->toArray());
     }
 
     /**

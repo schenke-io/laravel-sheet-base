@@ -165,6 +165,16 @@ HTML;
 
     private function getWarningRemark(): string
     {
-        return 'warning, do not edit';
+        return <<<'HTML'
+<!-- 
+
+
+This file is generated from /workbench/docs/README.md 
+
+All edits in the file /README.md will be overwritten
+
+-->
+HTML;
+
     }
 }
