@@ -1,0 +1,8 @@
+/.phpunit.cache/        export-ignore
+/build/                 export-ignore
+# /config/                export-ignore
+/docs/                  export-ignore
+/resources/             export-ignore
+/tests/                 export-ignore
+/workbench/             export-ignore
+/testbench.yaml         export-ignore
