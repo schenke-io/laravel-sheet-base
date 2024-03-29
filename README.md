@@ -247,7 +247,7 @@ In the following cases, endpoints can be defined in two ways:
 ##### Extending Existing Classes
 Create a class that inherits from one of the provided endpoint classes.
 Each extended class must define in `$path` a path to the file.
-Addional the used disk can be chnaged in  `$disk`
+The used disk can be overwritten in  `$disk` as well.
 
 ##### Using Filename Extensions
 Define a file with a specific extension,
@@ -358,17 +358,40 @@ GOOGLE_APPLICATION_CREDENTIALS=directory/google/file.json
 ````
 Create an empty Google sheets document and share it with the email 
 from the service account.<br>
-Extract from the url the `$spreadsheetId` and get the name of one sheet. 
-Enter both in the class:
+
+There are two ways to configure the spreadsheet ID used by this plugin:
+- directly in your EndpointClass 
+- in the config file (recommended for clarity and multiple files)
+
+In both cases you fill the worksheet name in `$sheetName` and 
+get than the URL of the Google sheet.
+The spreadsheet ID is the part of the URL after `/d/` and 
+before `/edit`. For example, in the 
+URL `https://docs.google.com/spreadsheets/d/123ABC-xyz123/edit`, the spreadsheet ID is 123ABC-xyz123.
+
+In `$spreadsheetId` you enter either the ID itself or the name of the 
+key in `config/sheet-base.php` as shown below.
+
 ````php
 class GoogleSheetLang extends EndpointReadGoogleSheet
 {
     public string $spreadsheetId = '1ttfjdfdjfdfjdfdjfdfdkfdfdQkGDE';
+    # or: public string $spreadsheetId = 'File-Main';
     public string $sheetName = 'Sheet1';
 }
 
+# in config/sheet-base.php 
+    'pipelines' => [
+    .....
+    ],
+    'spreadsheets' => [
+        'File-Main' => '1ttfjdfdjfdfjdfdjfdfdkfdfdQkGDE'
+    ]        
+  
+  
+
 ````
-The first row must include the column names as defined in the schema of the pipeline.
+The first data row in the spreadsheet must include the column names as defined in the schema of the pipeline.
 
 ### Verify the configuration
 

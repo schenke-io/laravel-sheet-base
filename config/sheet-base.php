@@ -24,4 +24,11 @@ return [
          *
          */
     ],
+    'spreadsheets' => [
+        /*
+         * key1 => spreadsheetId1,
+         * key2 => spreadsheetId2,
+         * key3 => spreadsheetId3,
+         */
+    ],
 ];
