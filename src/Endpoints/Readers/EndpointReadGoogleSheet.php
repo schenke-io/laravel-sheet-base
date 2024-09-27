@@ -38,7 +38,7 @@ class EndpointReadGoogleSheet extends GoogleSheetBase implements IsReader
                 }
             } else {
                 // end when the first column has no value
-                if (strlen($row[0]) < 1) {
+                if (strlen($row[0] ?? '') < 1) {
                     break;
                 }
                 // Align $row to the size of $header

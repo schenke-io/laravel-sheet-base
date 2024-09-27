@@ -2,6 +2,4 @@
 
 namespace SchenkeIo\LaravelSheetBase\Exceptions;
 
-class IdUniqueException extends \Exception
-{
-}
+class IdUniqueException extends \Exception {}

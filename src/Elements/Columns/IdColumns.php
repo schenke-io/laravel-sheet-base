@@ -2,6 +2,4 @@
 
 namespace SchenkeIo\LaravelSheetBase\Elements\Columns;
 
-class IdColumns
-{
-}
+class IdColumns {}

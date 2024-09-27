@@ -2,6 +2,4 @@
 
 namespace SchenkeIo\LaravelSheetBase\Contracts;
 
-interface IsFile extends IsEndpoint
-{
-}
+interface IsFile extends IsEndpoint {}

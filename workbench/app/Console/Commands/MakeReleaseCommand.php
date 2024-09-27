@@ -169,9 +169,7 @@ HTML;
 
         $schema = new class extends SheetBaseSchema
         {
-            protected function define(): void
-            {
-            }
+            protected function define(): void {}
         };
         $reflection = new \ReflectionClass(SheetBaseSchema::class);
         foreach ($reflection->getMethods() as $method) {

@@ -6,9 +6,7 @@ use Closure;
 
 class ColumnSchema
 {
-    public function __construct(public ColumnType $type, public ?Closure $closure = null)
-    {
-    }
+    public function __construct(public ColumnType $type, public ?Closure $closure = null) {}
 
     public function format(string $key, array $row): mixed
     {

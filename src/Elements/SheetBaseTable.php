@@ -2,6 +2,4 @@
 
 namespace SchenkeIo\LaravelSheetBase\Elements;
 
-class SheetBaseTable
-{
-}
+class SheetBaseTable {}

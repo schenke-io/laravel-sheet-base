@@ -2,6 +2,4 @@
 
 namespace SchenkeIo\LaravelSheetBase\Exceptions;
 
-class DataQualityException extends \Exception
-{
-}
+class DataQualityException extends \Exception {}

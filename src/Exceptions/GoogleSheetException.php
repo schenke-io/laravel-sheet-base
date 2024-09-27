@@ -2,6 +2,4 @@
 
 namespace SchenkeIo\LaravelSheetBase\Exceptions;
 
-class GoogleSheetException extends AddClassNameException
-{
-}
+class GoogleSheetException extends AddClassNameException {}

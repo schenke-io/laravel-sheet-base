@@ -13,9 +13,7 @@ class EndpointWriteArrayTest extends ConfigTestCase
     {
         $pipeline = new PipelineData(new DummySchema);
 
-        $endpoint = new class extends EndpointWriteArray
-        {
-        };
+        $endpoint = new class extends EndpointWriteArray {};
         $endpoint->releasePipeline($pipeline, '');
         $this->assertEquals([], $endpoint->arrayData);
 

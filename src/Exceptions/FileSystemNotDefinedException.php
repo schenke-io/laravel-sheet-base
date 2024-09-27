@@ -2,6 +2,4 @@
 
 namespace SchenkeIo\LaravelSheetBase\Exceptions;
 
-class FileSystemNotDefinedException extends \Exception
-{
-}
+class FileSystemNotDefinedException extends \Exception {}

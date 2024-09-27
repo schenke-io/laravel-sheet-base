@@ -25,8 +25,7 @@ final class Pipeline
         public readonly SheetBaseSchema $schema,
         public readonly IsEndpoint $target
 
-    ) {
-    }
+    ) {}
 
     /**
      * @throws EndpointCodeException
