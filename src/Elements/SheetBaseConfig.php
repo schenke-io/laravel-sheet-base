@@ -26,7 +26,7 @@ final class SheetBaseConfig
      */
     public static function make(): SheetBaseConfig
     {
-        $configProject = new SheetBaseConfig();
+        $configProject = new SheetBaseConfig;
         $pipelines = [];
         $targets = [];
         $languagePipelineCount = 0;

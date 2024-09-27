@@ -37,7 +37,7 @@ class GoogleSheetApiTest extends TestCase
             )
             ->willReturn(new Sheets\ValueRange(['values' => $data]));
 
-        $api = new GoogleSheetApi();
+        $api = new GoogleSheetApi;
         $api->spreadsheetsValues = $mockValues;
 
         $this->assertEquals($data, $api->getData('spreadsheetId', 'sheetName'));
@@ -66,8 +66,8 @@ class GoogleSheetApiTest extends TestCase
                 ]),
                 ['valueInputOption' => 'RAW']
             )
-            ->willReturn(new UpdateValuesResponse());
-        $api = new GoogleSheetApi();
+            ->willReturn(new UpdateValuesResponse);
+        $api = new GoogleSheetApi;
         $api->spreadsheetsValues = $mockValues;
         $this->assertInstanceOf(UpdateValuesResponse::class, $api->putData('spreadsheetId', 'range', $data));
     }

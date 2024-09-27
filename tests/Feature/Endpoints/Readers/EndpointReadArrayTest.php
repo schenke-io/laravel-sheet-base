@@ -9,7 +9,7 @@ class EndpointReadArrayTest extends TestCase
 {
     public function testGetArray()
     {
-        $endpoint = new EndpointReadArray();
+        $endpoint = new EndpointReadArray;
         $this->assertTrue(is_array($endpoint->getArray()));
     }
 }

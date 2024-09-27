@@ -11,7 +11,7 @@ class LaravelSheetBaseServiceProviderTest extends TestCase
     public function testConfigurePackage()
     {
         $serviceProvider = new LaravelSheetBaseServiceProvider($this->app);
-        $package = new Package();
+        $package = new Package;
         $serviceProvider->configurePackage($package);
         $serviceProvider->register();
         $serviceProvider->boot();

@@ -40,7 +40,7 @@ class EndpointReadExcelTest extends ConfigTestCase
      */
     public function testReadExcels(string $path, string $content, string $readerClass)
     {
-        $schema = new DummySheetBaseSchema();
+        $schema = new DummySheetBaseSchema;
         Storage::fake('sheet-base');
         Storage::disk('sheet-base')->put($path, $content);
         $pipelineData = new PipelineData($schema);

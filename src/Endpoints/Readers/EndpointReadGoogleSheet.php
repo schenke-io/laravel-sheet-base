@@ -6,7 +6,7 @@ use Google\Service\Exception;
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\EndpointBases\GoogleSheetBase;
-use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
+use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
 
 class EndpointReadGoogleSheet extends GoogleSheetBase implements IsReader
 {
@@ -21,8 +21,7 @@ class EndpointReadGoogleSheet extends GoogleSheetBase implements IsReader
     /**
      * get data and fill it into the pipeline
      *
-     * @throws EndpointCodeException
-     * @throws Exception
+     * @throws Exception|DataReadException
      */
     public function fillPipeline(PipelineData &$pipelineData): void
     {
@@ -30,11 +29,17 @@ class EndpointReadGoogleSheet extends GoogleSheetBase implements IsReader
         $header = [];
         foreach ($data as $rowIndex => $row) {
             if ($rowIndex == 0) {
-                $header = $row;
+                // the right end of the header is the first empty field
+                foreach ($row as $value) {
+                    if (strlen($value) < 1) {
+                        break;
+                    }
+                    $header[] = $value;
+                }
             } else {
-                // check if first column has a value
+                // end when the first column has no value
                 if (strlen($row[0]) < 1) {
-                    continue;
+                    break;
                 }
                 // Align $row to the size of $header
                 $row = array_slice($row, 0, count($header)); // Trim if $row is too long

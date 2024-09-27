@@ -113,7 +113,7 @@ return (new class() extends \SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema
     public function testAddColumnClosure()
     {
         $this->expectNotToPerformAssertions();
-        new class() extends SheetBaseSchema
+        new class extends SheetBaseSchema
         {
             /**
              * define the schema in Laravel migration syntax

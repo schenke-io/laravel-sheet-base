@@ -94,7 +94,7 @@ final class Pipeline
                     new ConfigErrorException($pipelineName, "is not a valid source class (IsReader): $source")
                 );
 
-                $return[] = new $source();
+                $return[] = new $source;
             } else {
                 // try filename for auto
                 $return[] = FindEndpointClass::fromSource($source);
@@ -120,10 +120,10 @@ final class Pipeline
             new ConfigErrorException($pipelineName, "schema not valid: $schema")
         );
         /** @var SheetBaseSchema $class */
-        $class = new $schema();
+        $class = new $schema;
         $class->verify($pipelineName);
 
-        return new $schema();
+        return new $schema;
     }
 
     /**
@@ -142,7 +142,7 @@ final class Pipeline
                 new ConfigErrorException($pipelineName, "is not a valid target class (IsWriter): $target")
             );
 
-            return new $target();
+            return new $target;
         } else {
             // try filename for auto
             return FindEndpointClass::fromTarget($target);

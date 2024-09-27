@@ -358,8 +358,7 @@ class GoogleSheetLang extends EndpointReadGoogleSheet
   
 
 ````
-The first data row in the spreadsheet must include the column names as defined in the schema of the pipeline.
-
+The first row in the spreadsheet must contain the column names, as specified in the pipeline schema. The table width is determined by the number of columns with header values. Additional headers to the right are ignored. Data reading stops when the first column is empty, and subsequent rows are discarded.
 ### Verify the configuration
 
 You can check the configuration after any edit with:

@@ -8,7 +8,7 @@ use Orchestra\Testbench\TestCase;
 use PHPUnit\Framework\MockObject\Exception;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
-use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
+use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
 use SchenkeIo\LaravelSheetBase\Exceptions\GoogleSheetException;
 use SchenkeIo\LaravelSheetBase\Google\GoogleSheetApi;
 use Workbench\App\Endpoints\TestDummyEndpointReadGoogleSheet;
@@ -18,7 +18,7 @@ class EndpointReadGoogleSheetTest extends TestCase
     /**
      * @throws Exception
      * @throws \Google\Service\Exception
-     * @throws EndpointCodeException
+     * @throws DataReadException
      */
     public function testFillPipeline()
     {
@@ -38,16 +38,17 @@ class EndpointReadGoogleSheetTest extends TestCase
                 'sheetName'
             )
             ->willReturn(new Sheets\ValueRange(['values' => [
-                ['a', 'b'],
+                ['a', 'b', '', 'c', 'd'], // only first 2 are used
                 [1, 2],
-                [null, null],  // this line gets skipped
-                [2, 5],
+                [2, 3],
+                [null, null],  // this line ends reading
+                [3, 5],
             ],
             ]
             )
             );
 
-        $api = new GoogleSheetApi();
+        $api = new GoogleSheetApi;
         $api->spreadsheetsValues = $mockValues;
 
         $pipelineData = new PipelineData($schema);

@@ -15,7 +15,7 @@ class GoogleSheetApi
 
     public function __construct()
     {
-        $client = new Client();
+        $client = new Client;
         $client->useApplicationDefaultCredentials();
         $client->addScope(Drive::DRIVE);
         $this->spreadsheetsValues = (new Sheets($client))->spreadsheets_values;
@@ -36,7 +36,7 @@ class GoogleSheetApi
      */
     public function putData(string $spreadsheetId, string $range, array $values, string $majorDimension = 'ROWS', $optParams = []): Sheets\UpdateValuesResponse
     {
-        $valueRange = new ValueRange();
+        $valueRange = new ValueRange;
         $valueRange->setValues([$values]);
         $valueRange->setMajorDimension($majorDimension);
         $optParams['valueInputOption'] = 'RAW';

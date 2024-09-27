@@ -29,12 +29,12 @@ class EndpointReadNeonTest extends ConfigTestCase
         if (! is_array($expectation)) {
             $this->expectException($expectation);
         }
-        $schema = new DummySheetBaseSchema();
+        $schema = new DummySheetBaseSchema;
 
         Storage::fake('sheet-base');
         Storage::disk('sheet-base')->put($path, $content);
         $pipelineData = new PipelineData($schema);
-        $neon = new DummyEndpointReadNeon();
+        $neon = new DummyEndpointReadNeon;
         $neon->fillPipeline($pipelineData);
         if (is_array($expectation)) {
             $this->assertEquals($expectation, $pipelineData->toArray());

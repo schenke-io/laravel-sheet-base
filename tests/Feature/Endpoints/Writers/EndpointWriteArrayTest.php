@@ -11,7 +11,7 @@ class EndpointWriteArrayTest extends ConfigTestCase
 {
     public function testReleasePipeline(): void
     {
-        $pipeline = new PipelineData(new DummySchema());
+        $pipeline = new PipelineData(new DummySchema);
 
         $endpoint = new class extends EndpointWriteArray
         {

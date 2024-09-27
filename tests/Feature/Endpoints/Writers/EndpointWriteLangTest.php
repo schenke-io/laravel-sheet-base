@@ -54,7 +54,7 @@ class EndpointWriteLangTest extends ConfigTestCase
 PHP;
         //        dump($php);
         eval($php); // make the class
-        $pipeLineData = new PipelineData(new LangSchema());
+        $pipeLineData = new PipelineData(new LangSchema);
         foreach ($rows as $row) {
             $pipeLineData->addRow($row);
         }

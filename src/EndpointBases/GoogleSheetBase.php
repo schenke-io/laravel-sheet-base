@@ -31,6 +31,6 @@ abstract class GoogleSheetBase implements IsEndpoint
         if ($configValue) {
             $this->spreadsheetId = $configValue;
         }
-        $this->spreadsheet = new GoogleSheetApi();
+        $this->spreadsheet = new GoogleSheetApi;
     }
 }
