@@ -2,6 +2,7 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineType;
@@ -41,9 +42,8 @@ return (new class() extends \SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema
 });");
     }
 
+    #[DataProvider('dataProviderSchemas')]
     /**
-     * @dataProvider dataProviderSchemas
-     *
      * @throws SchemaVerifyColumnsException
      */
     public function testSchemas(string $exception, string $php): void
@@ -87,9 +87,8 @@ return (new class() extends \SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema
         return $return;
     }
 
+    #[DataProvider('DataProviderColumnTypes')]
     /**
-     * @dataProvider dataProviderColumnTypes()
-     *
      * @return void
      */
     public function testAddColumnNonLanguageOrClosureWithoutException(ColumnType $columnType)

@@ -45,6 +45,7 @@ abstract class StorageFile extends StorageBase implements IsEndpoint
 
     protected function getStorageRoot(): string
     {
+        // @phpstan-ignore-next-line
         return rtrim(Storage::disk($this->disk)->getConfig()['root'] ?? '', '/').'/';
     }
 }

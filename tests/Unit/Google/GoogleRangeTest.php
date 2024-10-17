@@ -2,6 +2,7 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Unit\Google;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SchenkeIo\LaravelSheetBase\Google\GoogleRange;
 
@@ -22,9 +23,7 @@ class GoogleRangeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderRanges
-     */
+    #[DataProvider('dataProviderRanges')]
     public function testRangeToString(int $index, string $name, int $row, int $col, int $width, int $height, ?string $range): void
     {
         if (is_null($range)) {

@@ -13,7 +13,6 @@ class SheetBaseCheckCommandTest extends ConfigTestCase
 {
     public function testNoErrors(): void
     {
-
         Config::set('filesystems.disks.sheet-base', [
             'driver' => 'local',
             'root' => '/',

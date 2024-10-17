@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseConfig;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageBase;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
+use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
+use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
+use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 
 class SheetBaseCheckCommand extends Command
 {
@@ -15,7 +19,12 @@ class SheetBaseCheckCommand extends Command
     public $description = 'verifies the syntax of /config/sheet-base.php';
 
     /**
+     * @throws \Throwable
+     * @throws EndpointCodeException
+     * @throws FileSystemNotDefinedException
      * @throws ConfigErrorException
+     * @throws SchemaVerifyColumnsException
+     * @throws MakeEndpointException
      */
     public function handle(): int
     {
@@ -33,14 +42,11 @@ class SheetBaseCheckCommand extends Command
          */
         $configFileName = SheetBaseConfig::CONFIG_FILE_BASE.'.php';
         if (! is_array(config(SheetBaseConfig::CONFIG_FILE_BASE))) {
-            $this->error("config file '/config/$configFileName' empty or do not exists");
+            $this->error("config file '/config/$configFileName' empty or does not exists");
 
             return self::FAILURE;
         }
         $this->info('config file found');
-
-        //## SheetBaseConfig::make();
-
         $result = SheetBaseConfig::checkAndReportError();
         if (! is_null($result)) {
             $this->error($result);
@@ -48,8 +54,8 @@ class SheetBaseCheckCommand extends Command
             return self::FAILURE;
         }
         $this->info('no syntax errors in config file');
-        $this->info('file base directory: '.
-            Storage::disk(StorageBase::DEFAULT_DISK)->getConfig()['root']
+        // @phpstan-ignore-next-line
+        $this->info('file base directory: '.Storage::disk(StorageBase::DEFAULT_DISK)->getConfig()['root']
         );
 
         foreach (SheetBaseConfig::make()->pipelines as $name => $pipeline) {

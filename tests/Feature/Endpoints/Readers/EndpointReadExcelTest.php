@@ -3,6 +3,7 @@
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints\Readers;
 
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
@@ -33,10 +34,9 @@ class EndpointReadExcelTest extends ConfigTestCase
         ];
     }
 
+    #[DataProvider('dataProviderContent')]
     /**
      * @throws EndpointCodeException
-     *
-     * @dataProvider dataProviderContent
      */
     public function testReadExcels(string $path, string $content, string $readerClass)
     {

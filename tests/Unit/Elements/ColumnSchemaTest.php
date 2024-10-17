@@ -3,6 +3,7 @@
 namespace SchenkeIo\LaravelSheetBase\Tests\Unit\Elements;
 
 use Closure;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnSchema;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
@@ -37,9 +38,8 @@ class ColumnSchemaTest extends TestCase
         ];
     }
 
+    #[DataProvider('dataProviderTransform')]
     /**
-     * @dataProvider dataProviderTransform
-     *
      * @return void
      */
     public function testTransform(string $key, ?Closure $closure, array $row, mixed $result)

@@ -2,9 +2,13 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use SchenkeIo\LaravelSheetBase\Elements\Pipeline;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
+use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
+use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 use Workbench\App\Endpoints\DummyRead;
 use Workbench\App\Endpoints\DummySchema;
@@ -92,10 +96,14 @@ class PipelineTest extends ConfigTestCase
     }
 
     /**
-     * @dataProvider dataProviderConfig
-     *
+     * @throws \Throwable
+     * @throws EndpointCodeException
+     * @throws FileSystemNotDefinedException
      * @throws ConfigErrorException
+     * @throws SchemaVerifyColumnsException
+     * @throws MakeEndpointException
      */
+    #[DataProvider('dataProviderConfig')]
     public function testCanMakeFromConfig(string $exception, array $config): void
     {
         if ($exception == '') {
@@ -108,7 +116,12 @@ class PipelineTest extends ConfigTestCase
     }
 
     /**
+     * @throws \Throwable
+     * @throws EndpointCodeException
+     * @throws FileSystemNotDefinedException
      * @throws ConfigErrorException
+     * @throws SchemaVerifyColumnsException
+     * @throws MakeEndpointException
      */
     public function testPump(): void
     {

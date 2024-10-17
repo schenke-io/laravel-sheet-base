@@ -2,6 +2,7 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Skills;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Contracts\IsWriter;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
@@ -32,9 +33,8 @@ class MakeEndpointTest extends ConfigTestCase
         ];
     }
 
+    #[DataProvider('dataProviderPathTest')]
     /**
-     * @dataProvider  dataProviderPathTest
-     *
      * @throws FileSystemNotDefinedException
      * @throws EndpointCodeException
      * @throws \Throwable

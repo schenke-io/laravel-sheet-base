@@ -2,6 +2,7 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionMethod;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
@@ -19,9 +20,7 @@ class ColumnTypeTest extends ConfigTestCase
         return $return;
     }
 
-    /**
-     * @dataProvider dataProviderColumnTypes
-     */
+    #[DataProvider('dataProviderColumnTypes')]
     public function testAllMethodsAreDefined(ColumnType $columnType): void
     {
         $reflection = new \ReflectionClass(SheetBaseSchema::class);
@@ -99,9 +98,7 @@ class ColumnTypeTest extends ConfigTestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderFormat
-     */
+    #[DataProvider('dataProviderFormat')]
     public function testFormat(ColumnType $type, mixed $input, mixed $output): void
     {
 

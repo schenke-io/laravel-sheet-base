@@ -3,8 +3,13 @@
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
 use Illuminate\Support\Facades\Config;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseConfig;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
+use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
+use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
+use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 use Workbench\App\Endpoints\LangSchema;
 use Workbench\App\Endpoints\LangWrite;
@@ -96,12 +101,14 @@ class SheetBaseConfigTest extends ConfigTestCase
     }
 
     /**
-     * @dataProvider dataProvidedConfig
-     *
-     * @return void
-     *
+     * @throws \Throwable
+     * @throws EndpointCodeException
+     * @throws FileSystemNotDefinedException
      * @throws ConfigErrorException
+     * @throws SchemaVerifyColumnsException
+     * @throws MakeEndpointException
      */
+    #[DataProvider('dataProvidedConfig')]
     public function testConfigSyntax(string $exception, array $config)
     {
         if ($exception == '') {
@@ -113,11 +120,7 @@ class SheetBaseConfigTest extends ConfigTestCase
         SheetBaseConfig::make();
     }
 
-    /**
-     * @dataProvider dataProvidedConfig
-     *
-     * @return void
-     */
+    #[DataProvider('dataProvidedConfig')]
     public function testCheckAndReportError(string $exception, array $config)
     {
         Config::set(SheetBaseConfig::CONFIG_FILE_BASE.'.pipelines', $config);

@@ -2,6 +2,12 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
-use PHPUnit\Framework\TestCase;
+use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
-class PipelineTypeTest extends TestCase {}
+class PipelineTypeTest extends ConfigTestCase
+{
+    public function testNix()
+    {
+        $this->assertTrue(true);
+    }
+}

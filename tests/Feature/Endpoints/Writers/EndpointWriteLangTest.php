@@ -3,8 +3,10 @@
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints\Writers;
 
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageBase;
+use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 use Workbench\App\Endpoints\LangSchema;
@@ -30,10 +32,9 @@ class EndpointWriteLangTest extends ConfigTestCase
         ];
     }
 
+    #[DataProvider('dataProviderRows')]
     /**
-     * @dataProvider dataProviderRows
-     *
-     * @throws EndpointCodeException
+     * @throws EndpointCodeException|DataReadException
      */
     public function testWriteLang(string $exception, string $root, array $fileBases, array $rows): void
     {

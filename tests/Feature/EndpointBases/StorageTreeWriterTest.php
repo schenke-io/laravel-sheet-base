@@ -3,6 +3,7 @@
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\EndpointBases;
 
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageTreeWriter;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
@@ -18,9 +19,7 @@ class StorageTreeWriterTest extends ConfigTestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderPath
-     */
+    #[DataProvider('dataProviderPath')]
     public function testStoragePut(string $path, bool $isOk): void
     {
         $content = 'some random text';
