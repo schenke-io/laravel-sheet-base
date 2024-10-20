@@ -36,6 +36,7 @@ final class PipelineData
     {
         $id = '';
         if (isset($row[$this->idName])) {
+            // remove the id if set
             $id = $row[$this->idName];
             unset($row[$this->idName]);
         }

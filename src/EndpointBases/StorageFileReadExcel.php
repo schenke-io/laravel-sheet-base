@@ -3,6 +3,7 @@
 namespace SchenkeIo\LaravelSheetBase\EndpointBases;
 
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
+use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Skills\ReadExcel;
 
@@ -18,14 +19,15 @@ class StorageFileReadExcel extends StorageFileReader
     {
         parent::__construct($path);
         $classname = class_basename($this);
-        throw_if(strlen($this->extension) == 0, new EndpointCodeException($classname, '$extension is not defined'));
-        throw_if(strlen($this->separator) == 0, new EndpointCodeException($classname, '$separator is not defined'));
+        if ($this->separator == '') {
+            throw new EndpointCodeException($classname, '$separator is not defined');
+        }
     }
 
     /**
      * get data and fill it into the pipeline
      *
-     * @throws EndpointCodeException
+     * @throws DataReadException
      */
     public function fillPipeline(PipelineData &$pipelineData): void
     {

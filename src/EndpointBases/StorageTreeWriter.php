@@ -18,16 +18,15 @@ abstract class StorageTreeWriter extends StorageTree implements IsWriter
         /*
          * $path must be under the root
          */
-        throw_unless(
-            str_starts_with($path, $this->root),
-            new EndpointCodeException(
+        if (! str_starts_with($path, $this->root)) {
+            throw new EndpointCodeException(
                 class_basename($this),
                 sprintf(
                     'the given file %s is not under the given root %s',
                     $path, $this->root
                 )
-            )
-        );
+            );
+        }
         Storage::disk($this->disk)->put($path, $content);
     }
 

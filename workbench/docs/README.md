@@ -217,8 +217,6 @@ Use filenames when you just want to read and write to the default `sheet-base` d
 Use classes when you want to change the disk or want
 
 
-
-
 #### Endpoints as filenames
 In the following cases, endpoints can be defined in two ways:
 
@@ -230,7 +228,7 @@ The used disk can be overwritten in  `$disk` as well.
 ##### Using Filename Extensions
 Define a file with a specific extension,
 associated with the desired endpoint behavior.
-The file is read from the  `sheet-base` $disk.
+The file is located at the  `sheet-base` $disk.
 
 
 

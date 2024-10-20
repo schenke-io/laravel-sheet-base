@@ -239,8 +239,6 @@ Use filenames when you just want to read and write to the default `sheet-base` d
 Use classes when you want to change the disk or want
 
 
-
-
 #### Endpoints as filenames
 In the following cases, endpoints can be defined in two ways:
 
@@ -252,7 +250,7 @@ The used disk can be overwritten in  `$disk` as well.
 ##### Using Filename Extensions
 Define a file with a specific extension,
 associated with the desired endpoint behavior.
-The file is read from the  `sheet-base` $disk.
+The file is located at the  `sheet-base` $disk.
 
 
 
@@ -260,15 +258,15 @@ The file is read from the  `sheet-base` $disk.
 <table>
 <tr>
 <th>extension</th>
-<th>description</th>
+<th>documentation</th>
 <th>reader</th>
 <th>writer</th>
-</tr><tr><td>csv</td><td>comma seperated values</td><td>EndpointReadCsv</td><td>-</td></tr>
+</tr><tr><td>csv</td><td>comma seperated values</td><td>-</td><td>EndpointWriteCsv</td></tr>
 <tr><td>json</td><td>JavaScript Object Notation</td><td>-</td><td>EndpointWriteJson</td></tr>
 <tr><td>neon</td><td>Nette Object Notation</td><td>EndpointReadNeon</td><td>EndpointWriteNeon</td></tr>
 <tr><td>php</td><td>PHP config file</td><td>-</td><td>EndpointWritePhp</td></tr>
-<tr><td>psv</td><td>pipe seperated values</td><td>EndpointReadPsv</td><td>-</td></tr>
-<tr><td>tsv</td><td>tab seperated values</td><td>EndpointReadTsv</td><td>-</td></tr>
+<tr><td>psv</td><td>pipe seperated values</td><td>EndpointReadPsv</td><td>EndpointWritePsv</td></tr>
+<tr><td>tsv</td><td>tab seperated values</td><td>-</td><td>EndpointWriteTsv</td></tr>
 </table>
 
 

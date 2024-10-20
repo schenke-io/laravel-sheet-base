@@ -5,6 +5,7 @@ namespace Workbench\App\Console\Commands;
 use Illuminate\Console\Command;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
+use SchenkeIo\LaravelSheetBase\Skills\FindEndpointClass;
 
 class MakeReleaseCommand extends Command
 {
@@ -110,44 +111,27 @@ SVG;
 <table>
 <tr>
 <th>extension</th>
-<th>description</th>
+<th>documentation</th>
 <th>reader</th>
 <th>writer</th>
 </tr>
 HTML;
 
         $endpoints = [];
-        foreach (glob(realpath(__DIR__.'/../../../../src').'/Endpoints/**/*.php') as $file) {
-            if (preg_match('@(/Endpoints/.*/.*)\.php@', $file, $matches)) {
-                [$all, $path] = $matches;
-                $class = str_replace('/', '\\', 'SchenkeIo/LaravelSheetBase'.$path);
-                $reflection = new \ReflectionClass($class);
-                $shortName = $reflection->getShortName();
-                $readWrite = preg_match('/Write/', $shortName) ? 'Writer' : 'Reader';
-                $properties = [];
-                $extension = '';
-                foreach ($reflection->getProperties() as $property) {
-                    if ($property->isPublic()) {
-                        if (in_array($property->getType(), ['string', 'array'])) {
-                            $properties[$property->name] = (string) $property->getType();
-                        }
-                    } elseif ($property->name == 'extension') {
-                        $extension = $property->getDefaultValue();
-                    }
-                }
-                if (! $extension) {
-                    continue;
-                }
-                $endpoints[$extension][$readWrite] = $shortName;
-            }
+        foreach (FindEndpointClass::WRITERS as $extension => $class) {
+            $endpoints[$extension]['writer'] = class_basename($class);
+        }
+        foreach (FindEndpointClass::READERS as $extension => $class) {
+            $endpoints[$extension]['reader'] = class_basename($class);
         }
         ksort($endpoints);
+
         foreach ($endpoints as $extension => $columns) {
             $return .= sprintf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n",
                 $extension,
-                self::EXTENSION_HELP[$extension] ?? '-',
-                $columns['Reader'] ?? '-',
-                $columns['Writer'] ?? '-'
+                self::EXTENSION_HELP[$extension] ?? '-',  // @phpstan-ignore-line
+                $columns['reader'] ?? '-',                // @phpstan-ignore-line
+                $columns['writer'] ?? '-'                 // @phpstan-ignore-line
             );
         }
         $return .= '</table>';

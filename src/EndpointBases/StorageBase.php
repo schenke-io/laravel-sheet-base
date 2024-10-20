@@ -17,11 +17,10 @@ abstract class StorageBase implements IsEndpoint
      */
     public function __construct()
     {
-        throw_unless(
-            is_array(config('filesystems.disks.'.$this->disk)),
-            new FileSystemNotDefinedException(
+        if (! is_array(config('filesystems.disks.'.$this->disk))) {
+            throw new FileSystemNotDefinedException(
                 "the file system disk '{$this->disk}' is not defined in /config/filesystems.php"
-            )
-        );
+            );
+        }
     }
 }

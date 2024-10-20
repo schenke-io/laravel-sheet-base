@@ -9,6 +9,6 @@ class DummySheetBaseSchema extends SheetBaseSchema
     protected function define(): void
     {
         $this->addId('a');
-        $this->addUnsigned('b');
+        $this->addString('b');
     }
 }
