@@ -26,7 +26,7 @@ class StorageFileReadExcelTest extends ConfigTestCase
         {
             protected string $extension = 'csv';
 
-            protected string $separator = ',';
+            protected string $delimiter = ',';
         };
     }
 
@@ -37,7 +37,7 @@ class StorageFileReadExcelTest extends ConfigTestCase
         {
             protected string $extension = 'csv';
 
-            protected string $separator = ',';
+            protected string $delimiter = ',';
         };
     }
 
@@ -48,7 +48,7 @@ class StorageFileReadExcelTest extends ConfigTestCase
         {
             protected string $extension = 'psv';
 
-            protected string $separator = ',';
+            protected string $delimiter = ',';
         };
         $this->assertEquals($path, $endpoint->path);
     }

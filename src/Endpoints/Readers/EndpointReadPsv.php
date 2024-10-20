@@ -8,5 +8,5 @@ class EndpointReadPsv extends StorageFileReadExcel
 {
     protected string $extension = 'psv';
 
-    protected string $separator = '|';
+    protected string $delimiter = '|';
 }

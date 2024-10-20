@@ -8,5 +8,5 @@ class EndpointReadTsv extends StorageFileReadExcel
 {
     protected string $extension = 'tsv';
 
-    protected string $separator = "\t";
+    protected string $delimiter = "\t";
 }

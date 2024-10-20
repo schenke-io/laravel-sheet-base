@@ -13,14 +13,14 @@ class StorageFileReadExcel extends StorageFileReader
 
     protected string $extension = '';
 
-    protected string $separator = '';
+    protected string $delimiter = '';
 
     public function __construct(?string $path = null)
     {
         parent::__construct($path);
         $classname = class_basename($this);
-        if ($this->separator == '') {
-            throw new EndpointCodeException($classname, '$separator is not defined');
+        if ($this->delimiter == '') {
+            throw new EndpointCodeException($classname, '$delimiter is not defined');
         }
     }
 
@@ -33,7 +33,7 @@ class StorageFileReadExcel extends StorageFileReader
     {
         foreach ($this->getCsvLines(
             content: $this->storageGet($this->path),
-            separator: $this->separator,
+            separator: $this->delimiter,
             sheetBaseSchema: $pipelineData->sheetBaseSchema
         ) as $row) {
             $pipelineData->addRow($row);

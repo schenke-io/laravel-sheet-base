@@ -8,5 +8,5 @@ class EndpointReadCsv extends StorageFileReadExcel
 {
     protected string $extension = 'csv';
 
-    protected string $separator = ',';
+    protected string $delimiter = ',';
 }
