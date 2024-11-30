@@ -10,7 +10,7 @@ use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class EndpointWriteJsonTest extends ConfigTestCase
 {
-    public function testReleasePipeline(): void
+    public function test_release_pipeline(): void
     {
         $path = '/test.json';
         //dd(Storage::getConfig());

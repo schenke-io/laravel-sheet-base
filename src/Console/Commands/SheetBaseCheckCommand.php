@@ -19,7 +19,6 @@ class SheetBaseCheckCommand extends Command
     public $description = 'verifies the syntax of /config/sheet-base.php';
 
     /**
-     * @throws \Throwable
      * @throws EndpointCodeException
      * @throws FileSystemNotDefinedException
      * @throws ConfigErrorException
@@ -54,8 +53,8 @@ class SheetBaseCheckCommand extends Command
             return self::FAILURE;
         }
         $this->info('no syntax errors in config file');
-        // @phpstan-ignore-next-line
-        $this->info('file base directory: '.Storage::disk(StorageBase::DEFAULT_DISK)->getConfig()['root']
+        $this->info('file base directory: '.
+            Storage::disk(StorageBase::DEFAULT_DISK)->getConfig()['root']
         );
 
         foreach (SheetBaseConfig::make()->pipelines as $name => $pipeline) {

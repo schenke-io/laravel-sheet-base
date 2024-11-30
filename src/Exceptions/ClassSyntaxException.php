@@ -4,7 +4,7 @@ namespace SchenkeIo\LaravelSheetBase\Exceptions;
 
 use Exception;
 
-class AddClassNameException extends Exception
+class ClassSyntaxException extends Exception
 {
     public function __construct(string $className, string $message)
     {

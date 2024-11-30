@@ -44,6 +44,11 @@ abstract class StorageFile extends StorageBase implements IsEndpoint
         }
     }
 
+    public function toString(): string
+    {
+        return $this->path;
+    }
+
     protected function storageExists(string $path): bool
     {
         return Storage::disk($this->disk)->exists($path);
@@ -51,7 +56,6 @@ abstract class StorageFile extends StorageBase implements IsEndpoint
 
     protected function getStorageRoot(): string
     {
-        // @phpstan-ignore-next-line
         return rtrim(Storage::disk($this->disk)->getConfig()['root'] ?? '', '/').'/';
     }
 }

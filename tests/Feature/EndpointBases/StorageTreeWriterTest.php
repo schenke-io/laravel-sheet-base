@@ -20,7 +20,7 @@ class StorageTreeWriterTest extends ConfigTestCase
     }
 
     #[DataProvider('dataProviderPath')]
-    public function testStoragePut(string $path, bool $isOk): void
+    public function test_storage_put(string $path, bool $isOk): void
     {
         $content = 'some random text';
         Storage::fake('sheet-base');
@@ -46,5 +46,6 @@ class StorageTreeWriterTest extends ConfigTestCase
         };
         $tree->publicStoragePut($path, $content);
         $this->assertEquals($content, Storage::disk('sheet-base')->get($path));
+        $this->assertIsString($tree->toString());
     }
 }

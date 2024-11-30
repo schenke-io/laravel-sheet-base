@@ -10,14 +10,14 @@ use Workbench\App\Endpoints\DummyWrite;
 
 class SheetBaseCommandConfigErrorTest extends ConfigTestCase
 {
-    public function testDiskError(): void
+    public function test_disk_error(): void
     {
         Config::set('filesystems.disks.sheet-base', null);
         $this->artisan('sheet-base:check')->assertExitCode(1);
         $this->artisan('sheet-base:pump')->assertExitCode(0);
     }
 
-    public function testConfigError(): void
+    public function test_config_error(): void
     {
         Config::set('filesystems.disks.sheet-base', []);
         Config::set(SheetBaseConfig::CONFIG_FILE_BASE, null);
@@ -25,7 +25,7 @@ class SheetBaseCommandConfigErrorTest extends ConfigTestCase
         $this->artisan('sheet-base:pump')->assertExitCode(0);
     }
 
-    public function testSyntaxError(): void
+    public function test_syntax_error(): void
     {
         Config::set('filesystems.disks.sheet-base', []);
         Config::set(SheetBaseConfig::CONFIG_FILE_BASE.'.pipelines', [
@@ -35,7 +35,7 @@ class SheetBaseCommandConfigErrorTest extends ConfigTestCase
         $this->artisan('sheet-base:pump')->assertExitCode(1);
     }
 
-    public function testErrors(): void
+    public function test_errors(): void
     {
         Config::set('filesystems.disks.sheet-base', []);
         Config::set(SheetBaseConfig::CONFIG_FILE_BASE.'.pipelines', [

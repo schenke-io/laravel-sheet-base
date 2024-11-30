@@ -20,7 +20,7 @@ class EndpointReadGoogleSheetTest extends TestCase
      * @throws \Google\Service\Exception
      * @throws DataReadException
      */
-    public function testFillPipeline()
+    public function test_fill_pipeline()
     {
         $schema = new class extends SheetBaseSchema
         {
@@ -49,11 +49,11 @@ class EndpointReadGoogleSheetTest extends TestCase
             );
 
         $api = new GoogleSheetApi;
-        $api->spreadsheetsValues = $mockValues;
+        $api->sheets->spreadsheets_values = $mockValues;
 
         $pipelineData = new PipelineData($schema);
         $sheet = new TestDummyEndpointReadGoogleSheet('spreadsheetId', 'sheetName');
-        $sheet->spreadsheet = $api;
+        $sheet->googleSheetApi = $api;
 
         $sheet->fillPipeline($pipelineData);
         $result = $pipelineData->toArray();
@@ -61,19 +61,19 @@ class EndpointReadGoogleSheetTest extends TestCase
         $this->assertCount(2, $result);
     }
 
-    public function testExplain()
+    public function test_explain()
     {
         $sheet = new TestDummyEndpointReadGoogleSheet('spreadsheetId', 'sheetName');
         $this->assertGreaterThan(2, strlen($sheet->explain()));
     }
 
-    public function testExceptionSpreadsheetId()
+    public function test_exception_spreadsheet_id()
     {
         $this->expectException(GoogleSheetException::class);
         $sheet = new TestDummyEndpointReadGoogleSheet('', 'sheetName');
     }
 
-    public function testExceptionSheetName()
+    public function test_exception_sheet_name()
     {
         $this->expectException(GoogleSheetException::class);
         $sheet = new TestDummyEndpointReadGoogleSheet('spreadsheetId', '');

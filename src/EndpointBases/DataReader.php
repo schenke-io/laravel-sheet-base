@@ -4,7 +4,6 @@ namespace SchenkeIo\LaravelSheetBase\EndpointBases;
 
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
-use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 
 abstract class DataReader implements IsReader
 {
@@ -15,13 +14,16 @@ abstract class DataReader implements IsReader
 
     /**
      * get data and fill it into the pipeline
-     *
-     * @throws EndpointCodeException
      */
     final public function fillPipeline(PipelineData &$pipelineData): void
     {
         foreach ($this->getArray() as $row) {
             $pipelineData->addRow($row);
         }
+    }
+
+    public function toString(): string
+    {
+        return class_basename($this);
     }
 }

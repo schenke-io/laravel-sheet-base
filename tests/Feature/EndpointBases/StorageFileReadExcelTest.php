@@ -10,7 +10,7 @@ class StorageFileReadExcelTest extends ConfigTestCase
 {
     protected const PATH = 'psv/persons.psv';
 
-    public function testSeperatorMissing()
+    public function test_seperator_missing()
     {
         $this->expectException(EndpointCodeException::class);
         $endpoint = new class(self::PATH) extends StorageFileReadExcel
@@ -19,7 +19,7 @@ class StorageFileReadExcelTest extends ConfigTestCase
         };
     }
 
-    public function testPathMissing()
+    public function test_path_missing()
     {
         $this->expectException(EndpointCodeException::class);
         $endpoint = new class extends StorageFileReadExcel
@@ -30,7 +30,7 @@ class StorageFileReadExcelTest extends ConfigTestCase
         };
     }
 
-    public function testFileNotFound()
+    public function test_file_not_found()
     {
         $this->expectException(EndpointCodeException::class);
         $endpoint = new class('unknwon.csv') extends StorageFileReadExcel
@@ -41,7 +41,7 @@ class StorageFileReadExcelTest extends ConfigTestCase
         };
     }
 
-    public function testAllRight()
+    public function test_all_right()
     {
         $path = 'psv/persons.psv';
         $endpoint = new class($path) extends StorageFileReadExcel

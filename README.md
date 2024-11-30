@@ -1,19 +1,22 @@
+<!--
+
+This file was written by 'MakeReleaseCommand.php' line 56 using
+SchenkeIo\PackagingTools\Markdown\MarkdownAssembler
+
+Do not edit manually as it will be overwritten.
+
+-->
 # Laravel Sheet Base
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/schenke-io/laravel-sheet-base.svg?style=flat-square)](https://packagist.org/packages/schenke-io/laravel-sheet-base)
-![Coverage](https://raw.githubusercontent.com/schenke-io/laravel-sheet-base/main/tests/coverage/coverage.svg)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/schenke-io/laravel-sheet-base/run-tests.yml?branch=main&label=run-tests&style=flat-square)](https://github.com/schenke-io/laravel-sheet-base/actions?query=workflow%3Atests+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/schenke-io/laravel-sheet-base.svg?style=flat-square)](https://packagist.org/packages/schenke-io/laravel-sheet-base)
+![Coverage](/.github/coverage.svg)
+![PHPStan](/.github/phpstan.svg)
 
 
-<!-- 
 
 
-This file is generated from /workbench/docs/README.md 
-
-All edits in the file /README.md will be overwritten
-
--->
 The **Laravel Sheet Base** package simplifies data processing by offering a collection of classes specifically tailored for building efficient data conversion pipelines. These pipelines are well-suited for scenarios where data modifications occur infrequently.
 
 Here are some ideal use cases for this package:
@@ -27,27 +30,27 @@ on one end and **processing & storing** it using a **writer**
 on the other. Each pipeline uses a **schema** to define
 the **table format** for the writer.
 
-The Laravel Sheet Base package simplifies managing and 
-transforming data in your Laravel applications. 
+The Laravel Sheet Base package simplifies managing and
+transforming data in your Laravel applications.
 It offers several useful features:
 
-- **Work with various data formats:** Import data from 
-CSV files and export it to JSON, YAML, or Neon formats.
-- **Extract translations:** Easily gather translations 
-from different sources and generate language files.
-- **Combine data sources:** Merge data from multiple 
-sources into a single, targeted output.
-- **Transform and write data:** Read data, perform 
-calculations, and write the resulting transformed data.
-- **Generate files:** Create files for seeding, backups, 
-configuration, or Laravel Sushi integration.
+- **Work with various data formats:** Import data from
+  CSV files and export it to JSON, YAML, or Neon formats.
+- **Extract translations:** Easily gather translations
+  from different sources and generate language files.
+- **Combine data sources:** Merge data from multiple
+  sources into a single, targeted output.
+- **Transform and write data:** Read data, perform
+  calculations, and write the resulting transformed data.
+- **Generate files:** Create files for seeding, backups,
+  configuration, or Laravel Sushi integration.
 
-The package utilizes a flexible and extensible pipeline 
+The package utilizes a flexible and extensible pipeline
 architecture, making data management tasks efficient and straightforward.
 
 
 
-<!-- TOC -->
+
 * [Laravel Sheet Base](#laravel-sheet-base)
   * [Supported Readers](#supported-readers)
   * [Supported Writers](#supported-writers)
@@ -60,17 +63,19 @@ architecture, making data management tasks efficient and straightforward.
     * [Schema](#schema)
     * [Schema columns](#schema-columns)
     * [Endpoints](#endpoints)
-      * [Accessing Files on Disks: Defining Endpoints](#accessing-files-on-disks-defining-endpoints)
-      * [Endpoints as filenames](#endpoints-as-filenames)
+      * [Accessing Files](#accessing-files)
         * [Extending Existing Classes](#extending-existing-classes)
         * [Using Filename Extensions](#using-filename-extensions)
+        * [Extension and endpoints](#extension-and-endpoints)
       * [Endpoints as array](#endpoints-as-array)
-      * [Endpoint to write language files](#endpoint-to-write-language-files-)
+      * [Endpoint to write language files](#endpoint-to-write-language-files)
       * [Endpoint to read Google Sheets](#endpoint-to-read-google-sheets)
-    * [Verify the configuration](#verify-the-configuration)
+  * [Verify the configuration](#verify-the-configuration)
   * [Pumping](#pumping)
   * [License](#license)
-<!-- TOC -->
+
+
+
 
 
 ## Supported Readers
@@ -91,8 +96,8 @@ The package includes versatile writers capable of handling various file formats:
 - PHP (config) files (suitable for tests, configuration files, or Laravel Sushi)
 - Laravel language php-files
 
-Additionally, all written files that support comments include 
-remarks about the reference file, discouraging direct 
+Additionally, all written files that support comments include
+remarks about the reference file, discouraging direct
 editing.
 
 ## Schema building blocks
@@ -117,9 +122,12 @@ Here's the breakdown of how a pipeline pumps data:
 **Pipeline execution:**
 + Pipelines are executed in the alphabetic order of the pipeline names.
 + Important points:
-  + **No warning for duplicate IDs:** Sources can have duplicate IDs, but the final result only allows unique IDs.
-  + **Optional data in sources:** Sources might not have all the data defined in the Schema.
-  + **Pipelines can be chained:** One pipeline's output can be another's input.
+    + **No warning for duplicate IDs:** Sources can have duplicate IDs, but the final result only allows unique IDs.
+    + **Optional data in sources:** Sources might not have all the data defined in the Schema.
+    + **Pipelines can be chained:** One pipeline's output can be another's input.
+
+
+
 
 
 ## Installation
@@ -136,24 +144,29 @@ You can install the config file with:
 php artisan sheet-base:install
 ```
 
+
+
+
 ## Configuration
 
 ### Filesystem
-Configure the default disk in `config/filesystems.php`. 
-Define a new disk `sheet-base` and specify its location. 
-This will become the default place for files to be read 
+Configure the default disk in `config/filesystems.php`.
+Define a new disk `sheet-base` and specify its location.
+This will become the default place for files to be read
 and write.
 
 ### Pipelines
 Configure the pipelines in `config/sheet-base.php`.
 Under the primary key `pipelines` add names for each pipeline
 and define these 3 keys:
- 
-| key     | purpose                           | type                                     |
-|---------|-----------------------------------|------------------------------------------|
-| sources | where does the data comes from    | array of strings of classes or filenames |
-| schema  | schema of columns in output table | class name                               |
-| target  | where does the data goes to       | string of class or filename              |
+
+| key     | purpose                                             | type                                     |
+|---------|-----------------------------------------------------|------------------------------------------|
+| sources | where does the data comes from                      | array of strings of classes or filenames |
+| schema  | schema of columns in output table                   | class name                               |
+| target  | where does the data goes to                         | string of class or filename              |
+| filter  | list of ids which the pipeline should allow to pass | string of class or filename              |
+| sync    | syncs data back to Google Sheets                    | boolean true / false                     |
 
 ### Schema
 Each pipeline has a Schema, which defines the columns of the written file.
@@ -184,29 +197,27 @@ class MySchema extends SheetBaseSchema
 The following columns are possible:
 
 
-<table>
-<tr>
-<th>method</th>
-<th>definition</th>
-<th>can be null</th>
-<th>is ID</th>
-</tr><tr><td>addId</td><td>numeric or string id</td><td>yes</td><td>yes</td></tr>
-<tr><td>addDot</td><td>text id with dots like 'alpha.beta.gamma'</td><td>yes</td><td>yes</td></tr>
-<tr><td>addClosure</td><td>allows for custom formatting function using column name and data row as input</td><td>yes</td><td>no</td></tr>
-<tr><td>addUnsigned</td><td>-</td><td>yes</td><td>no</td></tr>
-<tr><td>addUnsignedNotNull</td><td>-</td><td>no</td><td>no</td></tr>
-<tr><td>addFloat</td><td>-</td><td>yes</td><td>no</td></tr>
-<tr><td>addBool</td><td>-</td><td>no</td><td>no</td></tr>
-<tr><td>addString</td><td>-</td><td>no</td><td>no</td></tr>
-<tr><td>addLanguage</td><td>valid language code as name</td><td>yes</td><td>no</td></tr>
-<tr><td>addNullString</td><td>-</td><td>yes</td><td>no</td></tr>
-<tr><td>addDateTime</td><td>-</td><td>yes</td><td>no</td></tr>
-</table>
+
+| method             | definition                                                                    | can be null | is ID |
+|--------------------|-------------------------------------------------------------------------------|-------------|-------|
+| addId              | numeric or string id                                                          | yes         | yes   |
+| addDot             | text id with dots like 'alpha.beta.gamma'                                     | yes         | yes   |
+| addClosure         | allows for custom formatting function using column name and data row as input | yes         | no    |
+| addUnsigned        | -                                                                             | yes         | no    |
+| addUnsignedNotNull | -                                                                             | no          | no    |
+| addFloat           | -                                                                             | yes         | no    |
+| addBool            | -                                                                             | no          | no    |
+| addString          | -                                                                             | no          | no    |
+| addLanguage        | valid language code as name                                                   | yes         | no    |
+| addNullString      | -                                                                             | yes         | no    |
+| addDateTime        | -                                                                             | yes         | no    |
+
+
 
 
 For the two possible ID columns `addId` and `addDot` the following applies:
-* must be only one ID column 
-* ID column must be the first column 
+* must be only one ID column
+* ID column must be the first column
 * empty ID values are skipped
 * if ID value repeats, its overwrite existing data - this allows to read from one file and add from another
 
@@ -226,21 +237,21 @@ class MySchema extends SheetBaseSchema
 }
 ```
 
+
+
+
+
 ### Endpoints
-A pipeline defines data flow between two designated points, 
-called **endpoints**. 
+A pipeline defines data flow between two designated points,
+called **endpoints**.
 You can define these endpoints in many ways.
 
-#### Accessing Files on Disks: Defining Endpoints
-* **Extending Existing Classes:** This approach leverages existing class structures with additional attributes for specific file types.
-* **Using Filename Extensions:** This method utilizes unique file extensions to identify and interact with different file formats.
-
-Use filenames when you just want to read and write to the default `sheet-base` disk.
-Use classes when you want to change the disk or want
 
 
-#### Endpoints as filenames
-In the following cases, endpoints can be defined in two ways:
+
+#### Accessing Files
+
+There are two ways to access files:
 
 ##### Extending Existing Classes
 Create a class that inherits from one of the provided endpoint classes.
@@ -254,25 +265,8 @@ The file is located at the  `sheet-base` $disk.
 
 
 
-
-<table>
-<tr>
-<th>extension</th>
-<th>documentation</th>
-<th>reader</th>
-<th>writer</th>
-</tr><tr><td>csv</td><td>comma seperated values</td><td>-</td><td>EndpointWriteCsv</td></tr>
-<tr><td>json</td><td>JavaScript Object Notation</td><td>-</td><td>EndpointWriteJson</td></tr>
-<tr><td>neon</td><td>Nette Object Notation</td><td>EndpointReadNeon</td><td>EndpointWriteNeon</td></tr>
-<tr><td>php</td><td>PHP config file</td><td>-</td><td>EndpointWritePhp</td></tr>
-<tr><td>psv</td><td>pipe seperated values</td><td>EndpointReadPsv</td><td>EndpointWritePsv</td></tr>
-<tr><td>tsv</td><td>tab seperated values</td><td>-</td><td>EndpointWriteTsv</td></tr>
-</table>
-
-
-
 ````php
-# config/sheet-base.php
+// config/sheet-base.php
 return [
     'pipelines' => [
         'sources' => [
@@ -286,17 +280,38 @@ return [
 ````
 and the class for it:
 ````php
-# App\MyEndPoints\MyData
+// App\MyEndPoints\MyData
 class MyData  extends EndpointWriteNeon
 {
     public string $path = 'directory/data2.neon';
 }
 ````
 
+##### Extension and endpoints
+
+
+
+
+| extension | documentation                          | reader           | writer            |
+|-----------|----------------------------------------|------------------|-------------------|
+| csv       | comma seperated values                 | EndpointReadCsv  | EndpointWriteCsv  |
+| json      | JavaScript Object Notation             | -                | EndpointWriteJson |
+| neon      | Nette Object Notation                  | EndpointReadNeon | EndpointWriteNeon |
+| php       | PHP config file                        | -                | EndpointWritePhp  |
+| psv       | pipe seperated values                  | EndpointReadPsv  | EndpointWritePsv  |
+| tsv       | tab seperated values                   | EndpointReadTsv  | EndpointWriteTsv  |
+| txt       | text files with just keys one per line | EndpointReadTxt  | EndpointWriteTxt  |
+| yaml      | YAML config file                       | EndpointReadYaml | EndpointWriteYaml |
+| yml       | YAML config file                       | EndpointReadYml  | EndpointWriteYml  |
+
+
+
+
 #### Endpoints as array
+
 The array endpoints, `EndpointReadArray` and `EndpointWriteArray`, allow for programmatic access to other data, such as Eloquent models, APIs, or special data formats.
 ````php
-# App\MyEndpoints\PhpRead
+// App\MyEndpoints\PhpRead
 class PhpRead extends EndpointReadArray{
     public function getArray(): array
     {
@@ -308,7 +323,7 @@ class PhpRead extends EndpointReadArray{
     }
 }
 
-# App\MyEndpoints\PhpWrite
+// App\MyEndpoints\PhpWrite
 class PhpWrite extends EndpointWriteArray{
     public function releasePipeline(PipelineData $pipelineData, string $writingClass): void
     {
@@ -318,12 +333,15 @@ class PhpWrite extends EndpointWriteArray{
 }
 ````
 
-#### Endpoint to write language files 
 
-One pipeline can be used to write language php files. 
-You need a special schema  and target file. 
+
+
+#### Endpoint to write language files
+
+One pipeline can be used to write language php files.
+You need a special schema  and target file.
 ````php
-# App\MyEndpoints\LanguageSchema
+// App\MyEndpoints\LanguageSchema
 class LanguageSchema extends SheetBaseSchema 
 {
     protected function define(): void
@@ -334,7 +352,7 @@ class LanguageSchema extends SheetBaseSchema
     }
 }
 
-# App\MyEndpoints\LanguageTarget
+// App\MyEndpoints\LanguageTarget
 class LanguageTarget extends EndpointWriteLang
 {
     // were to write the language files
@@ -345,40 +363,43 @@ class LanguageTarget extends EndpointWriteLang
 
 
 ````
+
+
+
 #### Endpoint to read Google Sheets
 
-First get a service account in the Google api console and download the json file. 
+First get a service account in the Google api console and download the json file.
 Then add the key `GOOGLE_APPLICATION_CREDENTIALS` to the `.env` file and fill the
-path to this file. 
-````bash
-# .env
+path to this file.
+```bash
 GOOGLE_APPLICATION_CREDENTIALS=directory/google/file.json
-````
-Create an empty Google sheets document and share it with the email 
+```
+Create an empty Google sheets document and share it with the email
 from the service account.<br>
 
 There are two ways to configure the spreadsheet ID used by this plugin:
-- directly in your EndpointClass 
+- directly in your EndpointClass
 - in the config file (recommended for clarity and multiple files)
 
-In both cases you fill the worksheet name in `$sheetName` and 
+In both cases you fill the worksheet name in `$sheetName` and
 get than the URL of the Google sheet.
-The spreadsheet ID is the part of the URL after `/d/` and 
-before `/edit`. For example, in the 
+The spreadsheet ID is the part of the URL after `/d/` and
+before `/edit`. For example, in the
 URL `https://docs.google.com/spreadsheets/d/123ABC-xyz123/edit`, the spreadsheet ID is 123ABC-xyz123.
 
-In `$spreadsheetId` you enter either the ID itself or the name of the 
+In `$spreadsheetId` you enter either the ID itself or the name of the
 key in `config/sheet-base.php` as shown below.
 
-````php
+```php
 class GoogleSheetLang extends EndpointReadGoogleSheet
 {
     public string $spreadsheetId = '1ttfjdfdjfdfjdfdjfdfdkfdfdQkGDE';
-    # or: public string $spreadsheetId = 'File-Main';
+    // or: public string $spreadsheetId = 'File-Main';
     public string $sheetName = 'Sheet1';
 }
 
-# in config/sheet-base.php 
+// in config/sheet-base.php
+ 
     'pipelines' => [
     .....
     ],
@@ -388,9 +409,18 @@ class GoogleSheetLang extends EndpointReadGoogleSheet
   
   
 
-````
-The first row in the spreadsheet must contain the column names, as specified in the pipeline schema. The table width is determined by the number of columns with header values. Additional headers to the right are ignored. Data reading stops when the first column is empty, and subsequent rows are discarded.
-### Verify the configuration
+```
+The first row in the spreadsheet must contain the column names, as specified in the pipeline schema. 
+The table width is determined by the number of columns with header values. 
+Additional headers to the right are ignored. 
+Data reading stops when the first column is empty, and subsequent rows are discarded.
+
+
+
+
+
+
+## Verify the configuration
 
 You can check the configuration after any edit with:
 
@@ -409,3 +439,6 @@ php artisan sheet-base:pump
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+
+

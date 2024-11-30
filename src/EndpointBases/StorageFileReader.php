@@ -18,8 +18,8 @@ abstract class StorageFileReader extends StorageFile implements IsReader
     public function __construct(?string $path = null)
     {
         parent::__construct($path);
-        throw_unless($this->storageExists($this->path),
-            new EndpointCodeException(
+        if (! $this->storageExists($this->path)) {
+            throw new EndpointCodeException(
                 class_basename($this),
                 sprintf(
                     'class %s was unable to find file %s in disk %s',
@@ -27,12 +27,11 @@ abstract class StorageFileReader extends StorageFile implements IsReader
                     $this->getStorageRoot().$this->path,
                     $this->disk
                 )
-            )
-        );
-
+            );
+        }
     }
 
-    protected function storageGet(string $path): string
+    protected function storageGet(string $path): ?string
     {
         return Storage::disk($this->disk)->get($path);
     }

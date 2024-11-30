@@ -2,9 +2,12 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
+use Illuminate\Console\Command;
+use Mockery;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
+use SchenkeIo\LaravelSheetBase\Elements\PipelineType;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
-use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
+use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadArray;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\TestCase;
 
@@ -36,9 +39,6 @@ class PipelineDataTest extends TestCase
     {
         $this->sheetBaseSchemaTable1 = new class extends SheetBaseSchema
         {
-            /**
-             * define the schema in Laravel migration syntax
-             */
             protected function define(): void
             {
                 $this->addId();
@@ -49,9 +49,6 @@ class PipelineDataTest extends TestCase
         };
         $this->sheetBaseSchemaTable2 = new class extends SheetBaseSchema
         {
-            /**
-             * define the schema in Laravel migration syntax
-             */
             protected function define(): void
             {
                 $this->addString('c1');
@@ -59,9 +56,6 @@ class PipelineDataTest extends TestCase
         };
         $this->sheetBaseSchemaTree = new class extends SheetBaseSchema
         {
-            /**
-             * define the schema in Laravel migration syntax
-             */
             protected function define(): void
             {
                 $this->addDot();
@@ -71,10 +65,7 @@ class PipelineDataTest extends TestCase
         };
     }
 
-    /**
-     * @throws EndpointCodeException
-     */
-    public function testOverwriteOfPipelineData(): void
+    public function test_overwrite_of_pipeline_data(): void
     {
         $pipeline = new PipelineData($this->sheetBaseSchemaTable1);
         $pipeline->addRow($this->dataTable[0]);
@@ -89,7 +80,7 @@ class PipelineDataTest extends TestCase
         $this->assertSame(0, $pipeline->toArray()[1]['c3'], 'no input results in 0 not in null');
     }
 
-    public function testOverwriteOnlySomeColumns(): void
+    public function test_overwrite_only_some_columns(): void
     {
         $pipeline = new PipelineData($this->sheetBaseSchemaTable1);
         $pipeline->addRow($this->dataTable[2]);
@@ -99,7 +90,7 @@ class PipelineDataTest extends TestCase
         $this->assertEquals('e', $pipeline->toArray()[1]['c2'], 'do not destroy line before');
     }
 
-    public function testFromArray(): void
+    public function test_from_array(): void
     {
         $pipelineData = PipelineData::fromArray($this->dataTable, $this->sheetBaseSchemaTable1);
         $this->assertEquals($this->dataTable, $pipelineData->toArray());
@@ -108,10 +99,7 @@ class PipelineDataTest extends TestCase
         $this->assertEquals($this->dataTree, $pipelineData->toArray());
     }
 
-    /**
-     * @throws DataReadException
-     */
-    public function testAddRowEmptyIdException()
+    public function test_add_row_empty_id_exception()
     {
         $pipeline = new PipelineData($this->sheetBaseSchemaTable1);
         $this->assertCount(0, $pipeline->toArray());
@@ -121,28 +109,51 @@ class PipelineDataTest extends TestCase
         $this->assertCount(1, $pipeline->toArray());
     }
 
-    /**
-     * @throws EndpointCodeException
-     */
-    public function testAddRowTree()
+    public function test_add_row_tree()
     {
         $pipelineData = new PipelineData($this->sheetBaseSchemaTree);
         $pipelineData->addRow($this->dataTree[0]);
         $pipelineData->addRow($this->dataTree[1]);
         $pipelineData->addRow($this->dataTree[2]);
-        $this->assertArrayHasKey('test', $pipelineData->toArray());
+        $this->assertArrayHasKey('test.title', $pipelineData->toArray());
+    }
+
+    public function test_overwrite_tree(): void
+    {
+        $pipelineData = new PipelineData($this->sheetBaseSchemaTree);
+        $pipelineData->addRow($this->dataTree[2]);
+        $pipelineData->addRow($this->dataTree[3]);
+        $this->assertArrayHasKey('test.help', $pipelineData->toArray());
+        $this->assertEquals('Call us again', $pipelineData->toArray()['test.help']['en']);
+    }
+
+    public function test_new_from_type(): void
+    {
+        $pipelineData = PipelineData::fromType(PipelineType::Table);
+        $this->assertCount(0, $pipelineData->toArray());
     }
 
     /**
      * @throws EndpointCodeException
      */
-    public function testOverwriteTree(): void
+    public function test_filter_keys_off(): void
     {
-        $pipelineData = new PipelineData($this->sheetBaseSchemaTree);
-        $pipelineData->addRow($this->dataTree[2]);
-        $pipelineData->addRow($this->dataTree[3]);
-        // dump($pipelineData->toArray());
-        $this->assertArrayHasKey('test', $pipelineData->toArray());
-        $this->assertEquals('Call us again', $pipelineData->toArray()['test']['help']['en']);
+        $pipeline = new PipelineData($this->sheetBaseSchemaTable1);
+        $pipeline->addRow($this->dataTable[0]);
+        $pipeline->addRow($this->dataTable[1]);
+        $this->assertCount(2, $pipeline->toArray());
+        $filter = new class extends EndpointReadArray
+        {
+            public function getArray(): array
+            {
+                return [
+                    ['id' => 1],
+                ];
+            }
+        };
+        $cmd = Mockery::mock(Command::class);
+        $cmd->shouldReceive('info')->once();
+        $pipeline->filterKeysOff($cmd, '', $filter);  // remove key 1
+        $this->assertCount(1, $pipeline->toArray());
     }
 }

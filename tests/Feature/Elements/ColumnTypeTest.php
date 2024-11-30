@@ -21,7 +21,7 @@ class ColumnTypeTest extends ConfigTestCase
     }
 
     #[DataProvider('dataProviderColumnTypes')]
-    public function testAllMethodsAreDefined(ColumnType $columnType): void
+    public function test_all_methods_are_defined(ColumnType $columnType): void
     {
         $reflection = new \ReflectionClass(SheetBaseSchema::class);
         $methodNames = array_map(function (ReflectionMethod $reflectionMethod) {
@@ -99,7 +99,7 @@ class ColumnTypeTest extends ConfigTestCase
     }
 
     #[DataProvider('dataProviderFormat')]
-    public function testFormat(ColumnType $type, mixed $input, mixed $output): void
+    public function test_format(ColumnType $type, mixed $input, mixed $output): void
     {
 
         $this->assertSame($output, $type->format($input));

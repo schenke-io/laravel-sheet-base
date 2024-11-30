@@ -5,13 +5,11 @@ namespace SchenkeIo\LaravelSheetBase\EndpointBases;
 use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Contracts\IsWriter;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
-use Throwable;
 
 abstract class StorageTreeWriter extends StorageTree implements IsWriter
 {
     /**
      * @throws EndpointCodeException
-     * @throws Throwable
      */
     protected function storagePut(string $path, string $content): void
     {

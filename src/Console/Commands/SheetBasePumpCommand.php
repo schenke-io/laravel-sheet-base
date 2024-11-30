@@ -14,18 +14,16 @@ class SheetBasePumpCommand extends Command
 
     public function handle(): int
     {
-        $inform = function (string $txt) {
-            $this->info($txt);
-        };
+
         try {
             $config = SheetBaseConfig::make();
             $pipelines = $config->pipelines;
             ksort($pipelines);
             foreach ($pipelines as $name => $pipeline) {
-                $pipeline->pump($inform, $name, class_basename(self::class));
+                $pipeline->pump($this, $name, class_basename(self::class));
             }
         } catch (Exception $e) {
-            $this->error($e->getMessage());
+            $this->error(sprintf('line %d in %s => %s', $e->getLine(), basename($e->getFile()), $e->getMessage()));
 
             return self::FAILURE;
         }

@@ -10,7 +10,7 @@ use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
 
 class ColumnSchemaTest extends TestCase
 {
-    public function testFormat(): void
+    public function test_format(): void
     {
         $columnSchema = new ColumnSchema(ColumnType::Boolean);
         $this->assertSame(true, $columnSchema->format('a', ['a' => true]));
@@ -42,7 +42,7 @@ class ColumnSchemaTest extends TestCase
     /**
      * @return void
      */
-    public function testTransform(string $key, ?Closure $closure, array $row, mixed $result)
+    public function test_transform(string $key, ?Closure $closure, array $row, mixed $result)
     {
         $columnSchema = new ColumnSchema(ColumnType::Closure, $closure);
         $this->assertSame($result, $columnSchema->format($key, $row));

@@ -2,26 +2,43 @@
 
 namespace SchenkeIo\LaravelSheetBase\Google;
 
-class GoogleRange
+use SchenkeIo\LaravelSheetBase\Exceptions\GoogleSheetException;
+
+readonly class GoogleRange
 {
     /**
-     * @throws \Throwable
+     * @throws GoogleSheetException
      */
     public function __construct(
-        protected readonly int $sheetIndex,
-        protected readonly string $sheetName,
-        protected readonly int $rowIndex,
-        protected readonly int $columnIndex,
-        protected readonly int $width = 1,
-        protected readonly int $height = 1
+        protected int $sheetIndex,
+        protected string $sheetName,
+        protected int $rowIndex,
+        protected int $columnIndex,
+        protected int $width = 1,
+        protected int $height = 1
     ) {
-        throw_if($this->sheetIndex < 0, 'sheet index must be >= 0');
-        throw_if(strlen($this->sheetName) < 2, 'sheet name length is < 2');
-        throw_if($this->columnIndex < 0, 'column < 0');
-        throw_if($this->rowIndex < 0, 'row < 0');
-        throw_if($this->columnIndex > 25, 'colun > 25');
-        throw_if($this->width < 1, 'width < 1');
-        throw_if($this->height < 1, 'height < 1');
+        $className = class_basename($this);
+        if ($this->sheetIndex < 0) {
+            throw new GoogleSheetException($className, 'sheet index must be >= 0');
+        }
+        if (strlen($this->sheetName) < 2) {
+            throw new GoogleSheetException($className, 'sheet name length is < 2');
+        }
+        if ($this->columnIndex < 0) {
+            throw new GoogleSheetException($className, 'column < 0');
+        }
+        if ($this->rowIndex < 0) {
+            throw new GoogleSheetException($className, 'row < 0');
+        }
+        if ($this->columnIndex > 25) {
+            throw new GoogleSheetException($className, 'column > 25');
+        }
+        if ($this->width < 1) {
+            throw new GoogleSheetException($className, 'width < 1');
+        }
+        if ($this->height < 1) {
+            throw new GoogleSheetException($className, 'height < 1');
+        }
     }
 
     public function asRange(): array

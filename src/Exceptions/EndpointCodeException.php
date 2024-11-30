@@ -2,4 +2,4 @@
 
 namespace SchenkeIo\LaravelSheetBase\Exceptions;
 
-class EndpointCodeException extends AddClassNameException {}
+class EndpointCodeException extends ClassSyntaxException {}

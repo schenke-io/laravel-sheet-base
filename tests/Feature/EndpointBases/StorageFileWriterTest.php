@@ -9,7 +9,7 @@ use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class StorageFileWriterTest extends ConfigTestCase
 {
-    public function testStoragePut(): void
+    public function test_storage_put(): void
     {
         $path = '/testfile.txt';
         $content = 'some random text';

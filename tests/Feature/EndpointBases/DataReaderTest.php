@@ -13,7 +13,7 @@ class DataReaderTest extends TestCase
     /**
      * @throws EndpointCodeException
      */
-    public function testCanFillPipeline()
+    public function test_can_fill_pipeline()
     {
         // define schema
         $sheetBaseSchema = new class extends SheetBaseSchema

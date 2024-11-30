@@ -28,7 +28,7 @@ class EndpointReadNeonTest extends ConfigTestCase
     /**
      * @throws EndpointCodeException|DataReadException
      */
-    public function testReadFile(mixed $expectation, string $content)
+    public function test_read_file(mixed $expectation, string $content)
     {
         $path = '/test.neon';
         if (! is_array($expectation)) {

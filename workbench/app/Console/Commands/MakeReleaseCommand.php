@@ -2,10 +2,15 @@
 
 namespace Workbench\App\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
-use SchenkeIo\LaravelSheetBase\Skills\FindEndpointClass;
+use SchenkeIo\LaravelSheetBase\Helpers\FindEndpointClass;
+use SchenkeIo\PackagingTools\Badges\BadgeStyle;
+use SchenkeIo\PackagingTools\Badges\MakeBadge;
+use SchenkeIo\PackagingTools\Markdown\MarkdownAssembler;
 
 class MakeReleaseCommand extends Command
 {
@@ -21,12 +26,15 @@ class MakeReleaseCommand extends Command
     ];
 
     protected const EXTENSION_HELP = [
-        'neon' => 'Nette Object Notation',
         'csv' => 'comma seperated values',
+        'json' => 'JavaScript Object Notation',
+        'neon' => 'Nette Object Notation',
+        'php' => 'PHP config file',
         'psv' => 'pipe seperated values',
         'tsv' => 'tab seperated values',
-        'json' => 'JavaScript Object Notation',
-        'php' => 'PHP config file',
+        'txt' => 'text files with just keys one per line',
+        'yaml' => 'YAML config file',
+        'yml' => 'YAML config file',
     ];
 
     protected const PROPERTY_HELP = [
@@ -35,88 +43,66 @@ class MakeReleaseCommand extends Command
         'spreadsheetId' => 'id of the Google spreadsheet found in its URL',
         'sheetName' => 'name of the sheet within the spreadsheet',
         'fileBases' => 'which first parts of the dot-keys should result in files',
-        'root' => 'langugae directory in the disk',
+        'root' => 'language directory in the disk',
     ];
 
     /**
-     * @throws \ReflectionException
+     * @throws FileNotFoundException
      */
     public function handle(): void
     {
-        $this->updateCoverageBadge();
 
-        $content = '';
-        foreach (file(__DIR__.'/../../../docs/README.md') as $line) {
-            if (preg_match('@_+include\((.*)\)@', $line, $matches)) {
-                [$all, $key] = $matches;
-                $line = match ($key) {
-                    'warning' => $this->getWarningRemark(),
-                    'table_columns' => $this->getColumnsTable(),
-                    'table_endpoints' => $this->getEndpointTable(),
-                    default => $line
-                };
-            }
-            $content .= $line;
-        }
-        file_put_contents(__DIR__.'/../../../../README.md', $content);
-        $this->info('readme made');
-    }
+        try {
+            $mda = new MarkdownAssembler('workbench/resources/md');
+            $mda->addMarkdown('header.md');
+            $mda->addMarkdown('introduction.md');
+            $mda->addTableOfContents();
+            $mda->addMarkdown('pipelines.md');
+            $mda->addMarkdown('installation.md');
+            $mda->addMarkdown('configuration1.md');
+            $mda->addTableFromArray($this->getColumnsTable());
+            // columns
+            $mda->addMarkdown('configuration2.md');
+            $mda->addMarkdown('endpoints.md');
+            $mda->addMarkdown('endpoint_files.md');
+            $mda->addTableFromArray($this->getEndpointTable());
+            $mda->addMarkdown('endpoint_array.md');
+            $mda->addMarkdown('endpoint_language.md');
+            $mda->addMarkdown('endpoint_google.md');
+            $mda->addMarkdown('closing.md');
 
-    private function updateCoverageBadge(): void
-    {
-        $dir = realpath(__DIR__.'/../../../../tests/coverage/');
-        $coverageTxt = "$dir/coverage.txt";
-        $coverageSvg = "$dir/coverage.svg";
-        if (! file_exists($coverageTxt)) {
-            $this->error("txt file missing: $coverageTxt");
+            $mda->writeMarkdown('README.md');
+
+        } catch (Exception $e) {
+            $this->error($e->getMessage());
 
             return;
         }
-        $content = file_get_contents($coverageTxt);
-        preg_match('@Lines:\s*([\d.]+)%@', $content, $matches);
-        $percentage = $matches[1];
 
-        $svg = <<<SVG
-<svg width="123.3" height="20" viewBox="0 0 1233 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Coverage: $percentage%">
-  <title>Coverage: $percentage%</title>
-  <linearGradient id="dPVkA" x2="0" y2="100%">
-    <stop offset="0" stop-opacity=".1" stop-color="#EEE"/>
-    <stop offset="1" stop-opacity=".1"/>
-  </linearGradient>
-  <mask id="JyxQb"><rect width="1233" height="200" rx="30" fill="#FFF"/></mask>
-  <g mask="url(#JyxQb)">
-    <rect width="623" height="200" fill="#555"/>
-    <rect width="610" height="200" fill="#3C1" x="623"/>
-    <rect width="1233" height="200" fill="url(#dPVkA)"/>
-  </g>
-  <g aria-hidden="true" fill="#fff" text-anchor="start" font-family="Verdana,DejaVu Sans,sans-serif" font-size="110">
-    <text x="60" y="148" textLength="523" fill="#000" opacity="0.25">Coverage</text>
-    <text x="50" y="138" textLength="523">Coverage</text>
-    <text x="678" y="148" textLength="510" fill="#000" opacity="0.25">$percentage%</text>
-    <text x="668" y="138" textLength="510">$percentage%</text>
-  </g>
-  
-</svg>
-SVG;
-        file_put_contents($coverageSvg, $svg);
-        unlink($coverageTxt);
+        $this->updateCoverageBadge();
+        $this->updatePhpStanBadge();
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws FileNotFoundException
      */
-    protected function getEndpointTable(): string
+    private function updateCoverageBadge(): void
     {
-        $return = <<<'HTML'
-<table>
-<tr>
-<th>extension</th>
-<th>documentation</th>
-<th>reader</th>
-<th>writer</th>
-</tr>
-HTML;
+        $badge = MakeBadge::makeCoverageBadge('build/logs/clover.xml', '44cc11');
+        $badge->store('.github/coverage.svg', BadgeStyle::FlatSquare);
+    }
 
+    /**
+     * @throws FileNotFoundException
+     */
+    private function updatePhpStanBadge():void {
+        $badge = MakeBadge::makePhpStanBadge('phpstan.neon');
+        $badge->store('.github/phpstan.svg', BadgeStyle::FlatSquare);
+    }
+
+    protected function getEndpointTable(): array
+    {
+        $data[] = ['extension', 'documentation', 'reader', 'writer'];
         $endpoints = [];
         foreach (FindEndpointClass::WRITERS as $extension => $class) {
             $endpoints[$extension]['writer'] = class_basename($class);
@@ -127,30 +113,20 @@ HTML;
         ksort($endpoints);
 
         foreach ($endpoints as $extension => $columns) {
-            $return .= sprintf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n",
+            $data[] = [
                 $extension,
                 self::EXTENSION_HELP[$extension] ?? '-',  // @phpstan-ignore-line
                 $columns['reader'] ?? '-',                // @phpstan-ignore-line
-                $columns['writer'] ?? '-'                 // @phpstan-ignore-line
-            );
+                $columns['writer'] ?? '-',                 // @phpstan-ignore-line
+            ];
         }
-        $return .= '</table>';
 
-        return $return;
+        return $data;
     }
 
-    protected function getColumnsTable(): string
+    protected function getColumnsTable(): array
     {
-        $return = <<<'HTML'
-<table>
-<tr>
-<th>method</th>
-<th>definition</th>
-<th>can be null</th>
-<th>is ID</th>
-</tr>
-HTML;
-
+        $data[] = ['method', 'definition', 'can be null', 'is ID'];
         $schema = new class extends SheetBaseSchema
         {
             protected function define(): void {}
@@ -166,39 +142,23 @@ HTML;
                 $columnSchema = $schema->columns['id'];
                 // get column type
                 $columnType = ColumnType::from($typeName);
-                // does it preserves null
+                // does it preserve null
                 $canBeNull = is_null($columnType->format(null));
                 // checkForId
                 $isId = $columnType->isId();
 
-                $return .= sprintf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n",
+                $data[] = [
                     $methodName,
                     self::COLUMN_HELP[$methodName] ?? '-',
                     $canBeNull ? 'yes' : 'no',
-                    $isId ? 'yes' : 'no'
-                );
+                    $isId ? 'yes' : 'no',
+                ];
                 $schema->columns = [];
                 $schema->idName = '';
 
             }
         }
-        $return .= '</table>';
 
-        return $return;
-    }
-
-    private function getWarningRemark(): string
-    {
-        return <<<'HTML'
-<!-- 
-
-
-This file is generated from /workbench/docs/README.md 
-
-All edits in the file /README.md will be overwritten
-
--->
-HTML;
-
+        return $data;
     }
 }

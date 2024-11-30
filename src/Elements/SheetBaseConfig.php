@@ -4,8 +4,6 @@ namespace SchenkeIo\LaravelSheetBase\Elements;
 
 use Exception;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
-use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
-use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 
@@ -17,9 +15,6 @@ final class SheetBaseConfig
     public array $pipelines = [];
 
     /**
-     * @throws \Throwable
-     * @throws FileSystemNotDefinedException
-     * @throws EndpointCodeException
      * @throws ConfigErrorException
      * @throws SchemaVerifyColumnsException
      * @throws MakeEndpointException
@@ -27,28 +22,35 @@ final class SheetBaseConfig
     public static function make(): SheetBaseConfig
     {
         $configProject = new SheetBaseConfig;
-        $pipelines = [];
         $targets = [];
-        $languagePipelineCount = 0;
-        foreach ($configProject->getConfig() as $pipelineName => $pipelineArray) {
-            $target = $pipelineArray['target'];
-
-            if (in_array($target, $targets)) {
-                throw new ConfigErrorException($pipelineName, 'multiple use of target: '.$target);
-            } else {
-                $targets[] = $target;
-            }
+        $pipelineIsLanguageCount = 0;
+        $pipelines = $configProject->getConfig();
+        foreach ($pipelines as $pipelineName => $pipelineArray) {
+            /*
+             * we check the pipeline during its construction
+             */
             $pipeline = Pipeline::fromConfig($pipelineArray, $pipelineName);
-            if ($pipeline->isLanguage()) {
-                $languagePipelineCount++;
-                throw_if(
-                    $languagePipelineCount > 1,
-                    new ConfigErrorException($pipelineName, 'multiple definition of a language pipeline')
-                );
+            /*
+             * each target only to be used once
+             */
+            $target = $pipeline->target->toString();
+            if (in_array($target, $targets)) {
+                throw ConfigErrorException::targetAlreadyUsed($pipelineName, $target);
             }
-            $pipelines[$pipelineName] = $pipeline;
+            $targets[] = $target;
+            /*
+             * maximum one language pipe
+             */
+            if ($pipeline->isLanguage) {
+                $pipelineIsLanguageCount++;
+                if ($pipelineIsLanguageCount > 1) {
+                    //dd($pipelineIsLanguageCount);
+                    throw ConfigErrorException::languagePipelineDefinedTwice($pipelineName);
+                }
+            }
+
+            $configProject->pipelines[$pipelineName] = $pipeline;
         }
-        $configProject->pipelines = $pipelines;
 
         return $configProject;
     }

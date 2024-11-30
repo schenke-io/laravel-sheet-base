@@ -4,6 +4,7 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Unit\Google;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use SchenkeIo\LaravelSheetBase\Exceptions\GoogleSheetException;
 use SchenkeIo\LaravelSheetBase\Google\GoogleRange;
 
 class GoogleRangeTest extends TestCase
@@ -23,16 +24,19 @@ class GoogleRangeTest extends TestCase
         ];
     }
 
+    /**
+     * @throws GoogleSheetException
+     */
     #[DataProvider('dataProviderRanges')]
-    public function testRangeToString(int $index, string $name, int $row, int $col, int $width, int $height, ?string $range): void
+    public function test_range_to_string(int $index, string $name, int $row, int $col, int $width, int $height, ?string $range): void
     {
         if (is_null($range)) {
-            $this->expectException(\RuntimeException::class);
+            $this->expectException(GoogleSheetException::class);
         }
         $this->assertEquals($range, (new GoogleRange($index, $name, $row, $col, $width, $height))->asString());
     }
 
-    public function testReturnAsRange()
+    public function test_return_as_range()
     {
         $return = [
             'sheetId' => '1',

@@ -9,7 +9,7 @@ use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class StorageFileTest extends ConfigTestCase
 {
-    public function testPathNotSet(): void
+    public function test_path_not_set(): void
     {
         $this->expectException(EndpointCodeException::class);
         $file = new class extends StorageFile
@@ -28,7 +28,7 @@ class StorageFileTest extends ConfigTestCase
         };
     }
 
-    public function testExtensionNotSet(): void
+    public function test_extension_not_set(): void
     {
         $this->expectException(EndpointCodeException::class);
         $file = new class extends StorageFile
@@ -47,7 +47,7 @@ class StorageFileTest extends ConfigTestCase
         };
     }
 
-    public function testWrongExtensionSet(): void
+    public function test_wrong_extension_set(): void
     {
         $this->expectException(EndpointCodeException::class);
         $file = new class extends StorageFile
@@ -66,7 +66,7 @@ class StorageFileTest extends ConfigTestCase
         };
     }
 
-    public function testStorageExists(): void
+    public function test_storage_exists(): void
     {
         $path = 'testfile.txt';
         Storage::fake('sheet-base');
@@ -76,7 +76,7 @@ class StorageFileTest extends ConfigTestCase
 
     }
 
-    public function testGetStorageRoot(): void
+    public function test_get_storage_root(): void
     {
 
         $file = new class extends StorageFile

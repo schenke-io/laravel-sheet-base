@@ -13,7 +13,7 @@ use SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints\Readers\DummySheetBaseSch
 
 class StorageFileWriteCsvTest extends ConfigTestCase
 {
-    public function testStoragePut(): void
+    public function test_storage_put(): void
     {
         $path = '/testfile.psv';
         $content = "a|b\n1|2\n";
@@ -40,7 +40,7 @@ class StorageFileWriteCsvTest extends ConfigTestCase
      * @throws DataReadException
      * @throws DataQualityException
      */
-    public function testWriteFromPipelineOk()
+    public function test_write_from_pipeline_ok()
     {
         $path = '/testfile.psv';
         $pipeline = new PipelineData(new DummySheetBaseSchema);
@@ -59,7 +59,7 @@ class StorageFileWriteCsvTest extends ConfigTestCase
         $this->assertEquals($content, Storage::disk('sheet-base')->get($path));
     }
 
-    public function testReadFromPipelineDelimiterInData()
+    public function test_read_from_pipeline_delimiter_in_data()
     {
         $path = '/testfile.psv';
         $pipeline = new PipelineData(new DummySheetBaseSchema);
@@ -77,7 +77,7 @@ class StorageFileWriteCsvTest extends ConfigTestCase
         $file->releasePipeline($pipeline, '');
     }
 
-    public function testDelimiterMissing()
+    public function test_delimiter_missing()
     {
         $path = '/testfile.psv';
         $this->expectException(EndpointCodeException::class);

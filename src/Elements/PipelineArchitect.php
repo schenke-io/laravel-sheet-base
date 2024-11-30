@@ -6,7 +6,7 @@ use SchenkeIo\LaravelSheetBase\Exceptions\ArchitectureException;
 
 class PipelineArchitect
 {
-    public const ColumnMethods = [
+    public array $columnMethods = [
         'addUnsigned',
         'addUnsignedNotNull',
         'addFloat',
@@ -19,12 +19,12 @@ class PipelineArchitect
         'addClosure',
     ];
 
-    public const ReadExtensions = ['neon', 'psv'];
+    public array $readExtensions = ['neon', 'psv', 'csv', 'tsv', 'txt', 'yaml', 'yml'];
 
-    public const WriteExtensions = ['neon', 'json', 'php'];
+    public array $writeExtensions = ['neon', 'json', 'php', 'csv', 'psv', 'tsv', 'txt', 'yaml'];
 
     /**
-     * @throws \Throwable
+     * @throws ArchitectureException
      */
     public function scan(): void
     {
@@ -34,7 +34,7 @@ class PipelineArchitect
     }
 
     /**
-     * @throws \Throwable
+     * @throws ArchitectureException
      */
     private function columnMethodsDefined(): void
     {
@@ -46,37 +46,41 @@ class PipelineArchitect
             }
         }
 
-        foreach (self::ColumnMethods as $method) {
-            throw_if(! in_array($method, $methodsFound), new ArchitectureException("method not found: $method"));
+        foreach ($this->columnMethods as $method) {
+            if (! in_array($method, $methodsFound)) {
+                throw new ArchitectureException("method not found: $method");
+            }
         }
     }
 
     /**
-     * @throws \Throwable
+     * @throws ArchitectureException
      */
     private function readersFound(): void
     {
-        foreach (self::ReadExtensions as $extension) {
+        foreach ($this->readExtensions as $extension) {
             $this->findFile('Readers', 'Read', ucfirst($extension));
         }
     }
 
     /**
-     * @throws \Throwable
+     * @throws ArchitectureException
      */
     private function writersFound(): void
     {
-        foreach (self::WriteExtensions as $extension) {
+        foreach ($this->writeExtensions as $extension) {
             $this->findFile('Writers', 'Write', ucfirst($extension));
         }
     }
 
     /**
-     * @throws \Throwable
+     * @throws ArchitectureException
      */
     private function findFile(string $directory, string $type, string $extension): void
     {
         $path = sprintf('%s/%s/Endpoint%s%s.php', __DIR__.'/../Endpoints', $directory, $type, $extension);
-        throw_if(! file_exists($path), new ArchitectureException("$type-file not found for extension $extension in Endpoints/$directory"));
+        if (! file_exists($path)) {
+            throw new ArchitectureException("$type-file not found for extension $extension in Endpoints/$directory");
+        }
     }
 }

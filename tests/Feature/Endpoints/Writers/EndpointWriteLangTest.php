@@ -36,7 +36,7 @@ class EndpointWriteLangTest extends ConfigTestCase
     /**
      * @throws EndpointCodeException|DataReadException
      */
-    public function testWriteLang(string $exception, string $root, array $fileBases, array $rows): void
+    public function test_write_lang(string $exception, string $root, array $fileBases, array $rows): void
     {
         Storage::fake(StorageBase::DEFAULT_DISK);
         if ($exception == '') {

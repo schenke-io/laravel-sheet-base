@@ -9,7 +9,7 @@ use Workbench\App\Endpoints\DummySchema;
 
 class EndpointWriteArrayTest extends ConfigTestCase
 {
-    public function testReleasePipeline(): void
+    public function test_release_pipeline(): void
     {
         $pipeline = new PipelineData(new DummySchema);
 

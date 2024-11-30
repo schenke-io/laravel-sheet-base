@@ -46,7 +46,7 @@ return (new class() extends \SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema
     /**
      * @throws SchemaVerifyColumnsException
      */
-    public function testSchemas(string $exception, string $php): void
+    public function test_schemas(string $exception, string $php): void
     {
         if ($exception != '') {
             $this->expectException($exception);
@@ -57,7 +57,7 @@ return (new class() extends \SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema
         $testClass->verify('test');
     }
 
-    public function testGetFunctions()
+    public function test_get_functions()
     {
         $testClass = $this->getClass('$this->addId();$this->addString("name");');
         $this->assertCount(2, $testClass->getColumns());
@@ -91,25 +91,25 @@ return (new class() extends \SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema
     /**
      * @return void
      */
-    public function testAddColumnNonLanguageOrClosureWithoutException(ColumnType $columnType)
+    public function test_add_column_non_language_or_closure_without_exception(ColumnType $columnType)
     {
         $this->expectNotToPerformAssertions();
         $this->getClass('$this->addId();$this->add'.$columnType->value.'("a");');
     }
 
-    public function testAddColumnLanguage()
+    public function test_add_column_language()
     {
         $this->expectNotToPerformAssertions();
         $this->getClass("\$this->addDot();\$this->addLanguage('de');");
     }
 
-    public function testAddColumnClosureNull()
+    public function test_add_column_closure_null()
     {
         $this->expectNotToPerformAssertions();
         $this->getClass("\$this->addId();\$this->addClosure('de');");
     }
 
-    public function testAddColumnClosure()
+    public function test_add_column_closure()
     {
         $this->expectNotToPerformAssertions();
         new class extends SheetBaseSchema

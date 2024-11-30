@@ -2,14 +2,16 @@
 
 namespace SchenkeIo\LaravelSheetBase\Elements;
 
-use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
+use Illuminate\Console\Command;
+use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
+use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 
 /**
  * generic data structure used inside the pipeline
  */
 final class PipelineData
 {
-    protected array $table = [];
+    protected array $data = [];
 
     protected string $idName = 'id';
 
@@ -24,14 +26,66 @@ final class PipelineData
     public static function fromArray(array $data, SheetBaseSchema $sheetBaseSchema): PipelineData
     {
         $me = new PipelineData($sheetBaseSchema);
-        $me->table = $data;
+        $me->data = $data;
 
         return $me;
     }
 
+    public static function fromType(PipelineType $pipelineType): PipelineData
+    {
+        return new PipelineData($pipelineType->getSchema());
+    }
+
     /**
-     * @throws DataReadException
+     * we return the data based on the pipeline type
      */
+    public function toArray(): array
+    {
+        return $this->data;
+    }
+
+    /**
+     * @return array list of keys which were removed by the filter
+     *
+     * @throws EndpointCodeException
+     */
+    public function filterKeysOff(
+        Command $cmd,
+        string $namePipeline,
+        ?IsReader $filterEndpoint = null): array
+    {
+        if (is_null($filterEndpoint)) {
+            return [];
+        }
+
+        $pipelineDataFilter = PipelineData::fromType($this->pipelineType);
+        $filterEndpoint->fillPipeline($pipelineDataFilter);
+
+        $keysPumped = array_keys($this->toArray());
+        $keysFilter = array_keys($pipelineDataFilter->toArray());
+        $keysToRemove = array_values(array_diff($keysPumped, $keysFilter));
+        $keysMissing = array_diff($keysFilter, $keysPumped);
+        /*
+         * remove data from pipeline
+         */
+        foreach ($keysToRemove as $key) {
+            unset($this->data[$key]);
+        }
+        $cmd->info(
+            sprintf(
+                "pipeline '%s' received %d records, %d passed, filter '%s' filtered %d out, keys missing: %d",
+                $namePipeline,
+                count($keysPumped),
+                count($this->data),
+                $filterEndpoint->toString(),
+                count($keysToRemove),
+                count($keysMissing)
+            )
+        );
+
+        return $keysToRemove;
+    }
+
     public function addRow(array $row): void
     {
         $id = '';
@@ -44,6 +98,12 @@ final class PipelineData
             // skip empty ID values
             return;
         }
+        if ($row == []) {
+            // we just had an id field
+            $this->data[$id] = null;
+
+            return;
+        }
         /*
          * we have a valid id
          */
@@ -52,37 +112,13 @@ final class PipelineData
             if ($columnName == $this->idName) {
                 continue;
             }
-            /*
-             * what is the default value if not null
-             */
-            $nullValue = $columnDefinition->type->format(null);
-            if ($this->pipelineType == PipelineType::Tree) {
-                /*
-                 * organize data in tree format
-                 */
-                $key = "$id.$columnName";
-                if (isset($row[$columnName])) {
-                    $cellValue = $columnDefinition->format($columnName, $row);
-                } else {
-                    $cellValue = data_get($this->table, $key, $nullValue);
-                }
-                data_set($this->table, $key, $cellValue);
-            } else {
-                /*
-                 * organize data in key => array format
-                 */
-                if (isset($row[$columnName])) {
-                    $cellValue = $columnDefinition->format($columnName, $row);
-                } else {
-                    $cellValue = $this->table[$id][$columnName] ?? $nullValue;
-                }
-                $this->table[$id][$columnName] = $cellValue;
+            if (
+                isset($row[$columnName]) ||  // we have data to store
+                ! isset($this->data[$id][$columnName]) // we have to set empty data
+            ) {
+                // set or overwrite
+                $this->data[$id][$columnName] = $columnDefinition->format($columnName, $row);
             }
         }
-    }
-
-    public function toArray(): array
-    {
-        return $this->table;
     }
 }

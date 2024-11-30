@@ -10,7 +10,7 @@ use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class StorageFileReaderTest extends ConfigTestCase
 {
-    public function testFileNotFound()
+    public function test_file_not_found()
     {
         Storage::fake('sheet-base');
         $this->expectException(EndpointCodeException::class);
@@ -30,7 +30,7 @@ class StorageFileReaderTest extends ConfigTestCase
         };
     }
 
-    public function testStorageGet(): void
+    public function test_storage_get(): void
     {
         $path = '/testfile.txt';
         $content = 'some random text';
@@ -56,5 +56,6 @@ class StorageFileReaderTest extends ConfigTestCase
             }
         };
         $this->assertEquals($content, $file->publicStorageGet($path));
+        $this->assertIsString($file->toString());
     }
 }

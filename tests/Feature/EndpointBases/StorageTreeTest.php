@@ -10,7 +10,7 @@ use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 #[AllowDynamicProperties]
 class StorageTreeTest extends ConfigTestCase
 {
-    public function testEmptyRootReadParseException()
+    public function test_empty_root_read_parse_exception()
     {
         $this->expectException(EndpointCodeException::class);
         $tree = new class extends StorageTree

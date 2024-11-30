@@ -13,7 +13,6 @@ abstract class StorageBase implements IsEndpoint
 
     /**
      * @throws FileSystemNotDefinedException
-     * @throws \Throwable
      */
     public function __construct()
     {
@@ -22,5 +21,10 @@ abstract class StorageBase implements IsEndpoint
                 "the file system disk '{$this->disk}' is not defined in /config/filesystems.php"
             );
         }
+    }
+
+    public function toString(): string
+    {
+        return 'storage:'.$this->disk;
     }
 }

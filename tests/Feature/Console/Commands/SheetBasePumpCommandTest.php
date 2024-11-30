@@ -11,7 +11,7 @@ use Workbench\App\Endpoints\DummyWrite;
 
 class SheetBasePumpCommandTest extends ConfigTestCase
 {
-    public function testNoErrors(): void
+    public function test_no_errors(): void
     {
         Config::set('filesystems.disks.sheet-base', []);
         Config::set(SheetBaseConfig::CONFIG_FILE_BASE.'.pipelines', [

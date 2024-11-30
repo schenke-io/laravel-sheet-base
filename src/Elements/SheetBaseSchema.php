@@ -41,7 +41,7 @@ abstract class SheetBaseSchema
      */
     private function newColumn(string $name, ColumnSchema $columnDefinition): void
     {
-        $track = debug_backtrace(0, 4);
+        $track = debug_backtrace(0, 3);
         $source = sprintf('class %s line %d', $track[2]['class'], $track[2]['line']);
 
         if ($name == '') {

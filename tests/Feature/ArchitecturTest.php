@@ -3,7 +3,7 @@
 use SchenkeIo\LaravelSheetBase\Contracts\IsEndpoint;
 
 test('debug functions not used anymore')
-    ->expect(['dd', 'dump', 'ddd'])
+    ->expect(['dd', 'dump', 'ddd', 'ray'])
     ->not->toBeUsed();
 
 test('eval only used in tests')

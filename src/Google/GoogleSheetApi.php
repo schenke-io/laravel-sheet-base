@@ -6,41 +6,89 @@ use Google\Client;
 use Google\Service\Drive;
 use Google\Service\Exception;
 use Google\Service\Sheets;
-use Google\Service\Sheets\Resource\SpreadsheetsValues;
 use Google\Service\Sheets\ValueRange;
+use Google_Service_Sheets_BatchUpdateSpreadsheetRequest;
+use Google_Service_Sheets_Request;
+use SchenkeIo\LaravelSheetBase\Exceptions\GoogleServiceException;
 
 class GoogleSheetApi
 {
-    public SpreadsheetsValues $spreadsheetsValues;
+    public Sheets $sheets;
 
-    public function __construct()
+    public function __construct(protected Client $client = new Client)
     {
-        $client = new Client;
-        $client->useApplicationDefaultCredentials();
-        $client->addScope(Drive::DRIVE);
-        $this->spreadsheetsValues = (new Sheets($client))->spreadsheets_values;
+        $this->client->useApplicationDefaultCredentials();
+        $this->client->addScope(Drive::DRIVE);
+        $this->sheets = new Sheets($this->client);
     }
 
     /**
-     * @throws Exception
+     * @return array[]
+     *
+     * @throws GoogleServiceException
      */
     public function getData(string $spreadsheetId, string $sheetName): array
     {
-        return $this->spreadsheetsValues
-            ->get($spreadsheetId, $sheetName)
-            ->getValues();
+        try {
+            return $this->sheets
+                ->spreadsheets_values
+                ->get($spreadsheetId, $sheetName)
+                ->getValues();
+        } catch (Exception $e) {
+            throw GoogleServiceException::fromGetValueRange($e->getMessage());
+        }
     }
 
     /**
-     * @throws Exception
+     * @throws GoogleServiceException
      */
-    public function putData(string $spreadsheetId, string $range, array $values, string $majorDimension = 'ROWS', $optParams = []): Sheets\UpdateValuesResponse
+    public function putData(string $spreadsheetId, string $range, array $values, string $majorDimension = 'ROWS', array $optParams = []): Sheets\UpdateValuesResponse
     {
-        $valueRange = new ValueRange;
-        $valueRange->setValues([$values]);
-        $valueRange->setMajorDimension($majorDimension);
-        $optParams['valueInputOption'] = 'RAW';
+        try {
+            $valueRange = new ValueRange;
+            $valueRange->setValues([$values]);
+            $valueRange->setMajorDimension($majorDimension);
+            $optParams['valueInputOption'] = 'RAW';
 
-        return $this->spreadsheetsValues->update($spreadsheetId, $range, $valueRange, $optParams);
+            return $this->sheets->spreadsheets_values->update($spreadsheetId, $range, $valueRange, $optParams);
+        } catch (Exception $e) {
+            throw GoogleServiceException::fromUpdateValueResponse($e->getMessage());
+        }
+    }
+
+    /**
+     * @param  Google_Service_Sheets_Request[]  $requests
+     *
+     * @throws GoogleServiceException
+     */
+    public function batchUpdate(string $spreadsheetId, array $requests): void
+    {
+        try {
+            $batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest([
+                'requests' => $requests,
+            ]);
+            $this->sheets->spreadsheets->batchUpdate($spreadsheetId, $batchUpdateRequest);
+        } catch (Exception $e) {
+            throw GoogleServiceException::fromBatchupdateResponse($e->getMessage());
+        }
+    }
+
+    /**
+     * @throws GoogleServiceException
+     */
+    public function getSheetId(string $spreadsheetId, string $sheetName): int
+    {
+        try {
+            $sheets = $this->sheets->spreadsheets->get($spreadsheetId)->getSheets();
+            foreach ($sheets as $sheet) {
+                if ($sheet->getProperties()->getTitle() === $sheetName) {
+                    return $sheet->getProperties()->getSheetId();
+                }
+            }
+
+            return -1;
+        } catch (Exception $e) {
+            throw GoogleServiceException::fromGetSpreadsheet($e->getMessage());
+        }
     }
 }

@@ -9,7 +9,7 @@ use Workbench\App\Endpoints\PersonsWriteNeon;
 
 class EndpointExplainTest extends ConfigTestCase
 {
-    public function testExplain(): void
+    public function test_explain(): void
     {
         $this->assertIsString((new PersonsReadPsv)->explain());
         $this->assertIsString((new PersonsWriteNeon)->explain());

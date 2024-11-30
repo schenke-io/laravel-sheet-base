@@ -8,7 +8,7 @@ use Spatie\LaravelPackageTools\Package;
 
 class LaravelSheetBaseServiceProviderTest extends TestCase
 {
-    public function testConfigurePackage()
+    public function test_configure_package()
     {
         $serviceProvider = new LaravelSheetBaseServiceProvider($this->app);
         $package = new Package;

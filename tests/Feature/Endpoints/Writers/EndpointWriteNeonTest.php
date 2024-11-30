@@ -6,15 +6,11 @@ use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
 use SchenkeIo\LaravelSheetBase\Endpoints\Writers\EndpointWriteNeon;
-use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class EndpointWriteNeonTest extends ConfigTestCase
 {
-    /**
-     * @throws EndpointCodeException
-     */
-    public function testWriteNeon()
+    public function test_write_neon()
     {
         $path = '/test.neon';
         //dd(Storage::getConfig());

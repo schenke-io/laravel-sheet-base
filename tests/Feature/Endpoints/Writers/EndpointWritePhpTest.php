@@ -10,7 +10,7 @@ use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class EndpointWritePhpTest extends ConfigTestCase
 {
-    public function testWritePhp()
+    public function test_write_php()
     {
         $path = '/test.php';
         //dd(Storage::getConfig());

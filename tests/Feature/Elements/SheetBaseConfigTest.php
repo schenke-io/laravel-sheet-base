@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseConfig;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
-use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
-use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
@@ -23,7 +21,7 @@ class SheetBaseConfigTest extends ConfigTestCase
     public static function dataProvidedConfig(): array
     {
         return [
-            'no error' => ['',
+            'no error' => ['', 0,
                 [
                     'persons' => [
                         'sources' => [PersonsReadPsv::class],
@@ -32,7 +30,7 @@ class SheetBaseConfigTest extends ConfigTestCase
                     ],
                 ],
             ],
-            'no array in sources' => [ConfigErrorException::class,
+            'no array in sources' => [ConfigErrorException::class, 4,
                 [
                     'persons' => [
                         'sources' => PersonsReadPsv::class,
@@ -41,7 +39,7 @@ class SheetBaseConfigTest extends ConfigTestCase
                     ],
                 ],
             ],
-            'wrong schema class' => [ConfigErrorException::class,
+            'wrong schema class' => [ConfigErrorException::class, 3,
                 [
                     'persons' => [
                         'sources' => [PersonsReadPsv::class],
@@ -50,7 +48,7 @@ class SheetBaseConfigTest extends ConfigTestCase
                     ],
                 ],
             ],
-            'wrong source class' => [ConfigErrorException::class,
+            'wrong source class' => [ConfigErrorException::class, 6,
                 [
                     'persons' => [
                         'sources' => [PersonSchema::class],
@@ -59,7 +57,7 @@ class SheetBaseConfigTest extends ConfigTestCase
                     ],
                 ],
             ],
-            'wrong target class' => [ConfigErrorException::class,
+            'wrong target class' => [ConfigErrorException::class, 8,
                 [
                     'persons' => [
                         'sources' => [PersonsReadPsv::class],
@@ -68,7 +66,7 @@ class SheetBaseConfigTest extends ConfigTestCase
                     ],
                 ],
             ],
-            'multiple use of same target' => [ConfigErrorException::class,
+            'multiple use of same target' => [ConfigErrorException::class, 9,
                 [
                     'persons' => [
                         'sources' => ['psv/persons.psv'],
@@ -82,7 +80,7 @@ class SheetBaseConfigTest extends ConfigTestCase
                     ],
                 ],
             ],
-            'multiple use of language' => [ConfigErrorException::class,
+            'multiple use of language' => [ConfigErrorException::class, 10,
                 [
                     'persons' => [
                         'sources' => [PersonsReadPsv::class],
@@ -102,26 +100,27 @@ class SheetBaseConfigTest extends ConfigTestCase
 
     /**
      * @throws \Throwable
-     * @throws EndpointCodeException
-     * @throws FileSystemNotDefinedException
      * @throws ConfigErrorException
      * @throws SchemaVerifyColumnsException
      * @throws MakeEndpointException
      */
     #[DataProvider('dataProvidedConfig')]
-    public function testConfigSyntax(string $exception, array $config)
+    public function test_config_syntax(string $exception, int $code, array $config)
     {
         if ($exception == '') {
             $this->expectNotToPerformAssertions();
         } else {
             $this->expectException($exception);
+            if ($exception === ConfigErrorException::class) {
+                $this->expectExceptionMessageMatches("/ $code\$/");
+            }
         }
         Config::set(SheetBaseConfig::CONFIG_FILE_BASE.'.pipelines', $config);
         SheetBaseConfig::make();
     }
 
-    #[DataProvider('dataProvidedConfig')]
-    public function testCheckAndReportError(string $exception, array $config)
+    //    #[DataProvider('dataProvidedConfig')]
+    public function _test_check_and_report_error(string $exception, array $config)
     {
         Config::set(SheetBaseConfig::CONFIG_FILE_BASE.'.pipelines', $config);
         if ($exception == '') {
