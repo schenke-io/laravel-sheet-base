@@ -2,9 +2,11 @@
 
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\EndpointBases;
 
+use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFileReadExcel;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
+use Workbench\App\Endpoints\PersonSchema;
 
 class StorageFileReadExcelTest extends ConfigTestCase
 {
@@ -51,5 +53,24 @@ class StorageFileReadExcelTest extends ConfigTestCase
             protected string $delimiter = ',';
         };
         $this->assertEquals($path, $endpoint->path);
+    }
+
+    public function test_multi_line_data()
+    {
+        $path = 'psv/multiline.psv';
+        $endpoint = new class($path) extends StorageFileReadExcel
+        {
+            protected string $extension = 'psv';
+
+            protected string $delimiter = '|';
+        };
+        $content = [
+            1 => ['name' => 'yes'],
+            2 => ['name' => "line1\nline2\n|"],
+        ];
+        $pipelineData = new PipelineData(new PersonSchema);
+        $endpoint->fillPipeline($pipelineData);
+
+        $this->assertEquals($content, $pipelineData->toArray());
     }
 }

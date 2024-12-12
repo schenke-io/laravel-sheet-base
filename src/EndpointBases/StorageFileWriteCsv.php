@@ -2,9 +2,10 @@
 
 namespace SchenkeIo\LaravelSheetBase\EndpointBases;
 
+use Illuminate\Support\Facades\File;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
-use SchenkeIo\LaravelSheetBase\Exceptions\DataQualityException;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 class StorageFileWriteCsv extends StorageFileWriter
 {
@@ -21,23 +22,15 @@ class StorageFileWriteCsv extends StorageFileWriter
         }
     }
 
-    /**
-     * @throws DataQualityException
-     */
     public function releasePipeline(PipelineData $pipelineData, string $writingClass): void
     {
-        $headers = array_keys($pipelineData->sheetBaseSchema->getColumns());
-        $content = implode($this->delimiter, $headers)."\n";
+        $idName = $pipelineData->sheetBaseSchema->idName;
+        $tmpFile = tempnam(sys_get_temp_dir(), 'csv');
+        $writer = SimpleExcelWriter::create($tmpFile, 'csv', null, $this->delimiter, false);
         foreach ($pipelineData->toArray() as $index => $row) {
-            array_unshift($row, $index);
-            // we exit when the data includes the delimiter
-            foreach ($row as $cell) {
-                if (str_contains($cell, $this->delimiter)) {
-                    throw new DataQualityException("the processed data included the delimiter: $cell");
-                }
-            }
-            $content .= implode($this->delimiter, $row)."\n";
+            $row = array_merge([$idName => $index], $row); // add index to the beginning
+            $writer->addRow($row);
         }
-        $this->storagePut($this->path, $content);
+        $this->storagePut($this->path, File::get($tmpFile));
     }
 }

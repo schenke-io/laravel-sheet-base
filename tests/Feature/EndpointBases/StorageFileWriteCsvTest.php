@@ -45,8 +45,8 @@ class StorageFileWriteCsvTest extends ConfigTestCase
         $path = '/testfile.psv';
         $pipeline = new PipelineData(new DummySheetBaseSchema);
         $pipeline->addRow(['a' => 1, 'b' => 2]);
-        $pipeline->addRow(['a' => 2, 'b' => 3]);
-        $content = "a|b\n1|2\n2|3\n";
+        $pipeline->addRow(['a' => 2, 'b' => "line1\nline2\nline3\n"]);
+        $content = "a|b\n1|2\n2|\"line1\nline2\nline3\"\n";
 
         Storage::fake('sheet-base');
         $file = new class($path) extends StorageFileWriteCsv
@@ -65,7 +65,7 @@ class StorageFileWriteCsvTest extends ConfigTestCase
         $pipeline = new PipelineData(new DummySheetBaseSchema);
         $pipeline->addRow(['a' => 1, 'b' => 'a|b']);
         $pipeline->addRow(['a' => 2, 'b' => 3]);
-        $this->expectException(DataQualityException::class);
+        $content = "a|b\n1|\"a|b\"\n2|3\n";
 
         Storage::fake('sheet-base');
         $file = new class($path) extends StorageFileWriteCsv
@@ -75,6 +75,7 @@ class StorageFileWriteCsvTest extends ConfigTestCase
             protected string $delimiter = '|';
         };
         $file->releasePipeline($pipeline, '');
+        $this->assertEquals($content, Storage::disk('sheet-base')->get($path));
     }
 
     public function test_delimiter_missing()

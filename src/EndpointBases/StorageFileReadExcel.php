@@ -2,15 +2,13 @@
 
 namespace SchenkeIo\LaravelSheetBase\EndpointBases;
 
+use Illuminate\Support\Facades\File;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
-use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
-use SchenkeIo\LaravelSheetBase\Skills\ReadExcel;
+use Spatie\SimpleExcel\SimpleExcelReader;
 
 class StorageFileReadExcel extends StorageFileReader
 {
-    use ReadExcel;
-
     protected string $extension = '';
 
     protected string $delimiter = '';
@@ -25,18 +23,17 @@ class StorageFileReadExcel extends StorageFileReader
     }
 
     /**
-     * get data and fill it into the pipeline
-     *
-     * @throws DataReadException
+     * get data and fill it into the pipeline     *
      */
     public function fillPipeline(PipelineData &$pipelineData): void
     {
-        foreach ($this->getCsvLines(
-            content: $this->storageGet($this->path),
-            separator: $this->delimiter,
-            sheetBaseSchema: $pipelineData->sheetBaseSchema
-        ) as $row) {
-            $pipelineData->addRow($row);
-        }
+        $tmpFile = tempnam(sys_get_temp_dir(), 'csv');
+        File::put($tmpFile, $this->storageGet($this->path));
+        SimpleExcelReader::create($tmpFile, 'csv')
+            ->useDelimiter($this->delimiter)
+            ->getRows()
+            ->each(
+                fn (array $row) => $pipelineData->addRow($row)
+            );
     }
 }

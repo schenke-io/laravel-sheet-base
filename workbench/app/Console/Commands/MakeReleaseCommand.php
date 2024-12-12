@@ -95,7 +95,8 @@ class MakeReleaseCommand extends Command
     /**
      * @throws FileNotFoundException
      */
-    private function updatePhpStanBadge():void {
+    private function updatePhpStanBadge(): void
+    {
         $badge = MakeBadge::makePhpStanBadge('phpstan.neon');
         $badge->store('.github/phpstan.svg', BadgeStyle::FlatSquare);
     }
