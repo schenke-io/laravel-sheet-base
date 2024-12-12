@@ -66,7 +66,7 @@ class StorageFileReadExcelTest extends ConfigTestCase
         };
         $content = [
             1 => ['name' => 'yes'],
-            2 => ['name' => "line1\nline2\n|"],
+            2 => ['name' => 'line1'.PHP_EOL.'line2'.PHP_EOL.'|'],
         ];
         $pipelineData = new PipelineData(new PersonSchema);
         $endpoint->fillPipeline($pipelineData);
