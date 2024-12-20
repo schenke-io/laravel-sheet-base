@@ -91,6 +91,7 @@ final class PipelineData
 
     public function addRow(array $row): void
     {
+
         $id = '';
         if (isset($row[$this->idName])) {
             // remove the id if set
@@ -108,14 +109,13 @@ final class PipelineData
             return;
         }
         /*
-         * we have a valid id
+         * we have a valid id with a data row
          */
         foreach ($this->sheetBaseSchema->getColumns() as $columnName => $columnDefinition) {
-            // we still have the id column
             if ($columnName == $this->idName) {
-                continue;
-            }
-            if (
+                // we still have the id column defined in the schema
+                $this->data[$id] = $this->data[$id] ?? [];
+            } elseif (
                 isset($row[$columnName]) ||  // we have data to store
                 ! isset($this->data[$id][$columnName]) // we have to set empty data
             ) {
