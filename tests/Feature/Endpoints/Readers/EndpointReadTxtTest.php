@@ -17,17 +17,17 @@ class EndpointReadTxtTest extends ConfigTestCase
         return [
             'ok 1' => [
                 [
-                    1 => null,
-                    2 => null,
+                    1 => [],
+                    2 => [],
                 ], "1\n2\n"],
             'ok 2' => [
                 [
-                    1 => null,
-                    3 => null,
+                    1 => [],
+                    3 => [],
                 ], "1\n\n\n3\n"],
             'ok 3' => [
                 [
-                    3 => null,
+                    3 => [],
                 ], "\n3\n"],
         ];
     }

@@ -21,6 +21,7 @@ yarn-error.log
 /_old
 /build
 
-
 .badita.yaml
 
+build/logs/clover.xml
+build/report.junit.xml

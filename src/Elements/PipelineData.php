@@ -11,6 +11,9 @@ use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
  */
 final class PipelineData
 {
+    /**
+     * @var array<string,array<string,array>>
+     */
     protected array $data = [];
 
     protected string $idName = 'id';
@@ -100,7 +103,7 @@ final class PipelineData
         }
         if ($row == []) {
             // we just had an id field
-            $this->data[$id] = null;
+            $this->data[$id] = [];
 
             return;
         }
