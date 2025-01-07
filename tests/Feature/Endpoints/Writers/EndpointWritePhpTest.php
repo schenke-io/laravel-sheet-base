@@ -13,7 +13,6 @@ class EndpointWritePhpTest extends ConfigTestCase
     public function test_write_php()
     {
         $path = '/test.php';
-        //dd(Storage::getConfig());
         $schema = new class extends SheetBaseSchema
         {
             protected function define(): void

@@ -12,6 +12,8 @@ class EndpointReadArray extends DataReader
 {
     /**
      * get an array of rows to be filled into the pipeline
+     *
+     * @return array|array[]
      */
     public function getArray(): array
     {

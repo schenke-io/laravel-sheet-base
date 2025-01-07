@@ -9,6 +9,8 @@ abstract class DataReader implements IsReader
 {
     /**
      * get an array of rows to be filled into the pipeline
+     *
+     * @return array<int,array>
      */
     abstract public function getArray(): array;
 

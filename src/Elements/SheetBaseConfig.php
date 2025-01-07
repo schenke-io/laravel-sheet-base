@@ -44,7 +44,7 @@ final class SheetBaseConfig
             if ($pipeline->isLanguage) {
                 $pipelineIsLanguageCount++;
                 if ($pipelineIsLanguageCount > 1) {
-                    //dd($pipelineIsLanguageCount);
+                    // dd($pipelineIsLanguageCount);
                     throw ConfigErrorException::languagePipelineDefinedTwice($pipelineName);
                 }
             }
@@ -69,6 +69,9 @@ final class SheetBaseConfig
         return null;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function getConfig(): array
     {
         return config(self::CONFIG_FILE_BASE.'.pipelines') ?? [];

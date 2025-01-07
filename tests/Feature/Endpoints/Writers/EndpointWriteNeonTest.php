@@ -13,7 +13,6 @@ class EndpointWriteNeonTest extends ConfigTestCase
     public function test_write_neon()
     {
         $path = '/test.neon';
-        //dd(Storage::getConfig());
         $schema = new class extends SheetBaseSchema
         {
             protected function define(): void

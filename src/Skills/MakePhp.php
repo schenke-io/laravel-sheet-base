@@ -6,6 +6,9 @@ trait MakePhp
 {
     use Comments;
 
+    /**
+     * @param  array[]|array[][]  $data
+     */
     protected function getPhp(array $data, string $writer): string
     {
 
@@ -23,6 +26,9 @@ PHP;
 
     }
 
+    /**
+     * @param  array[]|array[][]  $data
+     */
     protected function prettyArray(array $data): string
     {
 

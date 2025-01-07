@@ -88,7 +88,7 @@ class MakeReleaseCommand extends Command
      */
     private function updateCoverageBadge(): void
     {
-        $badge = MakeBadge::makeCoverageBadge('build/logs/clover.xml', '44cc11');
+        $badge = MakeBadge::makeCoverageBadge('build/logs/clover.xml');
         $badge->store('.github/coverage.svg', BadgeStyle::FlatSquare);
     }
 

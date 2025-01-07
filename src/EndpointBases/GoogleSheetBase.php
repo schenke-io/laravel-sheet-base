@@ -40,6 +40,8 @@ abstract class GoogleSheetBase implements IsEndpoint
     }
 
     /**
+     * @return array[]
+     *
      * @throws GoogleServiceException
      */
     public function get(string $range = ''): array

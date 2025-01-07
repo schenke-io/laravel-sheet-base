@@ -24,6 +24,7 @@ class Chunks
 
     /**
      * @param  array<int,mixed>  $data
+     * @return array[]
      */
     public static function splitIntoBatches(array $data): array
     {

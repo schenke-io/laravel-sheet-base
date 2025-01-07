@@ -41,6 +41,9 @@ readonly class GoogleRange
         }
     }
 
+    /**
+     * @return array<string,int>
+     */
     public function asRange(): array
     {
         return [

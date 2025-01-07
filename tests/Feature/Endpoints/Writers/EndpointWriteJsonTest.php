@@ -13,7 +13,6 @@ class EndpointWriteJsonTest extends ConfigTestCase
     public function test_release_pipeline(): void
     {
         $path = '/test.json';
-        //dd(Storage::getConfig());
         $schema = new class extends SheetBaseSchema
         {
             protected function define(): void

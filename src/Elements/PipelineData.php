@@ -26,6 +26,9 @@ final class PipelineData
         $this->pipelineType = $this->sheetBaseSchema->getPipelineType();
     }
 
+    /**
+     * @param  array<string,array<string,array>>  $data
+     */
     public static function fromArray(array $data, SheetBaseSchema $sheetBaseSchema): PipelineData
     {
         $me = new PipelineData($sheetBaseSchema);
@@ -41,6 +44,8 @@ final class PipelineData
 
     /**
      * we return the data based on the pipeline type
+     *
+     * @return array<string,array<string,array>>
      */
     public function toArray(): array
     {
@@ -48,7 +53,7 @@ final class PipelineData
     }
 
     /**
-     * @return array list of keys which were removed by the filter
+     * @return array<int,string> list of keys which were removed by the filter
      *
      * @throws EndpointCodeException
      */

@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseConfig;
 use SchenkeIo\LaravelSheetBase\EndpointBases\StorageBase;
 use SchenkeIo\LaravelSheetBase\Exceptions\ConfigErrorException;
-use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
-use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 
@@ -19,8 +17,6 @@ class SheetBaseCheckCommand extends Command
     public $description = 'verifies the syntax of /config/sheet-base.php';
 
     /**
-     * @throws EndpointCodeException
-     * @throws FileSystemNotDefinedException
      * @throws ConfigErrorException
      * @throws SchemaVerifyColumnsException
      * @throws MakeEndpointException
