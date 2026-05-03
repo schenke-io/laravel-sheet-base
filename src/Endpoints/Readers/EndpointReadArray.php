@@ -11,9 +11,7 @@ use SchenkeIo\LaravelSheetBase\EndpointBases\DataReader;
 class EndpointReadArray extends DataReader
 {
     /**
-     * get an array of rows to be filled into the pipeline
-     *
-     * @return array|array[]
+     * @return array<int, array<string, mixed>>
      */
     public function getArray(): array
     {

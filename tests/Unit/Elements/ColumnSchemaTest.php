@@ -6,7 +6,7 @@ use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SchenkeIo\LaravelSheetBase\Elements\ColumnSchema;
-use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
+use SchenkeIo\LaravelSheetBase\Enums\ColumnType;
 
 class ColumnSchemaTest extends TestCase
 {

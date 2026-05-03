@@ -3,7 +3,7 @@
 namespace SchenkeIo\LaravelSheetBase\Google;
 
 use Google\Service\Exception as Google_Service_Expectation;
-use Google_Service_Sheets_Request;
+use Google\Service\Sheets\Request;
 use Illuminate\Console\Command;
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadGoogleSheet;
@@ -24,6 +24,8 @@ class GoogleBackgroundPainter
     }
 
     /**
+     * @param  string[]  $keysToRemove
+     *
      * @throws GoogleServiceException
      */
     public function markRed(array $keysToRemove): void
@@ -39,6 +41,7 @@ class GoogleBackgroundPainter
          * read first row, find id
          */
         $sourceKeys = array_map(fn ($x) => $x[0], $sheet->get('A2:A'));
+        /** @var Request[] $requests */
         $requests = [];
         $sheetId = $sheet->getSheetId();
 
@@ -52,10 +55,10 @@ class GoogleBackgroundPainter
          * now send it all in batches
          */
         $batches = Chunks::splitIntoBatches($requests);
-        //        dd($sourceKeys,array_keys($requests),array_keys($batches));
 
         foreach ($batches as $batchIndex => $batch) {
             try {
+                /** @var Request[] $batch */
                 $sheet->googleSheetApi
                     ->batchUpdate($sheet->spreadsheetId, $batch);
                 $this->cmd->info("batch $batchIndex updated.");
@@ -66,9 +69,9 @@ class GoogleBackgroundPainter
         $this->cmd->info('');
     }
 
-    protected function getRedBackgroundRequest(int $sheetId, int $row): Google_Service_Sheets_Request
+    protected function getRedBackgroundRequest(int $sheetId, int $row): Request
     {
-        return new Google_Service_Sheets_Request([
+        return new Request([
             'repeatCell' => [
                 'cell' => [
                     'userEnteredFormat' => [

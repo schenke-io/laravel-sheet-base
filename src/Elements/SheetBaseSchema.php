@@ -2,17 +2,35 @@
 
 namespace SchenkeIo\LaravelSheetBase\Elements;
 
-use SchenkeIo\LaravelSheetBase\Elements\Columns\ControlColumns;
-use SchenkeIo\LaravelSheetBase\Elements\Columns\NumericColumns;
-use SchenkeIo\LaravelSheetBase\Elements\Columns\TextColumns;
+use SchenkeIo\LaravelSheetBase\Elements\Columns\HasColumns;
+use SchenkeIo\LaravelSheetBase\Enums\ColumnType;
+use SchenkeIo\LaravelSheetBase\Enums\PipelineType;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaAddColumnException;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 
+/**
+ * Class SheetBaseSchema
+ *
+ * Abstract base class for defining the structure of data in the pipeline.
+ *
+ * Main Responsibilities:
+ * - Schema Definition: Allows defining columns and their types using a fluent interface.
+ * - Validation: Verifies that the schema follows architectural rules (e.g., single ID column).
+ * - Metadata Management: Tracks the primary key and the type of pipeline (Table, Lang, etc.).
+ *
+ * Usage Example:
+ * ```php
+ * class MySchema extends SheetBaseSchema {
+ *     protected function define(): void {
+ *         $this->id('id');
+ *         $this->string('name');
+ *     }
+ * }
+ * ```
+ */
 abstract class SheetBaseSchema
 {
-    use ControlColumns;
-    use NumericColumns;
-    use TextColumns;
+    use HasColumns;
 
     public string $idName = '';
 
@@ -42,7 +60,9 @@ abstract class SheetBaseSchema
     private function newColumn(string $name, ColumnSchema $columnDefinition): void
     {
         $track = debug_backtrace(0, 3);
-        $source = sprintf('class %s line %d', $track[2]['class'], $track[2]['line']);
+        $class = $track[2]['class'] ?? 'unknown';
+        $line = $track[2]['line'] ?? 0;
+        $source = sprintf('class %s line %d', $class, $line);
 
         if ($name == '') {
             throw new SchemaAddColumnException($source, 'column name cannot be empty string');

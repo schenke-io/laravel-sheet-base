@@ -39,7 +39,7 @@ class StorageTreeWriterTest extends ConfigTestCase
                 $this->storagePut($path, $content);
             }
 
-            public function releasePipeline(PipelineData $pipelineData, string $writingClass)
+            public function releasePipeline(PipelineData $pipelineData, string $writingClass): void
             {
                 // TODO: Implement releasePipeline() method.
             }

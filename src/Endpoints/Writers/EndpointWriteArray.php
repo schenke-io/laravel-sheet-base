@@ -7,6 +7,7 @@ use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 
 class EndpointWriteArray implements IsWriter
 {
+    /** @var array<string, array<string, mixed>> */
     public array $arrayData = [];
 
     /**

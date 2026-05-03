@@ -7,6 +7,24 @@ use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
 use Throwable;
 
+/**
+ * Class StorageTree
+ *
+ * Base class for endpoints that manage a directory tree of files in storage.
+ *
+ * Main Responsibilities:
+ * - Root Directory Management: Ensures a root directory is defined for the tree.
+ * - File Base Validation: Tracks which file names (bases) are allowed within the tree.
+ * - Endpoint Interface: Implements basic endpoint functionality for directory-based storage.
+ *
+ * Usage Example:
+ * ```php
+ * class MyStorageTree extends StorageTree {
+ *     public string $root = 'translations';
+ *     public array $fileBases = ['en', 'de', 'fr'];
+ * }
+ * ```
+ */
 abstract class StorageTree extends StorageBase implements IsEndpoint
 {
     /**
@@ -16,6 +34,8 @@ abstract class StorageTree extends StorageBase implements IsEndpoint
 
     /**
      * list of file-bases (made from keys) which are OK to be written
+     *
+     * @var array<int, string>
      */
     public array $fileBases = [];
 

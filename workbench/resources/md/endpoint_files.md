@@ -39,3 +39,19 @@ class MyData  extends EndpointWriteNeon
 
 ##### Extension and endpoints
 
+The following extensions are automatically mapped to endpoints:
+
+| extension | reader class | writer class |
+|---|---|---|
+| array | EndpointReadArray | EndpointWriteArray |
+| csv | EndpointReadCsv | EndpointWriteCsv |
+| json | - | EndpointWriteJson |
+| lang | - | EndpointWriteLang |
+| neon | EndpointReadNeon | EndpointWriteNeon |
+| php | - | EndpointWritePhp |
+| psv | EndpointReadPsv | EndpointWritePsv |
+| tsv | EndpointReadTsv | EndpointWriteTsv |
+| txt | EndpointReadTxt | EndpointWriteTxt |
+| yaml | EndpointReadYaml | EndpointWriteYaml |
+| yml | EndpointReadYml | EndpointWriteYml |
+

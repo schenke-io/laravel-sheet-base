@@ -7,7 +7,25 @@ use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use Spatie\SimpleExcel\SimpleExcelWriter;
 
-class StorageFileWriteCsv extends StorageFileWriter
+/**
+ * Class DelimitedFileWriter
+ *
+ * Base class for writing delimited files (CSV, TSV, PSV) from the pipeline.
+ *
+ * Main Responsibilities:
+ * - File Serialization: Uses Spatie SimpleExcelWriter to write data to delimited formats.
+ * - Delimiter Management: Ensures a valid delimiter is used for writing.
+ * - Pipeline Release: Converts pipeline data into a delimited format and saves it to storage.
+ *
+ * Usage Example:
+ * ```php
+ * class CsvWriter extends DelimitedFileWriter {
+ *     protected string $extension = 'csv';
+ *     protected string $delimiter = ',';
+ * }
+ * ```
+ */
+class DelimitedFileWriter extends StorageFileWriter
 {
     /**
      * needs to be overwritten

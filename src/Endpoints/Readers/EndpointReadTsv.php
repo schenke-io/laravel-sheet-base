@@ -2,9 +2,9 @@
 
 namespace SchenkeIo\LaravelSheetBase\Endpoints\Readers;
 
-use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFileReadExcel;
+use SchenkeIo\LaravelSheetBase\EndpointBases\DelimitedFileReader;
 
-class EndpointReadTsv extends StorageFileReadExcel
+class EndpointReadTsv extends DelimitedFileReader
 {
     protected string $extension = 'tsv';
 

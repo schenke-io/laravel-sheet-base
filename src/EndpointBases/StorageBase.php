@@ -4,23 +4,27 @@ namespace SchenkeIo\LaravelSheetBase\EndpointBases;
 
 use SchenkeIo\LaravelSheetBase\Contracts\IsEndpoint;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
+use SchenkeIo\LaravelSheetBase\Traits\HasStorage;
 
+/**
+ * Class StorageBase
+ *
+ * Base class for all endpoints interacting with Laravel's storage disks.
+ *
+ * Main Responsibilities:
+ * - Disk Management: Ensures the storage disk is properly configured and accessible.
+ * - String Representation: Provides a consistent string format for storage-based endpoints.
+ */
 abstract class StorageBase implements IsEndpoint
 {
-    public const DEFAULT_DISK = 'sheet-base';
-
-    public string $disk = self::DEFAULT_DISK;
+    use HasStorage;
 
     /**
      * @throws FileSystemNotDefinedException
      */
     public function __construct()
     {
-        if (! is_array(config('filesystems.disks.'.$this->disk))) {
-            throw new FileSystemNotDefinedException(
-                "the file system disk '{$this->disk}' is not defined in /config/filesystems.php"
-            );
-        }
+        $this->checkDisk();
     }
 
     public function toString(): string

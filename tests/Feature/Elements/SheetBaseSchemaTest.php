@@ -4,9 +4,9 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
-use SchenkeIo\LaravelSheetBase\Elements\PipelineType;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
+use SchenkeIo\LaravelSheetBase\Enums\ColumnType;
+use SchenkeIo\LaravelSheetBase\Enums\PipelineType;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaAddColumnException;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 

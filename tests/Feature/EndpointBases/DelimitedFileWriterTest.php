@@ -4,14 +4,14 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\EndpointBases;
 
 use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
-use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFileWriteCsv;
+use SchenkeIo\LaravelSheetBase\EndpointBases\DelimitedFileWriter;
 use SchenkeIo\LaravelSheetBase\Exceptions\DataQualityException;
 use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints\Readers\DummySheetBaseSchema;
 
-class StorageFileWriteCsvTest extends ConfigTestCase
+class DelimitedFileWriterTest extends ConfigTestCase
 {
     public function test_storage_put(): void
     {
@@ -19,7 +19,7 @@ class StorageFileWriteCsvTest extends ConfigTestCase
         $content = "a|b\n1|2\n";
         Storage::fake('sheet-base');
 
-        $file = new class extends StorageFileWriteCsv
+        $file = new class extends DelimitedFileWriter
         {
             public string $path = '/testfile.psv';
 
@@ -49,7 +49,7 @@ class StorageFileWriteCsvTest extends ConfigTestCase
         $content = "a|b\n1|2\n2|\"line1\nline2\nline3\"\n";
 
         Storage::fake('sheet-base');
-        $file = new class($path) extends StorageFileWriteCsv
+        $file = new class($path) extends DelimitedFileWriter
         {
             protected string $extension = 'psv';
 
@@ -68,7 +68,7 @@ class StorageFileWriteCsvTest extends ConfigTestCase
         $content = "a|b\n1|\"a|b\"\n2|3\n";
 
         Storage::fake('sheet-base');
-        $file = new class($path) extends StorageFileWriteCsv
+        $file = new class($path) extends DelimitedFileWriter
         {
             protected string $extension = 'psv';
 
@@ -84,7 +84,7 @@ class StorageFileWriteCsvTest extends ConfigTestCase
         $this->expectException(EndpointCodeException::class);
 
         Storage::fake('sheet-base');
-        $file = new class($path) extends StorageFileWriteCsv
+        $file = new class($path) extends DelimitedFileWriter
         {
             protected string $extension = 'psv';
         };

@@ -7,7 +7,7 @@ trait MakePhp
     use Comments;
 
     /**
-     * @param  array[]|array[][]  $data
+     * @param  array<mixed, mixed>  $data
      */
     protected function getPhp(array $data, string $writer): string
     {
@@ -27,17 +27,39 @@ PHP;
     }
 
     /**
-     * @param  array[]|array[][]  $data
+     * @param  array<mixed, mixed>  $data
      */
-    protected function prettyArray(array $data): string
+    protected function prettyArray(array $data, int $indent = 0): string
     {
+        $result = '['.PHP_EOL;
+        $indentStr = str_repeat('    ', $indent + 1);
+        $nextIndent = $indent + 1;
 
-        $export = var_export($data, true);
-        $export = preg_replace('/^([ ]*)(.*)/m', '$1$1$2', $export);
-        $array = preg_split("/\r\n|\n|\r/", $export);
-        $array = preg_replace(["/\s*array\s\($/", "/\)(,)?$/", "/\s=>\s$/"], [null, ']$1', ' => ['], $array);
+        foreach ($data as $key => $value) {
+            $result .= $indentStr;
+            if (is_string($key)) {
+                $result .= "'".addslashes($key)."' => ";
+            }
 
-        return implode(PHP_EOL, array_filter(['['] + $array));
+            if (is_array($value)) {
+                $result .= $this->prettyArray($value, $nextIndent);
+            } elseif (is_string($value)) {
+                $result .= "'".addslashes($value)."'";
+            } elseif (is_bool($value)) {
+                $result .= $value ? 'true' : 'false';
+            } elseif (is_null($value)) {
+                $result .= 'null';
+            } elseif (is_int($value) || is_float($value)) {
+                $result .= $value;
+            } else {
+                $result .= 'null';
+            }
 
+            $result .= ','.PHP_EOL;
+        }
+
+        $result .= str_repeat('    ', $indent).']';
+
+        return $result;
     }
 }

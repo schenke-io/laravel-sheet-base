@@ -100,4 +100,23 @@ class StorageFileTest extends ConfigTestCase
         };
         $this->assertIsString($file->getRoot());
     }
+
+    public function test_to_string(): void
+    {
+        $file = new class extends StorageFile
+        {
+            public string $path = 'test.txt';
+
+            public string $extension = 'txt';
+
+            /**
+             * brief text what this endpoint is doing
+             */
+            public function explain(): string
+            {
+                return 'in test';
+            }
+        };
+        $this->assertEquals('test.txt', $file->toString());
+    }
 }

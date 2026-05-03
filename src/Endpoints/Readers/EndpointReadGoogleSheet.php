@@ -27,21 +27,26 @@ class EndpointReadGoogleSheet extends GoogleSheetBase implements IsReader
             if ($rowIndex == 0) {
                 // the right end of the header is the first empty field
                 foreach ($row as $value) {
-                    if (strlen($value) < 1) {
+                    $valueStr = (is_scalar($value) || (is_object($value) && method_exists($value, '__toString'))) ? (string) $value : '';
+                    if ($valueStr === '') {
                         break;
                     }
-                    $header[] = $value;
+                    $header[] = $valueStr;
                 }
             } else {
                 // end when the first column has no value
-                if (strlen($row[0] ?? '') < 1) {
+                $firstValue = $row[0] ?? '';
+                $firstValueStr = (is_scalar($firstValue) || (is_object($firstValue) && method_exists($firstValue, '__toString'))) ? (string) $firstValue : '';
+                if ($firstValueStr === '') {
                     break;
                 }
                 // Align $row to the size of $header
                 $row = array_slice($row, 0, count($header)); // Trim if $row is too long
                 $row = array_pad($row, count($header), null); // Extend with null if $row is too short
                 // Combine the arrays
-                $pipelineData->addRow(array_combine($header, $row));
+                /** @var array<string, mixed> $combined */
+                $combined = array_combine($header, $row) ?: [];
+                $pipelineData->addRow($combined);
             }
         }
     }

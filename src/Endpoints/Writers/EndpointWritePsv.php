@@ -2,9 +2,9 @@
 
 namespace SchenkeIo\LaravelSheetBase\Endpoints\Writers;
 
-use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFileWriteCsv;
+use SchenkeIo\LaravelSheetBase\EndpointBases\DelimitedFileWriter;
 
-class EndpointWritePsv extends StorageFileWriteCsv
+class EndpointWritePsv extends DelimitedFileWriter
 {
     protected string $extension = 'psv';
 

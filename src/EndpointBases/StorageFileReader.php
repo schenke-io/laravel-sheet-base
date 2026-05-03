@@ -2,14 +2,33 @@
 
 namespace SchenkeIo\LaravelSheetBase\EndpointBases;
 
-use Illuminate\Support\Facades\Storage;
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Exceptions\FileSystemNotDefinedException;
+use SchenkeIo\LaravelSheetBase\Traits\HasFileExtensions;
 use Throwable;
 
-abstract class StorageFileReader extends StorageFile implements IsReader
+/**
+ * Class StorageFileReader
+ *
+ * Abstract base class for reading data from files stored in the file system.
+ *
+ * Main Responsibilities:
+ * - existence Check: Verifies that the file exists in the specified storage before reading.
+ * - Path Management: Handles the file path and provides human-readable explanations.
+ * - Reader Interface: Implements IsReader for integration with the pipeline.
+ *
+ * Usage Example:
+ * ```php
+ * class MyFileReader extends StorageFileReader {
+ *     public function fillPipeline(PipelineData &$pipelineData): void { ... }
+ * }
+ * ```
+ */
+abstract class StorageFileReader extends StorageBase implements IsReader
 {
+    use HasFileExtensions;
+
     /**
      * @throws EndpointCodeException
      * @throws FileSystemNotDefinedException
@@ -17,7 +36,9 @@ abstract class StorageFileReader extends StorageFile implements IsReader
      */
     public function __construct(?string $path = null)
     {
-        parent::__construct($path);
+        parent::__construct();
+        $this->validatePathAndExtension($path);
+
         if (! $this->storageExists($this->path)) {
             throw new EndpointCodeException(
                 class_basename($this),
@@ -31,9 +52,9 @@ abstract class StorageFileReader extends StorageFile implements IsReader
         }
     }
 
-    protected function storageGet(string $path): ?string
+    public function toString(): string
     {
-        return Storage::disk($this->disk)->get($path);
+        return $this->path;
     }
 
     public function explain(): string

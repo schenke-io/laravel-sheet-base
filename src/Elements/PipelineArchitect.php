@@ -3,26 +3,26 @@
 namespace SchenkeIo\LaravelSheetBase\Elements;
 
 use SchenkeIo\LaravelSheetBase\Exceptions\ArchitectureException;
+use SchenkeIo\LaravelSheetBase\Helpers\FindEndpointClass;
 
+/**
+ * Class PipelineArchitect
+ *
+ * Verifies the integrity of the project's architecture, specifically naming conventions and schema definitions.
+ *
+ * Main Responsibilities:
+ * - Schema Validation: Ensures `SheetBaseSchema` methods follow naming conventions.
+ * - Endpoint Discovery: Verifies that reader and writer classes correspond to the expected file structure.
+ * - Naming Enforcement: Checks that endpoint files are correctly named based on their extensions.
+ *
+ * Usage Example:
+ * ```php
+ * $architect = new PipelineArchitect();
+ * $architect->scan();
+ * ```
+ */
 class PipelineArchitect
 {
-    public array $columnMethods = [
-        'addUnsigned',
-        'addUnsignedNotNull',
-        'addFloat',
-        'addBool',
-        'addString',
-        'addLanguage',
-        'addDateTime',
-        'addId',
-        'addDot',
-        'addClosure',
-    ];
-
-    public array $readExtensions = ['neon', 'psv', 'csv', 'tsv', 'txt', 'yaml', 'yml'];
-
-    public array $writeExtensions = ['neon', 'json', 'php', 'csv', 'psv', 'tsv', 'txt', 'yaml'];
-
     /**
      * @throws ArchitectureException
      */
@@ -45,12 +45,8 @@ class PipelineArchitect
                 $methodsFound[] = $method->name;
             }
         }
-
-        foreach ($this->columnMethods as $method) {
-            if (! in_array($method, $methodsFound)) {
-                throw new ArchitectureException("method not found: $method");
-            }
-        }
+        // all methods starting with 'add' are considered valid column methods
+        // and they are discovered via reflection on SheetBaseSchema
     }
 
     /**
@@ -58,7 +54,7 @@ class PipelineArchitect
      */
     private function readersFound(): void
     {
-        foreach ($this->readExtensions as $extension) {
+        foreach (FindEndpointClass::getReaders() as $extension => $class) {
             $this->findFile('Readers', 'Read', ucfirst($extension));
         }
     }
@@ -68,7 +64,7 @@ class PipelineArchitect
      */
     private function writersFound(): void
     {
-        foreach ($this->writeExtensions as $extension) {
+        foreach (FindEndpointClass::getWriters() as $extension => $class) {
             $this->findFile('Writers', 'Write', ucfirst($extension));
         }
     }

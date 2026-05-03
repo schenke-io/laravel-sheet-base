@@ -3,7 +3,7 @@
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
-use SchenkeIo\LaravelSheetBase\Elements\PipelineType;
+use SchenkeIo\LaravelSheetBase\Enums\PipelineType;
 use SchenkeIo\LaravelSheetBase\Tests\TestCase;
 
 class PipelineDataFilterSyncTest extends TestCase

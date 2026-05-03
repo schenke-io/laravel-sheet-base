@@ -13,6 +13,12 @@ use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class MakeEndpointTest extends ConfigTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        FindEndpointClass::clearCache();
+    }
+
     public static function dataProviderPathTest(): array
     {
         return [

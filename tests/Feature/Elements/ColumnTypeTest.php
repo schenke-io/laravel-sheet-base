@@ -4,8 +4,8 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionMethod;
-use SchenkeIo\LaravelSheetBase\Elements\ColumnType;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
+use SchenkeIo\LaravelSheetBase\Enums\ColumnType;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 
 class ColumnTypeTest extends ConfigTestCase

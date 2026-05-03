@@ -5,9 +5,9 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Elements;
 use Illuminate\Console\Command;
 use Mockery;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
-use SchenkeIo\LaravelSheetBase\Elements\PipelineType;
 use SchenkeIo\LaravelSheetBase\Elements\SheetBaseSchema;
 use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadArray;
+use SchenkeIo\LaravelSheetBase\Enums\PipelineType;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\TestCase;
 

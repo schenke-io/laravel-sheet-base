@@ -24,6 +24,7 @@ final class SheetBaseConfig
         $configProject = new SheetBaseConfig;
         $targets = [];
         $pipelineIsLanguageCount = 0;
+        /** @var array<string, array<string, mixed>> $pipelines */
         $pipelines = $configProject->getConfig();
         foreach ($pipelines as $pipelineName => $pipelineArray) {
             /*
@@ -44,7 +45,6 @@ final class SheetBaseConfig
             if ($pipeline->isLanguage) {
                 $pipelineIsLanguageCount++;
                 if ($pipelineIsLanguageCount > 1) {
-                    // dd($pipelineIsLanguageCount);
                     throw ConfigErrorException::languagePipelineDefinedTwice($pipelineName);
                 }
             }
@@ -70,10 +70,17 @@ final class SheetBaseConfig
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, array<string, mixed>>
      */
     protected function getConfig(): array
     {
-        return config(self::CONFIG_FILE_BASE.'.pipelines') ?? [];
+        $config = config(self::CONFIG_FILE_BASE.'.pipelines');
+
+        if (! is_array($config)) {
+            return [];
+        }
+
+        /** @var array<string, array<string, mixed>> $config */
+        return $config;
     }
 }

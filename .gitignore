@@ -25,3 +25,16 @@ yarn-error.log
 
 build/logs/clover.xml
 build/report.junit.xml
+/app/storage
+/storage/pail
+/.junie
+/.gemini
+GEMINI.md
+/.ai
+.output.txt
+/__old
+.run
+CLAUDE.md
+.CLAUDE.md
+.GEMINI.md
+AGENTS.md

@@ -6,11 +6,28 @@ use Google\Client;
 use Google\Service\Drive;
 use Google\Service\Exception;
 use Google\Service\Sheets;
+use Google\Service\Sheets\BatchUpdateSpreadsheetRequest;
+use Google\Service\Sheets\Request;
 use Google\Service\Sheets\ValueRange;
-use Google_Service_Sheets_BatchUpdateSpreadsheetRequest;
-use Google_Service_Sheets_Request;
 use SchenkeIo\LaravelSheetBase\Exceptions\GoogleServiceException;
 
+/**
+ * Class GoogleSheetApi
+ *
+ * Wrapper for the Google Sheets API, providing simplified methods for reading and writing sheet data.
+ *
+ * Main Responsibilities:
+ * - Authentication: Uses application default credentials and sets appropriate scopes.
+ * - Data Retrieval: Fetches values from a specified spreadsheet and sheet.
+ * - Data Updates: Updates cell values and performs batch operations (e.g., formatting).
+ * - Metadata: Retrieves sheet IDs based on title.
+ *
+ * Usage Example:
+ * ```php
+ * $api = new GoogleSheetApi();
+ * $data = $api->getData('spreadsheet-id', 'Sheet1');
+ * ```
+ */
 class GoogleSheetApi
 {
     public Sheets $sheets;
@@ -23,30 +40,41 @@ class GoogleSheetApi
     }
 
     /**
-     * @return array[]
+     * @return array<int, array<int, mixed>>
      *
      * @throws GoogleServiceException
      */
     public function getData(string $spreadsheetId, string $sheetName): array
     {
         try {
-            return $this->sheets
+            $values = $this->sheets
                 ->spreadsheets_values
                 ->get($spreadsheetId, $sheetName)
                 ->getValues();
+
+            if (! is_array($values)) {
+                return [];
+            }
+
+            /** @var array<int, array<int, mixed>> $values */
+            return $values;
         } catch (Exception $e) {
             throw GoogleServiceException::fromGetValueRange($e->getMessage());
         }
     }
 
     /**
+     * @param  array<int, array<int, mixed>>  $values
+     * @param  'ROWS'|'COLUMNS'  $majorDimension
+     * @param  array<string, mixed>  $optParams
+     *
      * @throws GoogleServiceException
      */
     public function putData(string $spreadsheetId, string $range, array $values, string $majorDimension = 'ROWS', array $optParams = []): Sheets\UpdateValuesResponse
     {
         try {
             $valueRange = new ValueRange;
-            $valueRange->setValues([$values]);
+            $valueRange->setValues($values);
             $valueRange->setMajorDimension($majorDimension);
             $optParams['valueInputOption'] = 'RAW';
 
@@ -57,14 +85,14 @@ class GoogleSheetApi
     }
 
     /**
-     * @param  Google_Service_Sheets_Request[]  $requests
+     * @param  Request[]  $requests
      *
      * @throws GoogleServiceException
      */
     public function batchUpdate(string $spreadsheetId, array $requests): void
     {
         try {
-            $batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest([
+            $batchUpdateRequest = new BatchUpdateSpreadsheetRequest([
                 'requests' => $requests,
             ]);
             $this->sheets->spreadsheets->batchUpdate($spreadsheetId, $batchUpdateRequest);

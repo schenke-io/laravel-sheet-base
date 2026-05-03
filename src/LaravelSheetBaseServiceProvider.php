@@ -8,8 +8,14 @@ use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
+/**
+ * Service provider for the Laravel Sheet Base package.
+ */
 class LaravelSheetBaseServiceProvider extends PackageServiceProvider
 {
+    /**
+     * Configure the package with its name, commands, config file, and installation command.
+     */
     public function configurePackage(Package $package): void
     {
         $package->name('laravel-sheet-base')

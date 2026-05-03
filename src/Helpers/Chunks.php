@@ -9,7 +9,7 @@ class Chunks
      */
     public static function batchCount(int $keyCount): int
     {
-        return max(1, floor(log($keyCount, 2.5)));
+        return (int) max(1, floor(log($keyCount, 2.5)));
     }
 
     /**
@@ -24,7 +24,7 @@ class Chunks
 
     /**
      * @param  array<int,mixed>  $data
-     * @return array[]
+     * @return array<int, array<int, mixed>>
      */
     public static function splitIntoBatches(array $data): array
     {

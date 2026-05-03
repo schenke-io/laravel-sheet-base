@@ -4,15 +4,30 @@ namespace SchenkeIo\LaravelSheetBase\Elements;
 
 use Illuminate\Console\Command;
 use SchenkeIo\LaravelSheetBase\Contracts\IsReader;
+use SchenkeIo\LaravelSheetBase\Enums\PipelineType;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 
 /**
- * generic data structure used inside the pipeline
+ * Class PipelineData
+ *
+ * Generic data structure used inside the pipeline to hold and manipulate data rows.
+ *
+ * Main Responsibilities:
+ * - Data Storage: Holds key-value data rows, typically indexed by a unique ID.
+ * - Filtering: Supports filtering of keys based on another data source.
+ * - Row Management: Provides methods to add and format rows according to a schema.
+ *
+ * Usage Example:
+ * ```php
+ * $pipelineData = new PipelineData($schema);
+ * $pipelineData->addRow(['id' => '1', 'name' => 'John']);
+ * $data = $pipelineData->toArray();
+ * ```
  */
 final class PipelineData
 {
     /**
-     * @var array<string,array<string,array>>
+     * @var array<string, array<string, mixed>>
      */
     protected array $data = [];
 
@@ -27,7 +42,7 @@ final class PipelineData
     }
 
     /**
-     * @param  array<string,array<string,array>>  $data
+     * @param  array<string, array<string, mixed>>  $data
      */
     public static function fromArray(array $data, SheetBaseSchema $sheetBaseSchema): PipelineData
     {
@@ -45,7 +60,7 @@ final class PipelineData
     /**
      * we return the data based on the pipeline type
      *
-     * @return array<string,array<string,array>>
+     * @return array<string, array<string, mixed>>
      */
     public function toArray(): array
     {
@@ -94,13 +109,17 @@ final class PipelineData
         return $keysToRemove;
     }
 
+    /**
+     * @param  array<string, mixed>  $row
+     */
     public function addRow(array $row): void
     {
 
         $id = '';
         if (isset($row[$this->idName])) {
             // remove the id if set
-            $id = $row[$this->idName];
+            $idValue = $row[$this->idName];
+            $id = (is_scalar($idValue) || (is_object($idValue) && method_exists($idValue, '__toString'))) ? (string) $idValue : '';
             unset($row[$this->idName]);
         }
         if (strlen($id) < 1) {

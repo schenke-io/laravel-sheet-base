@@ -40,6 +40,7 @@ class EndpointWriteLang extends StorageTreeWriter
             data_set($translation, implode('.', $parts), $value);
         }
 
+        /** @var array<string, array<string, array<mixed>>> $translation */
         foreach ($translation as $language => $files) {
             foreach ($files as $fileBase => $fileContent) {
                 $path = $this->getRoot()."/$language/$fileBase.php";

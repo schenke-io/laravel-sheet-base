@@ -4,6 +4,9 @@ namespace SchenkeIo\LaravelSheetBase\Exceptions;
 
 use Exception;
 
+/**
+ * Exception thrown when a configuration error occurs.
+ */
 class ConfigErrorException extends Exception
 {
     public function __construct(string $pipelineName, string $msg, int $code = 0)
@@ -51,9 +54,9 @@ class ConfigErrorException extends Exception
         return new self($pipelineName, "invalid target ($target)", 8);
     }
 
-    public static function targetAlreadyUsed(string $pipelineName, mixed $target): ConfigErrorException
+    public static function targetAlreadyUsed(string $pipelineName, string $target): ConfigErrorException
     {
-        return new self($pipelineName, "target already used ($target)", 9);
+        return new self($pipelineName, sprintf('target %s is already used', $target), 9);
     }
 
     public static function languagePipelineDefinedTwice(string $pipelineName): ConfigErrorException
@@ -81,6 +84,9 @@ class ConfigErrorException extends Exception
         return new self($name, 'sync requires filter', 14);
     }
 
+    /**
+     * @param  string[]  $unknownKeys
+     */
     public static function unknownKeysInConfig(string $pipelineName, array $unknownKeys): ConfigErrorException
     {
         return new self($pipelineName,

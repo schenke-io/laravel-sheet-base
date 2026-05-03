@@ -6,9 +6,9 @@ use Google\Client;
 use Google\Service\Drive;
 use Google\Service\Exception as Google_Service_Exception;
 use Google\Service\Sheets;
+use Google\Service\Sheets\BatchUpdateSpreadsheetRequest;
 use Google\Service\Sheets\Resource\SpreadsheetsValues;
 use Google\Service\Sheets\UpdateValuesResponse;
-use Google_Service_Sheets_BatchUpdateSpreadsheetRequest;
 use Illuminate\Support\Facades\Http;
 use Mockery;
 use Orchestra\Testbench\TestCase;
@@ -70,6 +70,18 @@ class GoogleSheetApiTest extends TestCase
         $this->assertEquals($data, $api->getData('spreadsheetId', 'sheetName'));
     }
 
+    public function test_get_data_returns_empty_array_if_null()
+    {
+        $mockValues = $this->createMock(SpreadsheetsValues::class);
+        $mockValues->method('get')
+            ->willReturn(new Sheets\ValueRange(['values' => null]));
+
+        $api = new GoogleSheetApi;
+        $api->sheets->spreadsheets_values = $mockValues;
+
+        $this->assertEquals([], $api->getData('spreadsheetId', 'sheetName'));
+    }
+
     /**
      * @throws GoogleServiceException
      * @throws Exception
@@ -124,7 +136,7 @@ class GoogleSheetApiTest extends TestCase
                 'spreadsheetId', 'range',
                 new Sheets\ValueRange([
                     'majorDimension' => 'ROWS',
-                    'values' => [$data],
+                    'values' => $data,
                 ]),
                 ['valueInputOption' => 'RAW']
             )
@@ -149,7 +161,7 @@ class GoogleSheetApiTest extends TestCase
                 'spreadsheetId', 'range',
                 new Sheets\ValueRange([
                     'majorDimension' => 'ROWS',
-                    'values' => [$data],
+                    'values' => $data,
                 ]),
                 ['valueInputOption' => 'RAW']
             )->willThrowException(new Google_Service_Exception(''));
@@ -191,7 +203,7 @@ class GoogleSheetApiTest extends TestCase
         $mockSheets = $this->mock('Google\Service\Sheets');
 
         $mockSheets->shouldReceive('spreadsheets')->andReturnSelf();
-        $mockSheets->shouldReceive('batchUpdate')->with($spreadsheetId, Mockery::type(Google_Service_Sheets_BatchUpdateSpreadsheetRequest::class));
+        $mockSheets->shouldReceive('batchUpdate')->with($spreadsheetId, Mockery::type(BatchUpdateSpreadsheetRequest::class));
 
         $api->sheets->spreadsheets = $mockSheets;
 
@@ -224,7 +236,7 @@ class GoogleSheetApiTest extends TestCase
 
         $mockSheets->shouldReceive('spreadsheets')->andReturnSelf();
         $mockSheets->shouldReceive('batchUpdate')
-            ->with($spreadsheetId, Mockery::type(Google_Service_Sheets_BatchUpdateSpreadsheetRequest::class))
+            ->with($spreadsheetId, Mockery::type(BatchUpdateSpreadsheetRequest::class))
             ->andThrow(new Google_Service_Exception(''));
         $this->expectException(GoogleServiceException::class);
         $api->sheets->spreadsheets = $mockSheets;

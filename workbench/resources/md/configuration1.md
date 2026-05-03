@@ -47,3 +47,15 @@ class MySchema extends SheetBaseSchema
 
 ### Schema columns
 The following columns are possible:
+
+- `addId(string $name = 'id')`: Standard ID column.
+- `addDot(string $name = 'id')`: Dot notation ID column (for language files).
+- `addString(string $name)`: Standard string column.
+- `addNullString(string $name)`: String column that can be null.
+- `addUnsigned(string $name)`: Unsigned integer column.
+- `addUnsignedNotNull(string $name)`: Unsigned integer column that cannot be null.
+- `addFloat(string $name)`: Floating point number column.
+- `addBool(string $name)`: Boolean column.
+- `addDateTime(string $name)`: DateTime column.
+- `addLanguage(string $name)`: Language column (2-char name).
+- `addClosure(string $name, Closure $closure)`: Column calculated by a closure.

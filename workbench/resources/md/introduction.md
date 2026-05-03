@@ -6,7 +6,7 @@ Here are some ideal use cases for this package:
 * **Infrequent data changes:** When your data remains relatively stable over time.
 * **Command line efficiency:** When utilizing a developer console command proves more efficient than a web form for data processing tasks.
 
-These pipelines involve **reading data** from **endpoints**
+These pipelines involve **reading data** from **readers**
 on one end and **processing & storing** it using a **writer**
 on the other. Each pipeline uses a **schema** to define
 the **table format** for the writer.

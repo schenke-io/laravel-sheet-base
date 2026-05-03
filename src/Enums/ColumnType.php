@@ -1,6 +1,6 @@
 <?php
 
-namespace SchenkeIo\LaravelSheetBase\Elements;
+namespace SchenkeIo\LaravelSheetBase\Enums;
 
 use Carbon\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
@@ -89,7 +89,7 @@ enum ColumnType: string
     private function formatUnsigned(mixed $param): ?int
     {
         if (is_numeric($param)) {
-            return max(0, floor($param));
+            return (int) max(0, floor((float) $param));
         } elseif (is_string($param) && strlen($param) > 0) {
             if (preg_match('@(\d+)@', $param, $matches)) {
                 return (int) $matches[1];
@@ -110,14 +110,22 @@ enum ColumnType: string
 
     private function formatString(mixed $param): string
     {
-        return trim((string) ($param ?? ''));
+        if (is_scalar($param) || (is_object($param) && method_exists($param, '__toString'))) {
+            return trim((string) $param);
+        }
+
+        return '';
     }
 
     private function formatNullString(mixed $param): ?string
     {
-        $return = (string) $param;
+        if (is_scalar($param) || (is_object($param) && method_exists($param, '__toString'))) {
+            $return = (string) $param;
 
-        return $return == '' ? null : $return;
+            return $return == '' ? null : $return;
+        }
+
+        return null;
     }
 
     private function formatDateTime(mixed $param): ?string

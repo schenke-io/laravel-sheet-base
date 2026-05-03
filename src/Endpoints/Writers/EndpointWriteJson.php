@@ -16,6 +16,6 @@ class EndpointWriteJson extends StorageFileWriter
             JSON_UNESCAPED_SLASHES +
             JSON_UNESCAPED_UNICODE
         );
-        $this->storagePut($this->path, $content);
+        $this->storagePut($this->path, (string) $content);
     }
 }

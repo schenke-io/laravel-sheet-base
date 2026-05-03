@@ -14,8 +14,23 @@ use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Exceptions\MakeEndpointException;
 use SchenkeIo\LaravelSheetBase\Exceptions\SchemaVerifyColumnsException;
 use SchenkeIo\LaravelSheetBase\Google\GoogleBackgroundPainter;
-use SchenkeIo\LaravelSheetBase\Helpers\FindEndpointClass;
 
+/**
+ * Class Pipeline
+ *
+ * Manages the flow of data from multiple sources through a schema and filter to a target endpoint.
+ *
+ * Main Responsibilities:
+ * - Data Orchestration: Pumps data from readers to writers.
+ * - Validation: Ensures configuration consistency between sources, filters, and targets.
+ * - Synchronization: Handles reverse sync for Google Sheets (e.g., marking rows in red).
+ *
+ * Usage Example:
+ * ```php
+ * $pipeline = Pipeline::fromConfig($config, 'my-pipeline');
+ * $pipeline->pump($command, 'my-pipeline', 'TargetClass');
+ * ```
+ */
 final readonly class Pipeline
 {
     public bool $isLanguage;
@@ -56,31 +71,15 @@ final readonly class Pipeline
     }
 
     /**
+     * @param  array<string, mixed>  $pipeline
+     *
      * @throws ConfigErrorException
      * @throws MakeEndpointException
      * @throws SchemaVerifyColumnsException
      */
     public static function fromConfig(array $pipeline, string $pipelineName): Pipeline
     {
-        $knownKeys = explode(',', 'sources,schema,target,filter,sync');
-        $foundKeys = array_keys($pipeline);
-        $unknownKeys = array_diff($foundKeys, $knownKeys);
-        if (count($unknownKeys) > 0) {
-            throw ConfigErrorException::unknownKeysInConfig($pipelineName, $unknownKeys);
-        }
-        if (! is_array($pipeline['sources'])) {
-            throw ConfigErrorException::sourceNotConfiguredAsArray($pipelineName);
-        }
-
-        return new Pipeline(
-            name: $pipelineName,
-            sources: self::getSources($pipeline['sources'], $pipelineName),
-            schema: self::getSchema($pipeline['schema'] ?? '', $pipelineName),
-            target: self::getTarget($pipeline['target'] ?? '', $pipelineName),
-            filter: self::getFilter($pipeline['filter'] ?? null, $pipelineName),
-            sync: $pipeline['sync'] ?? false
-        );
-
+        return PipelineConfigParser::parse($pipeline, $pipelineName);
     }
 
     /**
@@ -124,98 +123,5 @@ final readonly class Pipeline
         $cmd->info(sprintf("pipeline '%s' target %s  %s",
             $namePipeline, class_basename($this->target), $this->target->explain()
         ));
-    }
-
-    /**
-     * @throws ConfigErrorException
-     * @throws MakeEndpointException
-     */
-    protected static function getFilter(?string $filter, string $pipelineName): ?IsReader
-    {
-        if (is_null($filter)) {
-            // empty endpoint, no filtering
-            return null;
-        }
-        if (class_exists($filter)) {
-            if (! in_array(IsReader::class, class_implements($filter))) {
-                throw ConfigErrorException::filterClassIsNotReader($pipelineName, $filter);
-            }
-
-            return new $filter;
-        } else {
-            return FindEndpointClass::fromSource($filter);
-        }
-    }
-
-    /**
-     * @param  string[]|IsReader[]  $sources
-     * @return array<int,IsReader>
-     *
-     * @throws ConfigErrorException
-     * @throws MakeEndpointException
-     */
-    protected static function getSources(array $sources, string $pipelineName): array
-    {
-        if (count($sources) == 0) {
-            throw ConfigErrorException::noSourcesDefined($pipelineName);
-        }
-
-        $return = [];
-        foreach ($sources as $source) {
-            if ($source instanceof IsReader) {
-                $return[] = $source;
-            } elseif (class_exists($source)) {
-                if (! in_array(IsReader::class, class_implements($source))) {
-                    throw ConfigErrorException::invalidSource($pipelineName, $source);
-                }
-
-                $return[] = new $source;
-            } else {
-                // try filename for auto
-                $return[] = FindEndpointClass::fromSource($source);
-            }
-        }
-
-        return $return;
-    }
-
-    /**
-     * @throws ConfigErrorException
-     * @throws SchemaVerifyColumnsException
-     */
-    protected static function getSchema(string $schema, string $pipelineName): SheetBaseSchema
-    {
-        if (! class_exists($schema)) {
-            throw ConfigErrorException::schemaDoesNotExist($pipelineName, $schema);
-        }
-        if (! in_array(SheetBaseSchema::class, class_parents($schema))) {
-            throw ConfigErrorException::schemaInvalid($pipelineName, $schema);
-        }
-        /** @var SheetBaseSchema $class */
-        $class = new $schema;
-        $class->verify($pipelineName);
-
-        return new $schema;
-    }
-
-    /**
-     * @throws ConfigErrorException
-     * @throws MakeEndpointException
-     */
-    protected static function getTarget(string $target, string $pipelineName): IsWriter
-    {
-        if ($target == '') {
-            throw ConfigErrorException::emptyTarget($pipelineName);
-        }
-        if (class_exists($target)) {
-            if (! in_array(IsWriter::class, class_implements($target))) {
-                throw ConfigErrorException::invalidTarget($pipelineName, $target);
-            }
-
-            return new $target;
-        } else {
-            // try filename for auto
-            return FindEndpointClass::fromTarget($target);
-        }
     }
 }

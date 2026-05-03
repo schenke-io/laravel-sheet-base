@@ -25,7 +25,7 @@ class EndpointReadNeon extends StorageFileReader
     public function fillPipeline(PipelineData &$pipelineData): void
     {
         try {
-            $fileContent = $this->storageGet($this->path);
+            $fileContent = (string) $this->storageGet($this->path);
             $content = (new Processor)->process(
                 Expect::arrayOf('array'),
                 Neon::decode($fileContent)
@@ -34,6 +34,7 @@ class EndpointReadNeon extends StorageFileReader
             throw new EndpointCodeException(class_basename($this), $e->getMessage());
         }
         // from Neon processor parsing we always get an array
+        /** @var array<int, array<string, mixed>> $content */
         $idName = $pipelineData->sheetBaseSchema->getIdName();
         foreach ($content as $index => $row) {
             //            if (! isset($row[$idName])) {

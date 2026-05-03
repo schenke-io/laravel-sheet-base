@@ -5,8 +5,8 @@ namespace SchenkeIo\LaravelSheetBase\Tests\Feature\Endpoints\Readers;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
-use SchenkeIo\LaravelSheetBase\Elements\PipelineType;
 use SchenkeIo\LaravelSheetBase\Endpoints\Readers\EndpointReadTxt;
+use SchenkeIo\LaravelSheetBase\Enums\PipelineType;
 use SchenkeIo\LaravelSheetBase\Exceptions\DataReadException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 

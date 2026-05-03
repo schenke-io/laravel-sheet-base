@@ -3,19 +3,19 @@
 namespace SchenkeIo\LaravelSheetBase\Tests\Feature\EndpointBases;
 
 use SchenkeIo\LaravelSheetBase\Elements\PipelineData;
-use SchenkeIo\LaravelSheetBase\EndpointBases\StorageFileReadExcel;
+use SchenkeIo\LaravelSheetBase\EndpointBases\DelimitedFileReader;
 use SchenkeIo\LaravelSheetBase\Exceptions\EndpointCodeException;
 use SchenkeIo\LaravelSheetBase\Tests\Feature\ConfigTestCase;
 use Workbench\App\Endpoints\PersonSchema;
 
-class StorageFileReadExcelTest extends ConfigTestCase
+class DelimitedFileReaderTest extends ConfigTestCase
 {
     protected const PATH = 'psv/persons.psv';
 
     public function test_seperator_missing()
     {
         $this->expectException(EndpointCodeException::class);
-        $endpoint = new class(self::PATH) extends StorageFileReadExcel
+        $endpoint = new class(self::PATH) extends DelimitedFileReader
         {
             protected string $extension = 'psv';
         };
@@ -24,7 +24,7 @@ class StorageFileReadExcelTest extends ConfigTestCase
     public function test_path_missing()
     {
         $this->expectException(EndpointCodeException::class);
-        $endpoint = new class extends StorageFileReadExcel
+        $endpoint = new class extends DelimitedFileReader
         {
             protected string $extension = 'csv';
 
@@ -35,7 +35,7 @@ class StorageFileReadExcelTest extends ConfigTestCase
     public function test_file_not_found()
     {
         $this->expectException(EndpointCodeException::class);
-        $endpoint = new class('unknwon.csv') extends StorageFileReadExcel
+        $endpoint = new class('unknwon.csv') extends DelimitedFileReader
         {
             protected string $extension = 'csv';
 
@@ -46,7 +46,7 @@ class StorageFileReadExcelTest extends ConfigTestCase
     public function test_all_right()
     {
         $path = 'psv/persons.psv';
-        $endpoint = new class($path) extends StorageFileReadExcel
+        $endpoint = new class($path) extends DelimitedFileReader
         {
             protected string $extension = 'psv';
 
@@ -58,7 +58,7 @@ class StorageFileReadExcelTest extends ConfigTestCase
     public function test_multi_line_data()
     {
         $path = 'psv/multiline.psv';
-        $endpoint = new class($path) extends StorageFileReadExcel
+        $endpoint = new class($path) extends DelimitedFileReader
         {
             protected string $extension = 'psv';
 
@@ -72,5 +72,24 @@ class StorageFileReadExcelTest extends ConfigTestCase
         $endpoint->fillPipeline($pipelineData);
 
         $this->assertEquals($content, $pipelineData->toArray());
+    }
+
+    public function test_tempnam_fail()
+    {
+        $path = 'psv/persons.psv';
+        $endpoint = new class($path) extends DelimitedFileReader
+        {
+            protected string $extension = 'psv';
+
+            protected string $delimiter = ',';
+
+            protected function getTempFile(): string|false
+            {
+                return false;
+            }
+        };
+        $pipelineData = new PipelineData(new PersonSchema);
+        $endpoint->fillPipeline($pipelineData);
+        $this->assertEmpty($pipelineData->toArray());
     }
 }
