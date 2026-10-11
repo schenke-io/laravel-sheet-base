@@ -38,3 +38,7 @@ CLAUDE.md
 .CLAUDE.md
 .GEMINI.md
 AGENTS.md
+/.phpstorm
+/.claude
+/.continue
+.mcp.json

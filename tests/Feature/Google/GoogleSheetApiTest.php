@@ -57,7 +57,7 @@ class GoogleSheetApiTest extends TestCase
         ]);
 
         $mockValues = $this->createMock(SpreadsheetsValues::class);
-        $mockValues->method('get')
+        $mockValues->expects($this->once())->method('get')
             ->with(
                 'spreadsheetId',
                 'sheetName'
@@ -101,7 +101,7 @@ class GoogleSheetApiTest extends TestCase
         ]);
 
         $mockValues = $this->createMock(SpreadsheetsValues::class);
-        $mockValues->method('get')
+        $mockValues->expects($this->once())->method('get')
             ->with(
                 'spreadsheetId',
                 'sheetName'
@@ -131,7 +131,7 @@ class GoogleSheetApiTest extends TestCase
         Http::fake(['https://sheets.googleapis.com/v4/spreadsheets/*' => Http::response([], 200)]);
 
         $mockValues = $this->createMock(SpreadsheetsValues::class);
-        $mockValues->method('update')
+        $mockValues->expects($this->once())->method('update')
             ->with(
                 'spreadsheetId', 'range',
                 new Sheets\ValueRange([
@@ -156,7 +156,7 @@ class GoogleSheetApiTest extends TestCase
         Http::fake(['https://sheets.googleapis.com/v4/spreadsheets/*' => Http::response([], 200)]);
 
         $mockValues = $this->createMock(SpreadsheetsValues::class);
-        $mockValues->method('update')
+        $mockValues->expects($this->once())->method('update')
             ->with(
                 'spreadsheetId', 'range',
                 new Sheets\ValueRange([

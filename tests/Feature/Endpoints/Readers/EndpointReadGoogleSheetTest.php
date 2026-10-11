@@ -32,7 +32,7 @@ class EndpointReadGoogleSheetTest extends TestCase
         };
 
         $mockValues = $this->createMock(SpreadsheetsValues::class);
-        $mockValues->method('get')
+        $mockValues->expects($this->once())->method('get')
             ->with(
                 'spreadsheetId',
                 'sheetName'

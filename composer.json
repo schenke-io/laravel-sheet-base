@@ -32,7 +32,7 @@
         "spatie/laravel-ray": "^1.37",
         "nunomaduro/collision": "^8.1",
         "orchestra/testbench": "^10.9 || ^11.0",
-        "pestphp/pest": "^3.8",
+        "pestphp/pest": "^5.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "schenke-io/packaging-tools": "^0.2"
     },
